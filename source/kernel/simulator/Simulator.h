@@ -48,7 +48,7 @@ public: // only get
 	std::string getVersion() const;
 	unsigned int getVersionNumber() const;
 	std::string getName() const;
-	LicenceManager* getLicenceManager() const;
+	LicenceManager* getLicence() const;
 	PluginManager* getPlugins() const;
 	ModelManager* getModels() const;
 	TraceManager* getTracer() const;

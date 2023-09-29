@@ -196,7 +196,7 @@ bool ModelCheckerDefaultImpl1::checkLimits() {
 	bool res = true;
 	std::string text;
 	unsigned int value, limit;
-	LicenceManager *licence = _model->getParentSimulator()->getLicenceManager();
+	LicenceManager *licence = _model->getParentSimulator()->getLicence();
 	_model->getTracer()->trace("Checking model limits", TraceManager::Level::L7_internal);
 	Util::IncIndent();
 	{

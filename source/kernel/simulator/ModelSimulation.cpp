@@ -259,8 +259,8 @@ void ModelSimulation::_showSimulationHeader() {
 	//tm->traceReport("\n-----------------------------------------------------");
 	// simulator infos
 	tm->traceReport(_model->getParentSimulator()->getName());
-	tm->traceReport(_model->getParentSimulator()->getLicenceManager()->showLicence());
-	tm->traceReport(_model->getParentSimulator()->getLicenceManager()->showLimits());
+	tm->traceReport(_model->getParentSimulator()->getLicence()->showLicence());
+	tm->traceReport(_model->getParentSimulator()->getLicence()->showLimits());
 	// model infos
 	tm->traceReport("Analyst Name: "+_info->getAnalystName());
 	tm->traceReport("Project Title: "+_info->getProjectTitle());
@@ -413,7 +413,7 @@ void ModelSimulation::_stepSimulation() {
 			_model->getOnEvents()->NotifyProcessEventHandlers(_createSimulationEvent());
 			try {
 				_dispatchEvent(nextEvent);
-			} catch (std::exception e) {
+			} catch (std::exception &e) {
 				_model->getTracer()->traceError("Error on processing event ("+nextEvent->show()+")", e);
 			}
 			_model->getOnEvents()->NotifyAfterProcessEventHandlers(_createSimulationEvent());

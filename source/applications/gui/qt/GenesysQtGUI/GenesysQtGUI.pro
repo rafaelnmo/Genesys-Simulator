@@ -392,6 +392,7 @@ HEADERS += \
 	../../../TraitsApp.h \
 	../../../terminal/GenesysShell/GenesysShell.h \
 	../../../terminal/GenesysShell/GenesysShell_if.h \
+	../../../terminal/TraitsTerminalApp.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExample.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExampleExtended.h \
 	../../../terminal/examples/arenaExamples/Airport_Extended1.h \

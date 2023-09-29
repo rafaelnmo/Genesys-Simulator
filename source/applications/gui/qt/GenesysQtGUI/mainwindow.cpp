@@ -1709,7 +1709,7 @@ void MainWindow::on_actionAboutAbout_triggered() {
 }
 
 void MainWindow::on_actionAboutLicence_triggered() {
-	LicenceManager* licman = simulator->getLicenceManager();
+	LicenceManager* licman = simulator->getLicence();
 	std::string text = licman->showLicence() + "\n";
 	text += licman->showLimits() + "\n";
 	text += licman->showActivationCode();
