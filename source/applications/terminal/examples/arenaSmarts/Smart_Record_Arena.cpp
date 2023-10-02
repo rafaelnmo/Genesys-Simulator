@@ -5,13 +5,13 @@
  */
 
 /* 
- * File:   Smart_Record.cpp
+ * File:   Smart_Record_Arena.cpp
  * Author: rlcancian
  * 
  * Created on 3 de Setembro de 2019, 18:34
  */
 
-#include "Smart_Record.h"
+#include "Smart_Record_Arena.h"
 
 // you have to included need libs
 
@@ -26,14 +26,14 @@
 #include "../../../../plugins/components/Record.h"
 #include "../../../TraitsApp.h"
 
-Smart_Record::Smart_Record() {
+Smart_Record_Arena::Smart_Record_Arena() {
 }
 
 /**
  * This is the main function of the application. 
  * It instanciates the simulator, builds a simulation model and then simulate that model.
  */
-int Smart_Record::main(int argc, char** argv) {
+int Smart_Record_Arena::main(int argc, char** argv) {
 	Simulator* genesys = new Simulator();
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
@@ -78,10 +78,10 @@ int Smart_Record::main(int argc, char** argv) {
     simulation->setNumberOfReplications(300);
     simulation->setWarmUpPeriod(0.05);
     simulation->setWarmUpPeriodTimeUnit(Util::TimeUnit::minute);
-    model->save("./models/Smart_Record.gen");
+	model->save("./models/Smart_Record_Arena.gen");
     model->getSimulation()->start();
     while (model->getSimulation()-> isPaused());
-    for (int i=0;i < 1e9;i++);
+
     delete genesys;
     return 0;
 };

@@ -63,6 +63,7 @@ class Record : public ModelComponent {
 public:
 	Record(Model* model, std::string name = "");
 	virtual ~Record();
+
 public:
 	void setFilename(std::string filename);
 	std::string getFileName() const;
@@ -70,29 +71,43 @@ public:
 	std::string getExpression() const;
 	void setExpressionName(std::string expressionName);
 	std::string getExpressionName() const;
-	StatisticsCollector* getCstatExpression() const;
+	StatisticsCollector* getCstatExpression() const;	
+	bool getTimeDependent() const;
+	void setTimeDependent(bool timeDependent);
+
 public:
 	virtual std::string show();
+
 public:
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
+
 protected:
 	virtual void _onDispatchEvent(Entity* entity, unsigned int inputPortNumber);
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+
 protected:
-	//virtual void _initBetweenReplications();
+	virtual void _initBetweenReplications();
 	virtual bool _check(std::string* errorMessage);
 	virtual void _createInternalAndAttachedData();
+
 private:
-	std::string _expression = "";
-	std::string _expressionName = "";
-	std::string _filename = "";
+	const struct DEFAULT_VALUES {
+		const bool timeDependent = false;
+		const std::string expression = "";
+		const std::string expressionName = "";
+		const std::string filename = "";
+	} DEFAULT;
+	bool _timeDependent = DEFAULT.timeDependent;
+	std::string _expression = DEFAULT.expression;
+	std::string _expressionName = DEFAULT.expressionName;
+	std::string _filename = DEFAULT.filename;
 private:
-	// not a child modeldatum
+	const std::string _separator = " ";
 	StatisticsCollector* _cstatExpression = nullptr;
-	/* @TODO: Create an internal class to agregate ExpressionStatisticsColelctor, and change Record to got a list of it, so Record cn record a set of expressions into a set of files */
+	/* @TODO: Create an internal class to agregate ExpressionStatisticsColelctor, and change Record to got a list of it, so Record can record a set of expressions into a set of files */
 };
 
 #endif /* RECORD_H */

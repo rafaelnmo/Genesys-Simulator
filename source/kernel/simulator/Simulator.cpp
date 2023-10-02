@@ -85,7 +85,7 @@ std::string Simulator::getName() const {
 	return _name;
 }
 
-LicenceManager* Simulator::getLicenceManager() const {
+LicenceManager* Simulator::getLicence() const {
 	return _licenceManager;
 }
 

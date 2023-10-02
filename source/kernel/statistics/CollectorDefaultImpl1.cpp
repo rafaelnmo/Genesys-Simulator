@@ -25,11 +25,11 @@ void CollectorDefaultImpl1::clear() {
 	}
 }
 
-void CollectorDefaultImpl1::addValue(double value) {
+void CollectorDefaultImpl1::addValue(double value, double weight) {
 	_lastValue = value;
 	_numElements++;
 	if (_addValueHandler != nullptr) {
-		_addValueHandler(value);
+		_addValueHandler(value, weight);
 	}
 }
 

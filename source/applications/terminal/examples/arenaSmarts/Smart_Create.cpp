@@ -72,7 +72,7 @@ int Smart_Create::main(int argc, char** argv) {
     model->save("./models/Smart_Create.gen");
     model->getSimulation()->start();
     while (model->getSimulation()-> isPaused());
-    for (int i=0;i < 1e9;i++);
+    
     delete genesys;
     return 0;
 };

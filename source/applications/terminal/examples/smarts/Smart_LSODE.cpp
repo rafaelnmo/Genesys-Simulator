@@ -4,13 +4,13 @@
  */
 
 /* 
- * File:   Smart_ODE.cpp
+ * File:   Smart_LSODE.cpp
  * Author: rlcancian
  * 
  * Created on 11 de janeiro de 2022, 19:29
  */
 
-#include "Smart_ODE.h"
+#include "Smart_LSODE.h"
 
 #include "../../../../kernel/simulator/Simulator.h"
 #include "../../../../plugins/components/Create.h"
@@ -19,10 +19,10 @@
 #include "../../../../plugins/data/Variable.h"
 #include "../../../TraitsApp.h"
 
-Smart_ODE::Smart_ODE() {
+Smart_LSODE::Smart_LSODE() {
 }
 
-int Smart_ODE::main(int argc, char** argv) {
+int Smart_LSODE::main(int argc, char** argv) {
 	Simulator* genesys = new Simulator();
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
@@ -45,7 +45,7 @@ int Smart_ODE::main(int argc, char** argv) {
 	ode1->getDiffEquations()->insert("x[1]");
 	ode1->getDiffEquations()->insert("x[0] + exp(t)");
 	ode1->setStep(0.1);
-	ode1->setFilename("./temp/Smart_ODE.outputdatafile.txt"); // ODE results in a text tabular format
+	ode1->setFilename("./temp/Smart_LSODE.outputdatafile.txt"); // ODE results in a text tabular format
 	// connect model components to create a "workflow"
 	create1->getConnections()->insert(ode1);
 	ode1->getConnections()->insert(dispose1);
@@ -53,7 +53,7 @@ int Smart_ODE::main(int argc, char** argv) {
 	model->getSimulation()->setReplicationLength(2.0);
 	model->getSimulation()->setShowReportsAfterReplication(false);
 	model->getSimulation()->setShowReportsAfterSimulation(false);
-	model->save("./models/Smart_ODE.gen");
+	model->save("./models/Smart_LSODE.gen");
 	model->getSimulation()->start();
 	delete genesys;
 	return 0;

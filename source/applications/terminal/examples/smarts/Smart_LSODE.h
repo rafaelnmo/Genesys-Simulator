@@ -10,18 +10,18 @@
  * Created on 11 de janeiro de 2022, 19:29
  */
 
-#ifndef SMART_ODE_H
-#define SMART_ODE_H
+#ifndef SMART_LSODE_H
+#define SMART_LSODE_H
 
 
 #include "../../../BaseGenesysTerminalApplication.h"
 
-class Smart_ODE : public BaseGenesysTerminalApplication {
+class Smart_LSODE : public BaseGenesysTerminalApplication {
 public:
-	Smart_ODE();
+	Smart_LSODE();
 public:
 	virtual int main(int argc, char** argv);
 };
 
-#endif /* SMART_ODE_H */
+#endif /* SMART_LSODE_H */
 

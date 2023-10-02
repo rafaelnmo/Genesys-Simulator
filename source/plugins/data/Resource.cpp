@@ -59,7 +59,8 @@ bool Resource::seize(unsigned int quantity, double priority) {  //@ TODO: Consid
 	double tnow = _parentModel->getSimulation()->getSimulatedTime();
 	_sumCapacityOverTime += _lastTimeCapacityEvaluated * getCapacity();
 	_lastTimeCapacityEvaluated = tnow;
-	bool canSeize = (getCapacity() - _numberBusy) >= quantity;
+	int remainingCapacity = getCapacity() - _numberBusy;
+	bool canSeize = remainingCapacity >= quantity;
 	if (canSeize) {
 		_sumNumberBusyOverTime += std::max<double>(_lastTimeReleased, _lastTimeSeized) * _lastTimeAnythingNumberBusy;
 		_numberBusy += quantity;
@@ -145,8 +146,8 @@ Resource::ResourceState Resource::getResourceState() const {
 	return _resourceState;
 }
 
-void Resource::setCapacity(unsigned int _capacity) {
-	_capacity = _capacity;
+void Resource::setCapacity(unsigned int capacity) {
+	_capacity = capacity;
 }
 
 unsigned int Resource::getCapacity() const {

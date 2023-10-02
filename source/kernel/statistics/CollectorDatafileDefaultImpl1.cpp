@@ -34,7 +34,7 @@ void CollectorDatafileDefaultImpl1::clear() {
 	_lastValue = NULL; //@TODO: Change it to NaN or other default/null value
 }
 
-void CollectorDatafileDefaultImpl1::addValue(double value) {
+void CollectorDatafileDefaultImpl1::addValue(double value, double weight) {
 	std::ofstream file;
 	try {
 		if (this->_numElements > 0) {

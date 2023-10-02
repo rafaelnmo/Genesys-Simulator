@@ -24,33 +24,37 @@ public:
 	StatisticsDefaultImpl1(Collector_if* collector);
 	virtual ~StatisticsDefaultImpl1() = default;
 public:
-	virtual Collector_if* getCollector() const;
-	virtual void setCollector(Collector_if* collector);
+	virtual Collector_if* getCollector() const override;
+	virtual void setCollector(Collector_if* collector) override;
 public:
-	virtual unsigned int numElements();
-	virtual double min();
-	virtual double max();
-	virtual double average();
-	virtual double variance();
-	virtual double stddeviation();
-	virtual double variationCoef();
-	virtual double halfWidthConfidenceInterval();
-	virtual double confidenceLevel();
-	virtual unsigned int newSampleSize(double halfWidth);
-	virtual void setConfidenceLevel(double confidencelevel);
+	virtual unsigned int numElements() override;
+	virtual double min() override;
+	virtual double max() override;
+	virtual double average() override;
+	virtual double variance() override;
+	virtual double stddeviation() override;
+	virtual double variationCoef() override;
+	virtual double halfWidthConfidenceInterval() override;
+	virtual double confidenceLevel() override;
+	virtual unsigned int newSampleSize(double halfWidth) override;
+	virtual void setConfidenceLevel(double confidencelevel) override;
 private:
-	void collectorAddHandler(double newValue);
+	void collectorAddHandler(double newValue, double newWeight);
 	void collectorClearHandler();
 	void initStatistics();
 private:
 	Collector_if* _collector;
 	unsigned long _elems;
-	double _sum;
-	double _sumSquare;
+	double _sumData;
+	double _sumDataSquare;
+	double _sumWeight;
+	double _sumWeightSquare;
 	double _min;
 	double _max;
 	double _average;
 	double _variance;
+	double _unweightedvariance;
+	double _unbiasedVariance;
 	double _stddeviation;
 	double _variationCoef;
 	double _confidenceLevel = 0.95;

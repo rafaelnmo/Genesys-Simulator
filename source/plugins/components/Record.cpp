@@ -79,7 +79,10 @@ void Record::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber) {
 		// @TODO: open and close for every data is not a good idea. Should open when replication starts and close when it finishes.
 		std::ofstream file;
 		file.open(_filename, std::ofstream::out | std::ofstream::app);
-		file << value << std::endl;
+		if (_timeDependent)
+			file << _parentModel->getSimulation()->getSimulatedTime() << _separator << value << std::endl;
+		else
+			file << value << std::endl;
 		file.close();
 	}
 	_parentModel->getTracer()->traceSimulation(this, _parentModel->getSimulation()->getSimulatedTime(), entity, this, "Recording value " + std::to_string(value));
@@ -104,7 +107,20 @@ bool Record::_loadInstance(PersistenceRecord *fields) {
 	return res;
 }
 
-//void Record::_initBetweenReplications() {}
+void Record::_initBetweenReplications() {
+		try {
+			unsigned int numRep =  _parentModel->getSimulation()->getCurrentReplicationNumber();
+			std::ofstream file;
+			file.open(_filename, std::ofstream::app);
+				if (numRep==1) { // header
+					file << "#Expression=\""+_expression+"\", ExpressionName=\""+_expressionName+"\"" << std::endl;
+				}
+			file << "#ReplicationNumber=" <<numRep << std::endl; //"/" << _parentModel->getSimulation()->getNumberOfReplications() << std::endl;
+			file.close();
+		} catch (...) {
+
+		}
+}
 
 bool Record::_check(std::string* errorMessage) {
 	// when cheking the model (before simulating it), remove the file if exists
@@ -121,6 +137,14 @@ void Record::_createInternalAndAttachedData() {
 		this->_internalDataClear();
 		_cstatExpression = nullptr;
 	}
+}
+
+bool Record::getTimeDependent() const {
+	return _timeDependent;
+}
+
+void Record::setTimeDependent(bool timeDependent) {
+	_timeDependent = timeDependent;
 }
 
 PluginInformation* Record::GetPluginInformation() {

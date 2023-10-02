@@ -79,7 +79,7 @@ int Smart_Expression::main(int argc, char** argv) {
     simulation->setWarmUpPeriod(0.05, Util::TimeUnit::minute);
     model->save("./models/Smart_Expression.gen");
     model->getSimulation()->start();
-    for (int i=0;i < 1e9;i++);
+    
     delete genesys;
     return 0;
 };

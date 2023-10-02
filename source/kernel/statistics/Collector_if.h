@@ -19,11 +19,11 @@
 
 /*!
  */
-typedef std::function<void(double) > CollectorAddValueHandler;
+typedef std::function<void(double, double) > CollectorAddValueHandler;
 
 template<typename Class>
-CollectorAddValueHandler setCollectorAddValueHandler(void (Class::*function)(double), Class * object) {
-	return std::bind(function, object, std::placeholders::_1);
+CollectorAddValueHandler setCollectorAddValueHandler(void (Class::*function)(double, double), Class * object) {
+	return std::bind(function, object, std::placeholders::_1, std::placeholders::_2);
 }
 
 typedef std::function<void() > CollectorClearHandler;
@@ -39,7 +39,7 @@ CollectorClearHandler setCollectorClearHandler(void (Class::*function)(), Class 
 class Collector_if {
 public:
 	virtual void clear() = 0;
-	virtual void addValue(double value) = 0;
+	virtual void addValue(double value, double weight=1) = 0;
 	virtual double getLastValue() = 0;
 	virtual unsigned long numElements() = 0;
 public:

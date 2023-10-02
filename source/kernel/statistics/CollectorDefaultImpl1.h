@@ -22,13 +22,13 @@ public:
 	CollectorDefaultImpl1();
 	virtual ~CollectorDefaultImpl1() = default;
 public:
-	void clear();
-	void addValue(double value);
-	double getLastValue();
-	unsigned long numElements();
+	virtual void clear() override;
+	virtual void addValue(double value, double weight=1) override;
+	virtual double getLastValue() override;
+	virtual unsigned long numElements() override;
 public:
-	void setAddValueHandler(CollectorAddValueHandler addValueHandler);
-	void setClearHandler(CollectorClearHandler clearHandler);
+	virtual void setAddValueHandler(CollectorAddValueHandler addValueHandler) override;
+	virtual void setClearHandler(CollectorClearHandler clearHandler) override;
 private:
 	double _lastValue;
 	unsigned long _numElements = 0;

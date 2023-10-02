@@ -123,7 +123,7 @@ public:
 public: // g&s
 	void setResourceState(ResourceState _resourceState);
 	Resource::ResourceState getResourceState() const;
-	void setCapacity(unsigned int _capacity);
+	void setCapacity(unsigned int capacity);
 	unsigned int getCapacity() const;
 	void setCostBusyTimeUnit(double _costBusyTimeUnit);
 	double getCostBusyTimeUnit() const;

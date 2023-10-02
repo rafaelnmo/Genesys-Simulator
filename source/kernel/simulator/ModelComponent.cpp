@@ -12,18 +12,100 @@
 
 #include "ModelComponent.h"
 #include "Model.h"
-#include "../TraitsKernel.h"
 
 //using namespace GenesysKernel;
 
+
+//
+// public: /// constructors
+//
+
 ModelComponent::ModelComponent(Model* model, std::string componentTypename, std::string name) : ModelDataDefinition(model, componentTypename, name, false) {
 	model->getComponents()->insert(this);
-
 	// ADD_PROPERTY(std::string, ModelComponent, "Description", getDescription, setDescription)
 }
 
 ModelComponent::~ModelComponent() {
 	_parentModel->getComponents()->remove(this);
+}
+
+
+//
+// public: /// new public user methods for this component
+//
+
+ConnectionManager* ModelComponent::getConnections() const {
+	return _connections; // @TODO How to know if it changes?
+}
+
+bool ModelComponent::hasBreakpointAt() {
+	return _parentModel->getSimulation()->getBreakpointsOnComponent()->find(this) != _parentModel->getSimulation()->getBreakpointsOnComponent()->list()->end();
+}
+
+void ModelComponent::setDescription(std::string description) {
+	if (_description != description) {
+		this->_description = description;
+		_hasChanged = true;
+	}
+}
+
+std::string ModelComponent::getDescription() const {
+	return _description;
+}
+
+
+// ...
+
+
+//
+// public: /// virtual methods
+//
+
+
+std::string ModelComponent::show() {
+	return ModelDataDefinition::show(); // "{id=" + std::to_string(this->_id) + ",name=\""+this->_name + "\"}"; // , nextComponents[]=(" + _nextComponents->show() + ")}";
+}
+
+
+//
+// public: /// static methods that must have implementations (Load and New just the same. GetInformation must provide specific infos for the new component
+//
+
+void ModelComponent::SaveInstance(PersistenceRecord *fields, ModelComponent* component) {
+	component->trace("Writing component \"" + component->getName() + "\"", TraceManager::Level::L9_mostDetailed);
+	try {
+		component->_saveInstance(fields, component->_getSaveDefaultsOption());
+	} catch (const std::exception& e) {
+		component->traceError("Error executing component " + component->show(), e);
+	}
+}
+
+void ModelComponent::CreateInternalData(ModelComponent* component) {
+	//component->_model->getTraceManager()->trace(TraceManager::Level::blockArrival, "Writing component \"" + component->_name + "\""); //std::to_string(component->_id));
+	try {
+		component->_createInternalAndAttachedData();
+	} catch (const std::exception e) {
+		component->traceError("Error creating elements of component " + component->show(), e);
+	};
+}
+
+bool ModelComponent::Check(ModelComponent* component) {
+	component->trace("Checking " + component->_typename + ": \"" + component->getName() + "\""); //std::to_string(component->_id));
+	bool res = false;
+	std::string* errorMessage = new std::string();
+	Util::IncIndent();
+	{
+		try {
+			res = component->_check(errorMessage);
+			if (!res) {
+				component->traceError("Error: Checking has failed with message '" + *errorMessage + "'");
+			}
+		} catch (const std::exception& e) {
+			component->traceError("Error verifying component " + component->show(), e);
+		}
+	}
+	Util::DecIndent();
+	return res;
 }
 
 void ModelComponent::DispatchEvent(Event* event) {
@@ -48,65 +130,10 @@ void ModelComponent::DispatchEvent(Event* event) {
 	Util::DecIndent();
 }
 
-void ModelComponent::CreateInternalData(ModelComponent* component) {
-	//component->_model->getTraceManager()->trace(TraceManager::Level::blockArrival, "Writing component \"" + component->_name + "\""); //std::to_string(component->_id));
-	try {
-		component->_createInternalAndAttachedData();
-	} catch (const std::exception e) {
-		component->traceError("Error creating elements of component " + component->show(), e);
-	};
-}
 
-void ModelComponent::SaveInstance(PersistenceRecord *fields, ModelComponent* component) {
-	component->trace("Writing component \"" + component->getName() + "\"", TraceManager::Level::L9_mostDetailed);
-	try {
-		component->_saveInstance(fields, component->_getSaveDefaultsOption());
-	} catch (const std::exception& e) {
-		component->traceError("Error executing component " + component->show(), e);
-	}
-}
-
-void ModelComponent::setDescription(std::string description) {
-	if (_description != description) {
-		this->_description = description;
-		_hasChanged = true;
-	}
-}
-
-std::string ModelComponent::getDescription() const {
-	return _description;
-}
-
-bool ModelComponent::Check(ModelComponent* component) {
-	component->trace("Checking " + component->_typename + ": \"" + component->getName() + "\""); //std::to_string(component->_id));
-	bool res = false;
-	std::string* errorMessage = new std::string();
-	Util::IncIndent();
-	{
-		try {
-			res = component->_check(errorMessage);
-			if (!res) {
-				component->traceError("Error: Checking has failed with message '" + *errorMessage + "'");
-			}
-		} catch (const std::exception& e) {
-			component->traceError("Error verifying component " + component->show(), e);
-		}
-	}
-	Util::DecIndent();
-	return res;
-}
-
-ConnectionManager* ModelComponent::getConnections() const {
-	return _connections; // @TODO How to know if it changes?
-}
-
-bool ModelComponent::hasBreakpointAt() {
-	return _parentModel->getSimulation()->getBreakpointsOnComponent()->find(this) != _parentModel->getSimulation()->getBreakpointsOnComponent()->list()->end();
-}
-
-std::string ModelComponent::show() {
-	return ModelDataDefinition::show(); // "{id=" + std::to_string(this->_id) + ",name=\""+this->_name + "\"}"; // , nextComponents[]=(" + _nextComponents->show() + ")}";
-}
+//
+// protected: /// virtual method that must be overriden
+//
 
 bool ModelComponent::_loadInstance(PersistenceRecord *fields) {
 	bool res = ModelDataDefinition::_loadInstance(fields);
@@ -137,7 +164,59 @@ void ModelComponent::_saveInstance(PersistenceRecord *fields, bool saveDefaultVa
 	}
 }
 
-// just an easy access to trace
-//void ModelComponent::traceSimulation(void* thisobject, double time, Entity* entity, ModelComponent* component, std::string text, TraceManager::Level level){
-//	_parentModel->getTracer()->traceSimulation(thisobject, time, entity, component, text, level);
-//}
+
+//
+// protected: /// virtual methods that could be overriden by derived classes, if needed
+//
+
+/*
+bool ModelComponent::_check(std::string* errorMessage) {
+	bool resultAll = true;
+	resultAll &= _someString != "";
+	resultAll &= _someUint > 0;
+	return resultAll;
+}
+*/
+
+/*
+ParserChangesInformation* ModelComponent::_getParserChangesInformation() {
+	ParserChangesInformation* changes = new ParserChangesInformation();
+	//@TODO not implemented yet
+	changes->getassignments().append("");
+	changes->getexpressionProductions().append("");
+	changes->getexpressions().append("");
+	changes->getfunctionProdutions().append("");
+	changes->getassignments().append("");
+	changes->getincludes().append("");
+	changes->gettokens().append("");
+	changes->gettypeObjs().append("");
+	return changes;
+}
+*/
+
+/*
+void ModelComponent::_initBetweenReplications() {
+	_someString = "Test";
+	_someUint = 1;
+}
+*/
+
+/*
+void ModelComponent::_createInternalAndAttachedData() {
+	if (_internalDataDefinition == nullptr) {
+		PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
+		_internalDataDefinition = pm->newInstance<DummyElement>(_parentModel, getName() + "." + "JustaDummy");
+		_internalDataInsert("JustaDummy", _internalDataDefinition);
+	}
+	if (_attachedDataDefinition == nullptr) {
+		PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
+		_attachedDataDefinition = pm->newInstance<DummyElement>(_parentModel);
+		_attachedDataInsert("JustaDummy", _attachedDataDefinition);
+	}
+}
+*/
+
+/*
+void ModelComponent::_addProperty(PropertyBase* property) {
+}
+*/

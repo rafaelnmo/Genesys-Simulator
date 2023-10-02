@@ -13,23 +13,17 @@
 
 #include "StatisticsCollector.h"
 #include "../TraitsKernel.h"
-#include "DefineGetterSetter.h"
 
 //using namespace GenesysKernel;
 
-#ifdef PLUGINCONNECT_DYNAMIC
+typedef TraitsKernel<Model>::StatisticsCollector_StatisticsImplementation StatisticsClass;
 
+#ifdef PLUGINCONNECT_DYNAMIC
 extern "C" StaticGetPluginInformation GetPluginInformation() {
 	return &StatisticsCollector::GetPluginInformation;
 }
 #endif
 
-ModelDataDefinition* StatisticsCollector::NewInstance(Model* model, std::string name) {
-	return new StatisticsCollector(model, name);
-}
-
-
-typedef TraitsKernel<Model>::StatisticsCollector_StatisticsImplementation StatisticsClass;
 
 StatisticsCollector::StatisticsCollector(Model* model, std::string name, ModelDataDefinition* parent, bool insertIntoModel)
 	: ModelDataDefinition(model, Util::TypeOf<StatisticsCollector>(), name, insertIntoModel) {
@@ -37,6 +31,7 @@ StatisticsCollector::StatisticsCollector(Model* model, std::string name, ModelDa
 	_initStaticsAndCollector();
 	StatisticsClass* statThis = static_cast<StatisticsClass*>(this->_statistics);
 	std::string classname = Util::TypeOf<StatisticsClass>();
+	// controls
 	_parentModel->getResponses()->insert(new SimulationControlDouble(
 				 std::bind(&StatisticsClass::average, statThis), nullptr,
 				 classname, getName(), "Average"));
@@ -79,6 +74,11 @@ ModelDataDefinition* StatisticsCollector::getParent() const {
 
 Statistics_if* StatisticsCollector::getStatistics() const {
 	return _statistics;
+}
+
+
+ModelDataDefinition* StatisticsCollector::NewInstance(Model* model, std::string name) {
+	return new StatisticsCollector(model, name);
 }
 
 PluginInformation* StatisticsCollector::GetPluginInformation() {

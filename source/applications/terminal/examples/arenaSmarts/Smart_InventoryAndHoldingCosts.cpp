@@ -80,7 +80,7 @@ int Smart_InventoryAndHoldingCosts::main(int argc, char** argv) {
         model->check();
         model->getDataManager()->show();
 	sim->start();
-	for (int i = 0; i < 1e9; i++); // give UI some time to finish std::cout
+	
 	// free memory
 	delete genesys;
 	

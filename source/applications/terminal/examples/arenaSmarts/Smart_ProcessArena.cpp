@@ -66,7 +66,7 @@ int Smart_ProcessArena::main(int argc, char** argv) {
     model->save("./models/Smart_ProcessArena.gen");
     model->getSimulation()->start();
     while (model->getSimulation()-> isPaused());
-    for (int i=0;i < 1e9;i++);
+    
     delete genesys;
     return 0;
 };

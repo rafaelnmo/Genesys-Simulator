@@ -26,30 +26,30 @@ public:
 	StatisticsDatafileDefaultImpl1();
 	virtual ~StatisticsDatafileDefaultImpl1() = default;
 public:
-	virtual Collector_if* getCollector()  const;
-	virtual void setCollector(Collector_if* collector);
+	virtual Collector_if* getCollector()  const override;
+	virtual void setCollector(Collector_if* collector) override;
 public:
-	virtual unsigned int numElements();
-	virtual double min();
-	virtual double max();
-	virtual double average();
-	virtual double variance();
-	virtual double stddeviation();
-	virtual double variationCoef();
-	virtual double halfWidthConfidenceInterval();
-	virtual double confidenceLevel();
-	virtual unsigned int newSampleSize(double halfWidth);
-	virtual void setConfidenceLevel(double confidencelevel);
+	virtual unsigned int numElements() override;
+	virtual double min() override;
+	virtual double max() override;
+	virtual double average() override;
+	virtual double variance() override;
+	virtual double stddeviation() override;
+	virtual double variationCoef() override;
+	virtual double halfWidthConfidenceInterval() override;
+	virtual double confidenceLevel() override;
+	virtual unsigned int newSampleSize(double halfWidth) override;
+	virtual void setConfidenceLevel(double confidencelevel) override;
 public:
-	virtual double mode();
-	virtual double mediane();
-	virtual double quartil(unsigned short num);
-	virtual double decil(unsigned short num);
-	virtual double centil(unsigned short num);
-	virtual void setHistogramNumClasses(unsigned short num);
-	virtual unsigned short histogramNumClasses();
-	virtual double histogramClassLowerLimit(unsigned short classNum);
-	virtual unsigned int histogramClassFrequency(unsigned short classNum);
+	virtual double mode() override;
+	virtual double mediane() override;
+	virtual double quartil(unsigned short num) override;
+	virtual double decil(unsigned short num) override;
+	virtual double centil(unsigned short num) override;
+	virtual void setHistogramNumClasses(unsigned short num) override;
+	virtual unsigned short histogramNumClasses() override;
+	virtual double histogramClassLowerLimit(unsigned short classNum) override;
+	virtual unsigned int histogramClassFrequency(unsigned short classNum) override;
 private:
 	void _sortFile();
 	bool _hasNewValue();

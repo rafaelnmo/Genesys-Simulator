@@ -133,8 +133,9 @@ protected: // could be overriden
 
 private:
 	void _initCStats();
-private: //1::n
+private:
 	List<Waiting*>* _list = new List<Waiting*>();
+	double _lastTimeNumberInQueueChanged;
 private: //1::1
 
 	const struct DEFAULT_VALUES {

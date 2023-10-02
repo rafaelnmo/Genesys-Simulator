@@ -93,7 +93,7 @@ int Smart_ResourceScheduleCosting::main(int argc, char** argv) {
 	model->getSimulation()->start();
 	// run the simulation
 	sim->start();
-	for (int i = 0; i < 1e9; i++); // give UI some time to finish std::cout
+	
 	// free memory
 	delete genesys;
 	

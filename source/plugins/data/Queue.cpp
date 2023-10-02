@@ -49,23 +49,30 @@ std::string Queue::show() {
 }
 
 void Queue::insertElement(Waiting* modeldatum) {
+	if (_reportStatistics) {
+		double tnow = _parentModel->getSimulation()->getSimulatedTime();
+		double duration = tnow - _lastTimeNumberInQueueChanged;
+		this->_cstatNumberInQueue->getStatistics()->getCollector()->addValue(_list->size(), duration); // save the OLD quantity and for how long it was there
+		_lastTimeNumberInQueueChanged = tnow;
+	}
 	_list->insert(modeldatum);
-	if (_reportStatistics)
-		this->_cstatNumberInQueue->getStatistics()->getCollector()->addValue(_list->size());
 }
 
 void Queue::removeElement(Waiting* modeldatum) {
-	double tnow = _parentModel->getSimulation()->getSimulatedTime();
-	_list->remove(modeldatum);
 	if (_reportStatistics) {
-		this->_cstatNumberInQueue->getStatistics()->getCollector()->addValue(_list->size());
+		double tnow = _parentModel->getSimulation()->getSimulatedTime();
+		double duration = tnow - _lastTimeNumberInQueueChanged;
+		this->_cstatNumberInQueue->getStatistics()->getCollector()->addValue(_list->size(), duration); // save the OLD quantity and for how long it was there
+		_lastTimeNumberInQueueChanged = tnow;
 		double timeInQueue = tnow - modeldatum->getTimeStartedWaiting();
 		this->_cstatTimeInQueue->getStatistics()->getCollector()->addValue(timeInQueue);
 	}
+	_list->remove(modeldatum);
 }
 
 void Queue::_initBetweenReplications() {
 	this->_list->clear();
+	_lastTimeNumberInQueueChanged = 0.0;
 }
 
 unsigned int Queue::size() {

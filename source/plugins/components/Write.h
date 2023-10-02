@@ -23,22 +23,14 @@
  */
 class Write : public ModelComponent {
 public:
-
 	enum class WriteToType : int {
 		SCREEN = 1, FILE = 2
 	};
 
-
-
 public: // constructors
 	Write(Model* model, std::string name = "");
 	virtual ~Write() = default;
-public: // virtual
-	virtual std::string show();
-public: // static
-	static PluginInformation* GetPluginInformation();
-	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
-	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
+
 public:
 	void insertText(std::list<std::string> texts);
 	void setFilename(std::string _filename);
@@ -46,12 +38,23 @@ public:
 	void setWriteToType(WriteToType _writeToType);
 	Write::WriteToType writeToType() const;
 
+public: // virtual
+	virtual std::string show();
+
+public: // static
+	static PluginInformation* GetPluginInformation();
+	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
+	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
+
 protected: // virtual
 	virtual void _onDispatchEvent(Entity* entity, unsigned int inputPortNumber);
-	virtual void _initBetweenReplications();
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+
+protected: // virtual
 	virtual bool _check(std::string* errorMessage);
+	virtual void _initBetweenReplications();
+
 private: // methods
 private: // attributes 1:1
 	const struct DEFAULT_VALUES {
@@ -61,6 +64,7 @@ private: // attributes 1:1
 	WriteToType _writeToType = DEFAULT.writeToType;
 	std::string _filename = DEFAULT.filename;
 	std::ofstream _savefile;
+
 private: // attributes 1:n
 	List<std::string>* _writeElements = new List<std::string>();
 };

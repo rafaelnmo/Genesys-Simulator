@@ -5,23 +5,23 @@
  */
 
 /* 
- * File:   Smart_Record.h
+ * File:   Smart_Record_Arena.h
  * Author: rlcancian
  *
  * Created on 3 de Setembro de 2019, 18:34
  */
 
-#ifndef SMART_RECORD_H
-#define SMART_RECORD_H
+#ifndef Smart_Record_Arena_ARENA_H
+#define Smart_Record_Arena_ARENA_H
 
 #include "../../../BaseGenesysTerminalApplication.h"
 
-class Smart_Record : public BaseGenesysTerminalApplication {
+class Smart_Record_Arena : public BaseGenesysTerminalApplication {
 public:
-	Smart_Record();
+	Smart_Record_Arena();
 public:
 	virtual int main(int argc, char** argv);
 };
 
-#endif /* SMART_RECORD_H */
+#endif /* Smart_Record_Arena_ARENA_H */
 

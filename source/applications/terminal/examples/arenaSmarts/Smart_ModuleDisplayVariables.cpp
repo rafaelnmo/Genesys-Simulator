@@ -73,7 +73,7 @@ int Smart_ModuleDisplayVariables::main(int argc, char** argv) {
 	do {
 		model->getSimulation()->step();
 	} while (model->getSimulation()->isPaused());
-	for (int i = 0; i < 1e9; i++); // give UI some time to finish std::cout
+	
 	delete genesys;
 	return 0;
 };

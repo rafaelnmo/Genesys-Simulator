@@ -75,6 +75,7 @@ SOURCES += \
 	../../../../plugins/components/Create.cpp \
 	../../../../plugins/components/Decide.cpp \
 	../../../../plugins/components/Delay.cpp \
+	../../../../plugins/components/DiffEquations.cpp \
 	../../../../plugins/components/Dispose.cpp \
 	../../../../plugins/components/DropOff.cpp \
 	../../../../plugins/components/DummyComponent.cpp \
@@ -125,6 +126,7 @@ SOURCES += \
 	../../../../plugins/data/Station.cpp \
 	../../../../plugins/data/Storage.cpp \
 	../../../../plugins/data/Variable.cpp \
+	../../../../tools/FitterDummyImpl.cpp \
 	../../../../tools/HypothesisTesterDefaultImpl1.cpp \
 	../../../../tools/ProbabilityDistribution.cpp \
 	../../../../tools/ProbabilityDistributionBase.cpp \
@@ -166,7 +168,7 @@ SOURCES += \
 	../../../terminal/examples/arenaSmarts/Smart_PlacingEntitiesInQueueSets.cpp \
 	../../../terminal/examples/arenaSmarts/Smart_PriorityExample.cpp \
 	../../../terminal/examples/arenaSmarts/Smart_ProcessArena.cpp \
-	../../../terminal/examples/arenaSmarts/Smart_Record.cpp \
+	../../../terminal/examples/arenaSmarts/Smart_Record_Arena.cpp \
 	../../../terminal/examples/arenaSmarts/Smart_RemovingAndReorderingEntitiesInAQueue.cpp \
 	../../../terminal/examples/arenaSmarts/Smart_ResourceCosting.cpp \
 	../../../terminal/examples/arenaSmarts/Smart_ResourceScheduleCosting.cpp \
@@ -186,11 +188,12 @@ SOURCES += \
 	../../../terminal/examples/smarts/Smart_Delay.cpp \
 	../../../terminal/examples/smarts/Smart_Dummy.cpp \
 	../../../terminal/examples/smarts/Smart_Failures.cpp \
+	../../../terminal/examples/smarts/Smart_LSODE.cpp \
+	../../../terminal/examples/smarts/Smart_Record.cpp \
     ../../../terminal/examples/smarts/Smart_SimulationControlResponse.cpp \
 	../../../terminal/examples/smarts/Smart_WaitScanCondition.cpp \
 	../../../terminal/examples/smarts/Smart_WaitSignal.cpp \
 	../../../terminal/examples/smarts/Smart_ModelInfoModelSimulation.cpp \
-	../../../terminal/examples/smarts/Smart_ODE.cpp \
 	../../../terminal/examples/smarts/Smart_OnEvent.cpp \
 	../../../terminal/examples/smarts/Smart_Parser.cpp \
 	../../../terminal/examples/smarts/Smart_ParserModelFunctions.cpp \
@@ -202,10 +205,12 @@ SOURCES += \
 	../../../terminal/examples/smarts/Smart_SeizeDelayReleaseMany.cpp \
 	../../../terminal/examples/smarts/Smart_Sequence.cpp \
 	../../../terminal/examples/teaching/AnElectronicAssemblyAndTestSystem.cpp \
+	../../../terminal/examples/teaching/ContinuousModel.cpp \
 	../../../terminal/examples/teaching/FullSimulationOfComplexModel.cpp \
 	../../../terminal/examples/teaching/OperatingSystem02.cpp \
 	../../../terminal/examples/teaching/OperatingSystem03.cpp \
 	../../../terminal/underDevelopment/TestingTerminalApp.cpp \
+	BaseMVController.cpp \
 	CodeEditor.cpp \
 	ModelGraphicsScene.cpp \
 	ModelGraphicsView.cpp \
@@ -321,6 +326,7 @@ HEADERS += \
 	../../../../plugins/components/Create.h \
 	../../../../plugins/components/Decide.h \
 	../../../../plugins/components/Delay.h \
+	../../../../plugins/components/DiffEquations.h \
 	../../../../plugins/components/Dispose.h \
 	../../../../plugins/components/DropOff.h \
 	../../../../plugins/components/DummyComponent.h \
@@ -372,17 +378,21 @@ HEADERS += \
 	../../../../plugins/data/Storage.h \
 	../../../../plugins/data/Variable.h \
 	../../../../tools/DataAnalyser_if.h \
+	../../../../tools/FitterDummyImpl.h \
+	../../../../tools/Fitter_if.h \
 	../../../../tools/HypothesisTesterDefaultImpl1.h \
 	../../../../tools/HypothesisTester_if.h \
 	../../../../tools/ProbabilityDistribution.h \
 	../../../../tools/ProbabilityDistributionBase.h \
 	../../../../tools/SolverDefaultImpl1.h \
+	../../../../tools/Solver_if.h \
 	../../../../tools/TraitsTools.h \
 	../../../BaseGenesysTerminalApplication.h \
 	../../../GenesysApplication_if.h \
 	../../../TraitsApp.h \
 	../../../terminal/GenesysShell/GenesysShell.h \
 	../../../terminal/GenesysShell/GenesysShell_if.h \
+	../../../terminal/TraitsTerminalApp.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExample.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExampleExtended.h \
 	../../../terminal/examples/arenaExamples/Airport_Extended1.h \
@@ -418,7 +428,7 @@ HEADERS += \
 	../../../terminal/examples/arenaSmarts/Smart_PlacingEntitiesInQueueSets.h \
 	../../../terminal/examples/arenaSmarts/Smart_PriorityExample.h \
 	../../../terminal/examples/arenaSmarts/Smart_ProcessArena.h \
-	../../../terminal/examples/arenaSmarts/Smart_Record.h \
+	../../../terminal/examples/arenaSmarts/Smart_Record_Arena.h \
 	../../../terminal/examples/arenaSmarts/Smart_RemovingAndReorderingEntitiesInAQueue.h \
 	../../../terminal/examples/arenaSmarts/Smart_ResourceCosting.h \
 	../../../terminal/examples/arenaSmarts/Smart_ResourceScheduleCosting.h \
@@ -438,11 +448,12 @@ HEADERS += \
 	../../../terminal/examples/smarts/Smart_Delay.h \
 	../../../terminal/examples/smarts/Smart_Dummy.h \
 	../../../terminal/examples/smarts/Smart_Failures.h \
+	../../../terminal/examples/smarts/Smart_LSODE.h \
+	../../../terminal/examples/smarts/Smart_Record.h \
     ../../../terminal/examples/smarts/Smart_SimulationControlResponse.h \
 	../../../terminal/examples/smarts/Smart_WaitScanCondition.h \
 	../../../terminal/examples/smarts/Smart_WaitSignal.h \
 	../../../terminal/examples/smarts/Smart_ModelInfoModelSimulation.h \
-	../../../terminal/examples/smarts/Smart_ODE.h \
 	../../../terminal/examples/smarts/Smart_OnEvent.h \
 	../../../terminal/examples/smarts/Smart_Parser.h \
 	../../../terminal/examples/smarts/Smart_ParserModelFunctions.h \
@@ -455,10 +466,12 @@ HEADERS += \
 	../../../terminal/examples/smarts/Smart_Sequence.h \
 	../../../terminal/examples/teaching/AnElectronicAssemblyAndTestSystem.h \
 	../../../terminal/examples/teaching/BufferFIFO.h \
+	../../../terminal/examples/teaching/ContinuousModel.h \
 	../../../terminal/examples/teaching/FullSimulationOfComplexModel.h \
 	../../../terminal/examples/teaching/OperatingSystem02.h \
 	../../../terminal/examples/teaching/OperatingSystem03.h \
 	../../../terminal/underDevelopment/TestingTerminalApp.h \
+	BaseMVController.h \
 	CodeEditor.h \
 	LineNumberArea.h \
 	ModelGraphicsScene.h \
@@ -508,6 +521,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+	../../../../../autoloadplugins.txt \
 	QPropertyBrowser/CMakeLists.txt \
 	QPropertyBrowser/images/cursor-arrow.png \
 	QPropertyBrowser/images/cursor-busy.png \

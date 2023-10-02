@@ -116,7 +116,7 @@ int Smart_EntitiesProcessedByPriority::main(int argc, char** argv) {
 
 	// execute the simulation
 	model->getSimulation()->start();
-	for (int i = 0; i < 1e9; i++); // give UI some time to finish std::cout
+	
 	delete genesys;
 	return 0;
 };

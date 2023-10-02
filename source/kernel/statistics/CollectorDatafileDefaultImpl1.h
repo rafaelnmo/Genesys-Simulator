@@ -23,19 +23,19 @@ public:
 	CollectorDatafileDefaultImpl1();
 	virtual ~CollectorDatafileDefaultImpl1() = default;
 public: // inherited from Collector_if
-	void clear();
-	void addValue(double value);
-	double getLastValue();
-	unsigned long numElements();
+	virtual void clear() override;
+	virtual void addValue(double value, double weight=1) override;
+	virtual double getLastValue() override;
+	virtual unsigned long numElements() override;
 public:
-	double getValue(unsigned int num);
-	double getNextValue();
-	void seekFirstValue();
-	std::string getDataFilename();
-	void setDataFilename(std::string filename);
+	virtual double getValue(unsigned int num) override;
+	virtual double getNextValue() override;
+	virtual void seekFirstValue() override;
+	virtual std::string getDataFilename() override;
+	virtual void setDataFilename(std::string filename) override;
 public:
-	void setAddValueHandler(CollectorAddValueHandler addValueHandler);
-	void setClearHandler(CollectorClearHandler clearHandler);
+	virtual void setAddValueHandler(CollectorAddValueHandler addValueHandler) override;
+	virtual void setClearHandler(CollectorClearHandler clearHandler) override;
 private:
 	std::string _filename;
 	double _lastValue;
