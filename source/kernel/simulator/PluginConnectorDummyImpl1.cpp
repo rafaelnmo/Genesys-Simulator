@@ -55,7 +55,7 @@
 #include "../../plugins/components/Write.h"
 #include "../../plugins/components/LSODE.h"
 
-#include "../../plugins/components/ExtendedFSM.h"
+#include "../../plugins/components/ExtendedFinishStateMachine.h"
 
 
 
@@ -178,7 +178,7 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 	else if (fn == "dropoff.so")
 		GetInfo = &DropOff::GetPluginInformation;
 	else if (fn == "efsmData.so")
-		GetInfo = &ExtendedFSM::GetPluginInformation;
+        GetInfo = &ExtendedFinishStateMachine::GetPluginInformation;
 	else if (fn == "enter.so")
 		GetInfo = &Enter::GetPluginInformation;
 	else if (fn == "exit.so")

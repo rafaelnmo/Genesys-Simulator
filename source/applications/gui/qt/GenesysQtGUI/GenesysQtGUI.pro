@@ -82,6 +82,7 @@ SOURCES += \
 	../../../../plugins/components/Enter.cpp \
 	../../../../plugins/components/Exit.cpp \
 	../../../../plugins/components/FiniteStateMachine.cpp \
+    ../../../../plugins/components/ExtendedFinishStateMachine.cpp \
 	../../../../plugins/components/PickableStationItem.cpp \
 	../../../../plugins/components/Wait.cpp \
 	../../../../plugins/components/LSODE.cpp \
@@ -333,6 +334,7 @@ HEADERS += \
 	../../../../plugins/components/Enter.h \
 	../../../../plugins/components/Exit.h \
 	../../../../plugins/components/FiniteStateMachine.h \
+    ../../../../plugins/components/ExtendedFinishStateMachine.h \
 	../../../../plugins/components/PickableStationItem.h \
 	../../../../plugins/components/Wait.h \
 	../../../../plugins/components/LSODE.h \
@@ -363,6 +365,8 @@ HEADERS += \
 	../../../../plugins/data/CppCompiler.h \
 	../../../../plugins/data/DummyElement.h \
 	../../../../plugins/data/EFSM.h \
+        ../../../../plugins/data/State.h \
+        ../../../../plugins/data/Transition.h \
 	../../../../plugins/data/EntityGroup.h \
 	../../../../plugins/data/Failure.h \
 	../../../../plugins/data/File.h \

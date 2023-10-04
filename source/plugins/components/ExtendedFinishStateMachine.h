@@ -4,7 +4,7 @@
  */
 
 /* 
- * File:   ExtendedFSM.h
+ * File:   ExtendedFinishStateMachine.h
  * Author: roliveira
  *
  * Created on 4 de outubro de 2023, 01:24
@@ -13,7 +13,7 @@
 #ifndef EXFISTATMAC_H
 #define EXFISTATMAC_H
 
-#include "ExtendedFSM.h"
+#include "ExtendedFinishStateMachine.h"
 
 //#include "../../kernel/simulator/Model.h"
 //#include "../../kernel/simulator/Simulator.h"
@@ -24,10 +24,10 @@
 
 
 
-class ExtendedFSM : public ModelComponent {
+class ExtendedFinishStateMachine : public ModelComponent {
 public:
-	ExtendedFSM(Model* model, std::string name = "");
-	virtual ~ExtendedFSM() = default;
+	ExtendedFinishStateMachine(Model* model, std::string name = "");
+	virtual ~ExtendedFinishStateMachine() = default;
 public: // virtual
 	virtual std::string show();
 public: // static
