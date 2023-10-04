@@ -205,12 +205,12 @@ SOURCES += \
 	../../../terminal/examples/smarts/Smart_SeizeDelayReleaseMany.cpp \
 	../../../terminal/examples/smarts/Smart_Sequence.cpp \
 	../../../terminal/examples/teaching/AnElectronicAssemblyAndTestSystem.cpp \
-	../../../terminal/examples/teaching/ContinuousModel.cpp \
+#	../../../terminal/examples/teaching/ContinuousModel.cpp \
 	../../../terminal/examples/teaching/FullSimulationOfComplexModel.cpp \
 	../../../terminal/examples/teaching/OperatingSystem02.cpp \
 	../../../terminal/examples/teaching/OperatingSystem03.cpp \
 	../../../terminal/underDevelopment/TestingTerminalApp.cpp \
-	BaseMVController.cpp \
+#	BaseMVController.cpp \
 	CodeEditor.cpp \
 	ModelGraphicsScene.cpp \
 	ModelGraphicsView.cpp \
@@ -392,7 +392,7 @@ HEADERS += \
 	../../../TraitsApp.h \
 	../../../terminal/GenesysShell/GenesysShell.h \
 	../../../terminal/GenesysShell/GenesysShell_if.h \
-	../../../terminal/TraitsTerminalApp.h \
+#	../../../terminal/TraitsTerminalApp.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExample.h \
 	../../../terminal/examples/arenaExamples/AirportSecurityExampleExtended.h \
 	../../../terminal/examples/arenaExamples/Airport_Extended1.h \
@@ -466,12 +466,12 @@ HEADERS += \
 	../../../terminal/examples/smarts/Smart_Sequence.h \
 	../../../terminal/examples/teaching/AnElectronicAssemblyAndTestSystem.h \
 	../../../terminal/examples/teaching/BufferFIFO.h \
-	../../../terminal/examples/teaching/ContinuousModel.h \
+# 	../../../terminal/examples/teaching/ContinuousModel.h \
 	../../../terminal/examples/teaching/FullSimulationOfComplexModel.h \
 	../../../terminal/examples/teaching/OperatingSystem02.h \
 	../../../terminal/examples/teaching/OperatingSystem03.h \
 	../../../terminal/underDevelopment/TestingTerminalApp.h \
-	BaseMVController.h \
+#	BaseMVController.h \
 	CodeEditor.h \
 	LineNumberArea.h \
 	ModelGraphicsScene.h \
