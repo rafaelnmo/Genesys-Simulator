@@ -55,6 +55,9 @@
 #include "../../plugins/components/Write.h"
 #include "../../plugins/components/LSODE.h"
 
+#include "../../plugins/components/ExtendedFSM.h"
+
+
 
 // Model data definitions
 #include "../../plugins/data/CppCompiler.h"
@@ -71,6 +74,10 @@
 #include "../../plugins/data/Storage.h"
 #include "../../plugins/data/Variable.h"
 #include "../../plugins/data/EFSM.h"
+
+#include "../../plugins/data/State.h"
+#include "../../plugins/data/Transition.h"
+
 //#include "../../plugins/data/Expression.h"
 //#include "../../plugins/data/Conveyor.h"
 //#include "../../plugins/data/Segment.h"
