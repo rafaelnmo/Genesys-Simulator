@@ -20,7 +20,7 @@
 
 // Model Components
 #include "../../../../plugins/components/Create.h"
-#include "../../../../plugins/components/ExtendedFSM.h"
+#include "../../../../plugins/components/ExtendedFinishStateMachine.h"
 #include "../../../../plugins/components/Dispose.h"
 
 Smart_ExtendedFSM::Smart_ExtendedFSM() {
