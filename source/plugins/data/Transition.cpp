@@ -9,7 +9,19 @@
 #include "../../kernel/simulator/Model.h"
 #include "../../kernel/simulator/PluginManager.h"
 
-Transition::Transition(std::string parameterName, State* originState, State* destinationState, std::string guardExpression, TransitionType* transitionType)
+
+Transition::Transition(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<Storage>(), name) {
+	//controls
+    _parameterName = parameterName;
+    _originState = originState;
+    _destinationState = destinationState;
+    _guardExpression = guardExpression;
+    if (transitionType == nullptr)
+        transitionType = new TransitionType();
+    _type = transitionType;
+}
+
+/*Transition::Transition(std::string parameterName, State* originState, State* destinationState, std::string guardExpression, TransitionType* transitionType)
     : ModelDataDefinition(model, Util::TypeOf<Transition>(), name) {
     _parameterName = parameterName;
     _originState = originState;
@@ -18,6 +30,11 @@ Transition::Transition(std::string parameterName, State* originState, State* des
     if (transitionType == nullptr)
         transitionType = new TransitionType();
     _type = transitionType;
+}*/
+
+std::string State::show() {
+    // Implement the show() method
+    return "transition: " + _name;
 }
 
 PluginInformation* Transition::GetPluginInformation() {

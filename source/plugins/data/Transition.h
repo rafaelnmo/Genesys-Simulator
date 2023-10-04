@@ -33,7 +33,7 @@ public:
 	};
 public:
 
-	Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = "", TransitionType* transitionType = nullptr) {
+	/*Transition(std::string parameterName, State* originState, State* destinationState, std::string guardExpression = "", TransitionType* transitionType = nullptr) {
 		_parameterName = parameterName;
 		_originState = originState;
 		_destinationState = destinationState;
@@ -41,9 +41,34 @@ public:
 		if (transitionType == nullptr)
 			transitionType = new TransitionType();
 		_type = transitionType;
-	}
-	
+	}*/
+	Transition(Model* model, std::string name = "");
+
 	virtual ~Transition() = default;
+
+public: // static
+	static ModelDataDefinition* LoadInstance(Model* model, PersistenceRecord *fields);
+	static PluginInformation* GetPluginInformation();
+	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
+public:
+	virtual std::string show();
+
+protected: // must be overriden 
+	virtual bool _loadInstance(PersistenceRecord *fields);
+	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+protected: // could be overriden 
+	virtual bool _check(std::string* errorMessage);
+	virtual ParserChangesInformation* _getParserChangesInformation();
+private:
+
+	const struct DEFAULT_VALUES {
+		const double totalArea = 1;
+		const unsigned int capacity = 10;
+		const double unitsPerArea = 1;
+	} DEFAULT;
+	double _totalArea = DEFAULT.totalArea;
+	unsigned int _capacity = DEFAULT.capacity;
+	double _unitsPerArea = DEFAULT.unitsPerArea;
 
 private:
 	std::string _parameterName;
