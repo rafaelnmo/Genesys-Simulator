@@ -10,8 +10,8 @@
  * Created on 4 de outubro de 2023, 01:24
  */
 
-#ifndef EXFISTATMAC_H
-#define EXFISTATMAC_H
+#ifndef EXTENDEDFINSTATMAC_H
+#define EXTENDEDFINSTATMAC_H
 
 #include "ExtendedFinishStateMachine.h"
 
@@ -57,5 +57,5 @@ private: // attributes 1:1
 	List<Transition*>* _transitions = new List<Transition*>();
 };
 
-#endif /* EXFISTATMAC_H */
+#endif /* EXTENDEDFINSTATMAC_H */
 
