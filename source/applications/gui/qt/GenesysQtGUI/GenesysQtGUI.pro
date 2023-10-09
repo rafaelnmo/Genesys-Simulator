@@ -75,7 +75,6 @@ SOURCES += \
 	../../../../plugins/components/Create.cpp \
 	../../../../plugins/components/Decide.cpp \
 	../../../../plugins/components/Delay.cpp \
-	../../../../plugins/components/DiffEquations.cpp \
 	../../../../plugins/components/Dispose.cpp \
 	../../../../plugins/components/DropOff.cpp \
 	../../../../plugins/components/DummyComponent.cpp \
@@ -133,7 +132,6 @@ SOURCES += \
 	../../../../tools/SolverDefaultImpl1.cpp \
 	../../../BaseGenesysTerminalApplication.cpp \
 	../../../terminal/GenesysShell/GenesysShell.cpp \
-	BaseMVController.cpp \
 	CodeEditor.cpp \
 	ModelGraphicsScene.cpp \
 	ModelGraphicsView.cpp \
@@ -249,7 +247,6 @@ HEADERS += \
 	../../../../plugins/components/Create.h \
 	../../../../plugins/components/Decide.h \
 	../../../../plugins/components/Delay.h \
-	../../../../plugins/components/DiffEquations.h \
 	../../../../plugins/components/Dispose.h \
 	../../../../plugins/components/DropOff.h \
 	../../../../plugins/components/DummyComponent.h \
@@ -316,7 +313,6 @@ HEADERS += \
 	../../../terminal/GenesysShell/GenesysShell.h \
 	../../../terminal/GenesysShell/GenesysShell_if.h \
 	../../../terminal/TraitsTerminalApp.h \
-	BaseMVController.h \
 	CodeEditor.h \
 	LineNumberArea.h \
 	ModelGraphicsScene.h \
