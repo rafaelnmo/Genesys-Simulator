@@ -78,6 +78,51 @@ void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValue
 	fields->saveField("someString", _someString, DEFAULT.someString);
 }
 
+	void addState(FSM_State* state){
+
+	}
+
+	void addTransition(FSM_Transition* transition){
+
+	}
+
+	void fire(){
+        FSM_State* currentState = getCurrentState();
+        std::vector<FSM_Transition*> transitions = getTransitionsFrom(currentState);
+
+        // Loop through transitions to find one with a true guard.
+        for (FSM_Transition* transition : transitions) {
+            std::string guardExpression = transition->getGuardExpression();
+            if (evaluateGuardExpression(guardExpression)) {
+                // Guard is true, execute output actions.
+                executeOutputActions(transition);
+                return; // Stop processing other transitions.
+            }
+        }
+
+        // If no transition with a true guard is found, handle that case.
+        handleNoTrueGuardCase();		
+	}
+
+	// Evaluate the guard expression.
+    bool evaluateGuardExpression(const std::string& expression) {
+        // Implement the logic to evaluate the expression, as previously discussed.
+        // ...
+    }
+
+    // Execute output actions if the guard is true.
+    void executeOutputActions(FSM_Transition* transition) {
+        // Implement how to execute output actions.
+        // ...
+    }
+
+    // Handle the case when no transition with a true guard is found.
+    void handleNoTrueGuardCase() {
+        // Implement the necessary logic for this case.
+        // ...
+    }
+
+
 // protected virtual -- could be overriden 
 
 //ParserChangesInformation* ExFiStatMac::_getParserChangesInformation() {}

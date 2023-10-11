@@ -111,6 +111,10 @@ public:
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+	void addState(FSM_State* state);
+	void addTransition(FSM_Transition* transition);
+	void fire();
+
 protected: // could be overriden .
 	virtual bool _check(std::string* errorMessage);
 	virtual void _initBetweenReplications();

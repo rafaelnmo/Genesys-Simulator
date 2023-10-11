@@ -20,6 +20,8 @@
 //#include "terminal/examples/smarts/Smart_Buffer.h"
 
 #include "terminal/examples/smarts/Smart_ExtendedFSM.h"
+#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
+
 template <typename T>
 struct TraitsApp {
 };
@@ -32,8 +34,18 @@ template <> struct TraitsApp<GenesysApplication_if> {
 	static const bool runTests = false;
 	static const bool runGraphicalUserInterface = true; ///< If false, a terminal application will be compiled and executed (See TraitsTerminalApp.h). If true, a GUI for a general simulator will be executed.
 
-	typedef Smart_ExtendedFSM Application;
+    //typedef Smart_ExtendedFSM Application;
+    typedef Smart_FiniteStateMachine Application;
 };
+/*
+template <> struct TraitsApp<GenesysApplication_if> {
+	static const TraceManager::Level traceLevel = TraceManager::Level::L9_mostDetailed;
+	static const bool runTests = false;
+	static const bool runGraphicalUserInterface = true; ///< If false, a terminal application will be compiled and executed (See TraitsTerminalApp.h). If true, a GUI for a general simulator will be executed.
+
+	typedef Smart_FiniteStateMachine Application;
+};*/
+
 
 #endif /* TRAITSAPP_H */
 
