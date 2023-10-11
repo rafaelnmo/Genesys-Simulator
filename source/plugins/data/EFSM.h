@@ -22,42 +22,43 @@ public:
 
 	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false) {
 		_name = name;
-		_refinementName = refinementName;
 		_isInitialState = isInitialState;
 		_isFinalState = isFinalState;
+		// _refinementName = refinementName;
 	}
 
-	void setName(std::string _name) {
-		this->_name = _name;
+	void setName(std::string name) {
+		_name = name;
 	}
 
 	std::string getName() const {
 		return _name;
 	}
 
-	void setIsFinalState(bool _isFinalState) {
-		this->_isFinalState = _isFinalState;
+	void setIsFinalState(bool isFinalState) {
+		_isFinalState = isFinalState;
 	}
 
 	bool isFinalState() const {
 		return _isFinalState;
 	}
 
-	void setIsInitialState(bool _isInitialState) {
-		this->_isInitialState = _isInitialState;
+	void setIsInitialState(bool isInitialState) {
+		_isInitialState = isInitialState;
 	}
 
 	bool isInitialState() const {
 		return _isInitialState;
 	}
 
-	void setRefinementName(std::string _refinementName) {
-		this->_refinementName = _refinementName;
-	}
+	// void setRefinementName(std::string refinementName) {
+	// 	_refinementName = refinementName;
+	// }
 
-	std::string getRefinementName() const {
-		return _refinementName;
-	}
+	// std::string getRefinementName() const {
+	// 	return _refinementName;
+	// }
+
 private:
 	std::string _name;
 	std::string _refinementName;
@@ -68,34 +69,48 @@ private:
 class FSM_Transition : public PersistentObject_base {
 public:
 
-	struct TransitionType {
-		bool isdefault = false;
-		bool nondeterministic = false;
-		bool immediatbe = false;
-		bool preemptive = false;
-		bool history = false;
-		bool error = false;
-		bool termination = false;
-	};
+	// struct TransitionType {
+	// 	bool isdefault = false;
+	// 	bool nondeterministic = false;
+	// 	bool immediatbe = false;
+	// 	bool preemptive = false;
+	// 	bool history = false;
+	// 	bool error = false;
+	// 	bool termination = false;
+	// };
 public:
 
-	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = "", TransitionType* transitionType = nullptr) {
-		_parameterName = parameterName;
+    FSM_State* getOriginState() {
+        return _originState;
+    }
+
+    std::string getGuardExpression() {
+        return _guardExpression;
+    }
+
+    std::string getOutputActions() {
+        return _outputActions;
+    }
+
+    std::string getSetActions() {
+        return _setActions;
+    }
+
+	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = "") {
 		_originState = originState;
 		_destinationState = destinationState;
 		_guardExpression = guardExpression;
-		if (transitionType == nullptr)
-			transitionType = new TransitionType();
-		_type = transitionType;
+		// if (transitionType == nullptr)
+		// 	transitionType = new TransitionType();
+		// _type = transitionType;
 	}
 private:
-	std::string _parameterName;
 	std::string _guardExpression;
 	FSM_State* _originState;
 	FSM_State* _destinationState;
-	TransitionType* _type;
-	List<std::string*>* _outputActions = new List<std::string*>();
-	List<std::string*>* _setActions = new List<std::string*>();
+	//TransitionType* _type;
+	std::string _outputActions;
+	std::string _setActions;
 };
 
 class ExtendedFSM : public ModelDataDefinition {

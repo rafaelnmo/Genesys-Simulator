@@ -19,6 +19,11 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 }
 #endif
 
+
+
+
+// Rafael begin
+
 // constructors
 
 ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
@@ -106,3 +111,4 @@ void ExtendedFSM::_createInternalAndAttachedData() {
 }
 
 
+// Rafael end
