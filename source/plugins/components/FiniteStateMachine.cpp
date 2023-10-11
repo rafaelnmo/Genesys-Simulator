@@ -31,7 +31,7 @@ FiniteStateMachine::FiniteStateMachine(Model* model, std::string name) : ModelCo
 }
 
 std::string FiniteStateMachine::show() {
-	return ModelComponent::show() + "";
+	return ModelComponent::show() + "asdasdad";
 }
 
 // public static 
@@ -96,3 +96,4 @@ void FiniteStateMachine::_createInternalAndAttachedData() {
 		_internalDataInsert("JustaDummy", _internalDataDefinition);
 	}
 }
+

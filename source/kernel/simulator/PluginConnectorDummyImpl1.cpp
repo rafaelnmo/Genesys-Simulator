@@ -173,12 +173,8 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &Dispose::GetPluginInformation;
 	else if (fn == "dummy.so")
 		GetInfo = &DummyComponent::GetPluginInformation;
-	else if (fn == "diffequations.so")
-		GetInfo = &DiffEquations::GetPluginInformation;
 	else if (fn == "dropoff.so")
 		GetInfo = &DropOff::GetPluginInformation;
-	else if (fn == "efsmData.so")
-        GetInfo = &ExtendedFinishStateMachine::GetPluginInformation;
 	else if (fn == "enter.so")
 		GetInfo = &Enter::GetPluginInformation;
 	else if (fn == "exit.so")

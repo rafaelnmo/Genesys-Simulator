@@ -40,6 +40,11 @@ int Smart_FiniteStateMachine::main(int argc, char** argv) {
 	FiniteStateMachine* fsm1 = plugins->newInstance<FiniteStateMachine>(model);
 	Dispose* dispose1 = plugins->newInstance<Dispose>(model);
 	// connect model components to create a "workflow"
+	fsm1->CreateInternalData(fsm1);
+	fsm1->show();
+	fsm1->getInternalDataDefinition()->getName();
+	fsm1->getInternalDataDefinition()->show();
+
 	create1->getConnections()->insert(fsm1);
 	fsm1->getConnections()->insert(dispose1);
 	// set options, save and simulate

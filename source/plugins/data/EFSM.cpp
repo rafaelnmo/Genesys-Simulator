@@ -11,6 +11,8 @@
  */
 
 #include "EFSM.h"
+//#include "Transition.h"
+//#include "State"
 
 #ifdef PLUGINCONNECT_DYNAMIC
 
@@ -34,17 +36,24 @@ void ExtendedFSM::fire(std::string inputs) {
     auto setActions = std::string();
     FSM_State* destinationState;
     auto transitionFound = false;
-    for (auto transition: _transitions){
-        if (transition.getOriginState() == _current_state){
-            if (parseAndCheck(transition.getGuardExpression())) {
-                outputActions = transition.getOutputActions();
-                setActions = transition.getSetActions();
-                destinationState = transition.getDestinationState();
+    auto transition = _transitions->front();
+
+    for(auto i = 0u; i < _transitions->size(); ++i){
+
+        if (transition->getOriginState() == _current_state){
+            if (parseAndCheck(transition->getGuardExpression())) {
+                outputActions = transition->getOutputActions();
+                setActions = transition->getSetActions();
+                destinationState = transition->getDestinationState();
                 transitionFound = true;
                 break;
             }
         }
+
+        transition = _transitions->next();
     }
+
+    
 
     if (transitionFound) {
         // EXECUTE OUTPUT ACTIONS
@@ -57,11 +66,11 @@ void ExtendedFSM::postfire(FSM_State* destinationState, std::string setActions){
     _current_state = destinationState;
 }
 
-bool parseAndCheck(std::string expression){
+bool ExtendedFSM::parseAndCheck(std::string expression){
     // TODO
 }
 
-void executeActions(std::string actions){
+void ExtendedFSM::executeActions(std::string actions){
     // TODO
 }
 
@@ -97,12 +106,7 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
 PluginInformation* ExtendedFSM::GetPluginInformation() {
 	PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
 	info->setDescriptionHelp("//@TODO");
-	//info->setDescriptionHelp("");
-	//info->setObservation("");
-	//info->setMinimumOutputs();
-	//info->setDynamicLibFilenameDependencies();
-	//info->setFields();
-	// ...
+
 	return info;
 }
 
@@ -133,25 +137,7 @@ void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValue
 	void addTransition(FSM_Transition* transition){
 
 	}
-
-	void fire(){
-        FSM_State* currentState = getCurrentState();
-        std::vector<FSM_Transition*> transitions = getTransitionsFrom(currentState);
-
-        // Loop through transitions to find one with a true guard.
-        for (FSM_Transition* transition : transitions) {
-            std::string guardExpression = transition->getGuardExpression();
-            if (evaluateGuardExpression(guardExpression)) {
-                // Guard is true, execute output actions.
-                executeOutputActions(transition);
-                return; // Stop processing other transitions.
-            }
-        }
-
-        // If no transition with a true guard is found, handle that case.
-        handleNoTrueGuardCase();		
-	}
-
+    
 	// Evaluate the guard expression.
     bool evaluateGuardExpression(const std::string& expression) {
         // Implement the logic to evaluate the expression, as previously discussed.

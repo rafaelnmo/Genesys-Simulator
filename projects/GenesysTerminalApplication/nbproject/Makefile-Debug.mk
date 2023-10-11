@@ -95,7 +95,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/296208d5/Smart_FiniteStateMachine.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_HoldSearchRemove.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation.o \
-	${OBJECTDIR}/_ext/296208d5/Smart_ODE.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_OnEvent.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Parser.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_ParserModelFunctions.o \
@@ -511,10 +510,6 @@ ${OBJECTDIR}/_ext/296208d5/Smart_HoldSearchRemove.o: ../../source/applications/t
 ${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation.o: ../../source/applications/terminal/examples/smarts/Smart_ModelInfoModelSimulation.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
 	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation.o ../../source/applications/terminal/examples/smarts/Smart_ModelInfoModelSimulation.cpp
-
-${OBJECTDIR}/_ext/296208d5/Smart_ODE.o: ../../source/applications/terminal/examples/smarts/Smart_ODE.cpp
-	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
-	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/296208d5/Smart_ODE.o ../../source/applications/terminal/examples/smarts/Smart_ODE.cpp
 
 ${OBJECTDIR}/_ext/296208d5/Smart_OnEvent.o: ../../source/applications/terminal/examples/smarts/Smart_OnEvent.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
@@ -1814,17 +1809,6 @@ ${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation_nomain.o: ${OBJECTDIR}
 	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation.o ${OBJECTDIR}/_ext/296208d5/Smart_ModelInfoModelSimulation_nomain.o;\
 	fi
 
-${OBJECTDIR}/_ext/296208d5/Smart_ODE_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_ODE.o ../../source/applications/terminal/examples/smarts/Smart_ODE.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
-	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/296208d5/Smart_ODE.o`; \
-	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
-	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
-	then  \
-	    $(COMPILE.cc) -g -I../../source/gtest -std=c++14 -Dmain=__nomain -o ${OBJECTDIR}/_ext/296208d5/Smart_ODE_nomain.o ../../source/applications/terminal/examples/smarts/Smart_ODE.cpp;\
-	else  \
-	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_ODE.o ${OBJECTDIR}/_ext/296208d5/Smart_ODE_nomain.o;\
-	fi
 
 ${OBJECTDIR}/_ext/296208d5/Smart_OnEvent_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_OnEvent.o ../../source/applications/terminal/examples/smarts/Smart_OnEvent.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
