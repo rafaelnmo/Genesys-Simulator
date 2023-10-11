@@ -19,7 +19,14 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 }
 #endif
 
-
+//bool FSM_State::loadInstance(PersistenceRecord *fields) {
+//    bool res = true;
+//    try {
+//        _name = fields->loadField("name", "");
+//        //_isInitialState = fields->loadField("isInitialState", "");
+//
+//    }
+//}
 
 
 // Rafael begin

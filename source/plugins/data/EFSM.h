@@ -20,12 +20,15 @@
 class FSM_State : public PersistentObject_base {
 public:
 
-	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false) {
-		_name = name;
-		_isInitialState = isInitialState;
-		_isFinalState = isFinalState;
-		// _refinementName = refinementName;
-	}
+	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false):
+		_name(name),
+		// _refinementName(refinementName),
+		_isInitialState(isInitialState),
+		_isFinalState(isFinalState)
+	{}
+
+    // bool loadInstance(PersistenceRecord *fields);
+    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
 	void setName(std::string name) {
 		_name = name;
@@ -61,9 +64,9 @@ public:
 
 private:
 	std::string _name;
-	std::string _refinementName;
-	bool _isInitialState;
-	bool _isFinalState;
+	bool _isInitialState = false;
+	bool _isFinalState = false;
+	// std::string _refinementName;
 };
 
 class FSM_Transition : public PersistentObject_base {
@@ -79,6 +82,18 @@ public:
 	// 	bool termination = false;
 	// };
 public:
+
+	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = ""):
+		_originState(originState),
+		_destinationState(destinationState),
+		_guardExpression(guardExpression)
+	{}
+		// if (transitionType == nullptr)
+		// 	transitionType = new TransitionType();
+		// _type = transitionType;
+
+    // bool loadInstance(PersistenceRecord *fields);
+    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
     FSM_State* getOriginState() {
         return _originState;
@@ -96,21 +111,13 @@ public:
         return _setActions;
     }
 
-	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = "") {
-		_originState = originState;
-		_destinationState = destinationState;
-		_guardExpression = guardExpression;
-		// if (transitionType == nullptr)
-		// 	transitionType = new TransitionType();
-		// _type = transitionType;
-	}
 private:
-	std::string _guardExpression;
+	std::string _guardExpression = "";
 	FSM_State* _originState;
 	FSM_State* _destinationState;
 	//TransitionType* _type;
 	std::string _outputActions;
-	std::string _setActions;
+	std::string _setActions = "";
 };
 
 class ExtendedFSM : public ModelDataDefinition {
