@@ -28,6 +28,42 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 //    }
 //}
 
+void ExtendedFSM::fire(std::string inputs) {
+    //auto inputs = get_inputs(inputs_str);
+    auto outputActions = std::string();
+    auto setActions = std::string();
+    FSM_State* destinationState;
+    auto transitionFound = false;
+    for (auto transition: _transitions){
+        if (transition.getOriginState() == _current_state){
+            if (parseAndCheck(transition.getGuardExpression())) {
+                outputActions = transition.getOutputActions();
+                setActions = transition.getSetActions();
+                destinationState = transition.getDestinationState();
+                transitionFound = true;
+                break;
+            }
+        }
+    }
+
+    if (transitionFound) {
+        // EXECUTE OUTPUT ACTIONS
+        postfire(destinationState, setActions);
+    }
+}
+
+void ExtendedFSM::postfire(FSM_State* destinationState, std::string setActions){
+    executeActions(setActions);
+    _current_state = destinationState;
+}
+
+bool parseAndCheck(std::string expression){
+    // TODO
+}
+
+void executeActions(std::string actions){
+    // TODO
+}
 
 // Rafael begin
 
