@@ -20,82 +20,108 @@
 class FSM_State : public PersistentObject_base {
 public:
 
-	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false) {
-		_name = name;
-		_refinementName = refinementName;
-		_isInitialState = isInitialState;
-		_isFinalState = isFinalState;
-	}
+	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false):
+		_name(name),
+		// _refinementName(refinementName),
+		_isInitialState(isInitialState),
+		_isFinalState(isFinalState)
+	{}
 
-	void setName(std::string _name) {
-		this->_name = _name;
+    // bool loadInstance(PersistenceRecord *fields);
+    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+
+	void setName(std::string name) {
+		_name = name;
 	}
 
 	std::string getName() const {
 		return _name;
 	}
 
-	void setIsFinalState(bool _isFinalState) {
-		this->_isFinalState = _isFinalState;
+	void setIsFinalState(bool isFinalState) {
+		_isFinalState = isFinalState;
 	}
 
 	bool isFinalState() const {
 		return _isFinalState;
 	}
 
-	void setIsInitialState(bool _isInitialState) {
-		this->_isInitialState = _isInitialState;
+	void setIsInitialState(bool isInitialState) {
+		_isInitialState = isInitialState;
 	}
 
 	bool isInitialState() const {
 		return _isInitialState;
 	}
 
-	void setRefinementName(std::string _refinementName) {
-		this->_refinementName = _refinementName;
-	}
+	// void setRefinementName(std::string refinementName) {
+	// 	_refinementName = refinementName;
+	// }
 
-	std::string getRefinementName() const {
-		return _refinementName;
-	}
+	// std::string getRefinementName() const {
+	// 	return _refinementName;
+	// }
+
 private:
 	std::string _name;
-	std::string _refinementName;
-	bool _isInitialState;
-	bool _isFinalState;
+	bool _isInitialState = false;
+	bool _isFinalState = false;
+	// std::string _refinementName;
 };
 
 class FSM_Transition : public PersistentObject_base {
 public:
 
-	struct TransitionType {
-		bool isdefault = false;
-		bool nondeterministic = false;
-		bool immediatbe = false;
-		bool preemptive = false;
-		bool history = false;
-		bool error = false;
-		bool termination = false;
-	};
+	// struct TransitionType {
+	// 	bool isdefault = false;
+	// 	bool nondeterministic = false;
+	// 	bool immediatbe = false;
+	// 	bool preemptive = false;
+	// 	bool history = false;
+	// 	bool error = false;
+	// 	bool termination = false;
+	// };
 public:
 
-	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = "", TransitionType* transitionType = nullptr) {
-		_parameterName = parameterName;
-		_originState = originState;
-		_destinationState = destinationState;
-		_guardExpression = guardExpression;
-		if (transitionType == nullptr)
-			transitionType = new TransitionType();
-		_type = transitionType;
-	}
+	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = ""):
+		_originState(originState),
+		_destinationState(destinationState),
+		_guardExpression(guardExpression)
+	{}
+		// if (transitionType == nullptr)
+		// 	transitionType = new TransitionType();
+		// _type = transitionType;
+
+    // bool loadInstance(PersistenceRecord *fields);
+    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+
+    FSM_State* getOriginState() {
+        return _originState;
+    }
+
+    FSM_State* getDestinationState() {
+        return _destinationState;
+    }
+
+    std::string getGuardExpression() {
+        return _guardExpression;
+    }
+
+    std::string getOutputActions() {
+        return _outputActions;
+    }
+
+    std::string getSetActions() {
+        return _setActions;
+    }
+
 private:
-	std::string _parameterName;
-	std::string _guardExpression;
+	std::string _guardExpression = "";
 	FSM_State* _originState;
 	FSM_State* _destinationState;
-	TransitionType* _type;
-	List<std::string*>* _outputActions = new List<std::string*>();
-	List<std::string*>* _setActions = new List<std::string*>();
+	//TransitionType* _type;
+	std::string _outputActions;
+	std::string _setActions = "";
 };
 
 class ExtendedFSM : public ModelDataDefinition {
@@ -108,6 +134,10 @@ public: // static
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
 public:
 	virtual std::string show();
+    void fire(std::string inputs);
+    void postfire(FSM_State* destinationState, std::string setActions);
+    bool parseAndCheck(std::string expression);
+    void executeActions(std::string actions);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
@@ -128,8 +158,12 @@ private:
 	} DEFAULT;
 	std::string _someString = DEFAULT.someString;
 	unsigned int _someUint = DEFAULT.someUint;
-	List<FSM_State*>* _states = new List<FSM_State*>();
-	List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
+	//List<FSM_State*>* _states = new List<FSM_State*>();
+	//List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
+    std::vector<FSM_State> _states = std::vector<FSM_State>{};
+    std::vector<FSM_Transition> _transitions = std::vector<FSM_Transition>{};
+
+    FSM_State* _current_state;
 
 };
 
