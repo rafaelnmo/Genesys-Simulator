@@ -35,8 +35,8 @@ bool FSM_State::_loadInstance(PersistenceRecord *fields) {
     }
 }
 
-void FSM_State::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
-	fields->saveField("name", _name, "");
+void FSM_Transition::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
+    //fields->saveField("name", _name, "");
 }
 
 bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
@@ -93,7 +93,7 @@ void ExtendedFSM::executeActions(std::string actions){
 
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     auto state = FSM_State(name, isFinalState, isInitialState);
-    _states.push_back(state);
+   // _states.push_back(state);
 }
 
 void ExtendedFSM::insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = ""){

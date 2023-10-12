@@ -143,8 +143,8 @@ public:
 		return _someString;
 	}
 
-    void insertState(std::string name, bool isFinalState = false, bool isInitialState = false);
-    void insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = "");
+    void insertState(std::string name, bool isFinalState , bool isInitialState);
+    void insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
