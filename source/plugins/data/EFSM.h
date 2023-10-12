@@ -21,15 +21,15 @@
 class FSM_State : public PersistentObject_base {
 public:
 
-	FSM_State(std::string name, std::string refinementName = "", bool isInitialState = false, bool isFinalState = false):
+	FSM_State(std::string name, bool isFinalState = false, bool isInitialState = false):
 		_name(name),
 		// _refinementName(refinementName),
 		_isInitialState(isInitialState),
 		_isFinalState(isFinalState)
 	{}
 
-    // bool loadInstance(PersistenceRecord *fields);
-    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+    bool _loadInstance(PersistenceRecord *fields);
+    void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
 	void setName(std::string name) {
 		_name = name;
@@ -93,8 +93,8 @@ public:
 		// 	transitionType = new TransitionType();
 		// _type = transitionType;
 
-    // bool loadInstance(PersistenceRecord *fields);
-    // void saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+    bool _loadInstance(PersistenceRecord *fields);
+    void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
     FSM_State* getOriginState() {
         return _originState;
@@ -143,6 +143,8 @@ public:
 		return _someString;
 	}
 
+    void insertState(std::string name, bool isFinalState = false, bool isInitialState = false);
+    void insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = "");
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);

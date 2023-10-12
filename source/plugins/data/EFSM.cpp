@@ -21,14 +21,31 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 }
 #endif
 
-//bool FSM_State::loadInstance(PersistenceRecord *fields) {
-//    bool res = true;
-//    try {
-//        _name = fields->loadField("name", "");
-//        //_isInitialState = fields->loadField("isInitialState", "");
-//
-//    }
-//}
+void FSM_State::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
+	fields->saveField("name", _name, "");
+}
+
+bool FSM_State::_loadInstance(PersistenceRecord *fields) {
+    bool res = true;
+    try {
+        _name = fields->loadField("name", "");
+        //_isInitialState = fields->loadField("isInitialState", );
+	} catch (...) {
+		res = false;
+    }
+}
+
+void FSM_State::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
+	fields->saveField("name", _name, "");
+}
+
+bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
+    bool res = true;
+    try {
+	} catch (...) {
+		res = false;
+    }
+}
 
 void ExtendedFSM::fire(std::string inputs) {
     //auto inputs = get_inputs(inputs_str);
@@ -72,6 +89,16 @@ bool ExtendedFSM::parseAndCheck(std::string expression){
 
 void ExtendedFSM::executeActions(std::string actions){
     // TODO
+}
+
+void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
+    auto state = FSM_State(name, isFinalState, isInitialState);
+    _states.push_back(state);
+}
+
+void ExtendedFSM::insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = ""){
+
+
 }
 
 // Rafael begin
