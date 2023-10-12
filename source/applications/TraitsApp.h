@@ -19,7 +19,7 @@
 
 //#include "terminal/examples/smarts/Smart_Buffer.h"
 
-#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
+//#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
 #include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
 
 template <typename T>
