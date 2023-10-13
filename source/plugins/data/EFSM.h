@@ -125,6 +125,25 @@ private:
 	std::string _setActions = "";
 };
 
+class FSM_Variable : public PersistentObject_base {
+public:
+	FSM_Variable(std::string name, int value):
+	_name(name),
+	_value(value)
+	{}
+
+    bool _loadInstance(PersistenceRecord *fields);
+    void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
+
+	std::string getName(){
+		return _name;
+	}
+
+	int _value;
+private:
+	std::string _name;
+};
+
 class ExtendedFSM : public ModelDataDefinition {
 public:
 	ExtendedFSM(Model* model, std::string name = "");
@@ -145,6 +164,7 @@ public:
 
     void insertState(std::string name, bool isFinalState , bool isInitialState);
     void insertTransition(std::string parameterName, std::string originState_str, std::string destinationState_str, std::string guardExpression);
+    void insertVariable(std::string name, int initialValue);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
@@ -169,6 +189,7 @@ private:
 	//List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
     std::vector<FSM_State> *_states = new std::vector<FSM_State>;
     std::vector<FSM_Transition> *_transitions = new std::vector<FSM_Transition>;
+	std::vector<FSM_Variable> *_variables = new std::vector<FSM_Variable>;
 
     std::string _currentStateName;
 
