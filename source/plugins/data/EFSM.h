@@ -157,7 +157,8 @@ public:
     void fire(std::string inputs);
     void postfire(std::string destinationState, std::string setActions);
     bool parseAndCheck(std::string expression);
-    void executeActions(std::string actions);
+    void updateVariables(std::string actions);
+	int getValue(std::string value_str);
 	std::string getName(){
 		return _someString;
 	}

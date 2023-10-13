@@ -86,7 +86,7 @@ void ExtendedFSM::fire(std::string inputs) {
     //    transition = _transitions->next();
     //}
 
-    for (auto transition: *_transitions) {
+    for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
             if (parseAndCheck(transition.getGuardExpression())) {
                 outputActions = transition.getOutputActions();
@@ -106,7 +106,7 @@ void ExtendedFSM::fire(std::string inputs) {
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
-    executeActions(setActions);
+    updateVariables(setActions);
     _currentStateName = destinationState;
 }
 
@@ -121,6 +121,19 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
     return str.substr(strBegin, strRange);
 }
 
+int ExtendedFSM::getValue(std::string value_str) {
+    try {
+        return std::stoi(value_str);
+    }
+    catch(const std::invalid_argument& e) {
+        for (auto variable: *_variables) {
+            if (variable.getName() == value_str) {
+                return variable._value;
+            }
+        }
+    }
+}
+
 bool ExtendedFSM::parseAndCheck(std::string expression){
     if (expression == "") {
         return true;
@@ -128,7 +141,6 @@ bool ExtendedFSM::parseAndCheck(std::string expression){
     auto expression_ss = std::stringstream();
     expression_ss << expression;
     auto action = std::string();
-    auto actions = std::vector<std::string> {};
 
     while(std::getline(expression_ss, action, ';')) {
         auto action_ss = std::stringstream();
@@ -144,31 +156,9 @@ bool ExtendedFSM::parseAndCheck(std::string expression){
         operatorAction = trim(operatorAction);
         operand2_str = trim(operand2_str);
 
-        int operand1, operand2;
-        try {
-            operand1 = std::stoi(operand1_str);
-        }
-        catch(const std::invalid_argument& e) {
-            for (auto variable: *_variables) {
-                if (variable.getName() == operand1_str) {
-                    operand1 = variable._value;
-                    break;
-                }
-            }
-        }
+        auto operand1 = getValue(operand1_str);
+        auto operand2 = getValue(operand2_str);
         
-        try {
-            operand2 = std::stoi(operand2_str);
-        }
-        catch(const std::invalid_argument& e) {
-            for (auto variable: *_variables) {
-                if (variable.getName() == operand2_str) {
-                    operand2 = variable._value;
-                    break;
-                }
-            }
-        }
-
         if (operatorAction == "<") {
             if (not operand1 < operand2) {
                 return false;
@@ -196,8 +186,50 @@ bool ExtendedFSM::parseAndCheck(std::string expression){
     return true;
 }
 
-void ExtendedFSM::executeActions(std::string actions){
-    // TODO
+void ExtendedFSM::updateVariables(std::string actions){
+    if (actions == "") {
+        return;
+    }
+    auto actions_ss = std::stringstream();
+    actions_ss << actions;
+    auto action = std::string();
+
+    while(std::getline(actions_ss, action, ';')) {
+        auto action_ss = std::stringstream();
+        auto variableNAME = std::string();
+        auto newValue_str = std::string();
+
+        std::getline(action_ss, variableNAME, '=');
+        std::getline(action_ss, newValue_str, ';');
+
+        auto newValue_ss = std::stringstream();
+        newValue_ss << newValue_str;
+        auto value_str = std::string();
+        auto operatorAction = std::string();
+        std::getline(newValue_ss, value_str, ' ');
+        auto newValue = getValue(value_str);
+
+        while(std::getline(newValue_ss, operatorAction, ' ')){
+            std::getline(newValue_ss, value_str, ' ');
+            auto value = getValue(value_str);
+            if (operatorAction == "+") {
+                newValue += value;
+            } else if (operatorAction == "-") {
+                newValue -= value;
+            } else if (operatorAction == "*") {
+                newValue *= value;
+            } else if (operatorAction == "/") {
+                newValue /= value;
+            }
+        }
+
+        for (auto& variable: *_variables) {
+            if (variable.getName() == variableNAME) {
+                variable._value = newValue;
+            }
+        }
+
+    }
 }
 
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
