@@ -51,25 +51,35 @@ void ExtendedFSM::fire(std::string inputs) {
     //auto inputs = get_inputs(inputs_str);
     auto outputActions = std::string();
     auto setActions = std::string();
-    FSM_State* destinationState;
+    auto destinationState = std::string();
     auto transitionFound = false;
-    auto transition = _transitions->front();
+    //auto transition = _transitions->front();
 
-    for(auto i = 0u; i < _transitions->size(); ++i){
+    //for(auto i = 0u; i < _transitions->size(); ++i){
+    //    if (transition->getOriginState() == _currentStateName){
+    //        if (parseAndCheck(transition->getGuardExpression())) {
+    //            outputActions = transition->getOutputActions();
+    //            setActions = transition->getSetActions();
+    //            destinationState = transition->getDestinationState();
+    //            transitionFound = true;
+    //            break;
+    //        }
+    //    }
 
-        if (transition->getOriginState() == _current_state){
-            if (parseAndCheck(transition->getGuardExpression())) {
-                outputActions = transition->getOutputActions();
-                setActions = transition->getSetActions();
-                destinationState = transition->getDestinationState();
+    //    transition = _transitions->next();
+    //}
+
+    for (auto transition: *_transitions) {
+        if (transition.getOriginState() == _currentStateName){
+            if (parseAndCheck(transition.getGuardExpression())) {
+                outputActions = transition.getOutputActions();
+                setActions = transition.getSetActions();
+                destinationState = transition.getDestinationState();
                 transitionFound = true;
                 break;
             }
         }
-
-        transition = _transitions->next();
     }
-
     
 
     if (transitionFound) {
@@ -78,9 +88,9 @@ void ExtendedFSM::fire(std::string inputs) {
     }
 }
 
-void ExtendedFSM::postfire(FSM_State* destinationState, std::string setActions){
+void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
     executeActions(setActions);
-    _current_state = destinationState;
+    _currentStateName = destinationState;
 }
 
 bool ExtendedFSM::parseAndCheck(std::string expression){
@@ -93,12 +103,12 @@ void ExtendedFSM::executeActions(std::string actions){
 
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     auto state = FSM_State(name, isFinalState, isInitialState);
-   // _states.push_back(state);
+   _states->push_back(state);
 }
 
-void ExtendedFSM::insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = ""){
-
-
+void ExtendedFSM::insertTransition(std::string parameterName, std::string originState_str, std::string destinationState_str, std::string guardExpression = ""){
+    auto transition = FSM_Transition(parameterName, originState_str, destinationState_str, guardExpression); 
+    _transitions->push_back(transition);
 }
 
 // Rafael begin

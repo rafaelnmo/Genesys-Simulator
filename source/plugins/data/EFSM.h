@@ -84,7 +84,7 @@ public:
 	// };
 public:
 
-	FSM_Transition(std::string parameterName, FSM_State* originState, FSM_State* destinationState, std::string guardExpression = ""):
+	FSM_Transition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = ""):
 		_originState(originState),
 		_destinationState(destinationState),
 		_guardExpression(guardExpression)
@@ -96,11 +96,11 @@ public:
     bool _loadInstance(PersistenceRecord *fields);
     void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
-    FSM_State* getOriginState() {
+    std::string getOriginState() {
         return _originState;
     }
 
-    FSM_State* getDestinationState() {
+    std::string getDestinationState() {
         return _destinationState;
     }
 
@@ -118,8 +118,8 @@ public:
 
 private:
 	std::string _guardExpression = "";
-	FSM_State* _originState;
-	FSM_State* _destinationState;
+	std::string _originState;
+	std::string _destinationState;
 	//TransitionType* _type;
 	std::string _outputActions;
 	std::string _setActions = "";
@@ -136,7 +136,7 @@ public: // static
 public:
 	virtual std::string show();
     void fire(std::string inputs);
-    void postfire(FSM_State* destinationState, std::string setActions);
+    void postfire(std::string destinationState, std::string setActions);
     bool parseAndCheck(std::string expression);
     void executeActions(std::string actions);
 	std::string getName(){
@@ -144,7 +144,7 @@ public:
 	}
 
     void insertState(std::string name, bool isFinalState , bool isInitialState);
-    void insertTransition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression);
+    void insertTransition(std::string parameterName, std::string originState_str, std::string destinationState_str, std::string guardExpression);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
@@ -165,12 +165,12 @@ private:
 	} DEFAULT;
 	std::string _someString = DEFAULT.someString;
 	unsigned int _someUint = DEFAULT.someUint;
-	List<FSM_State*>* _states = new List<FSM_State*>();
-	List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
-    //std::vector<FSM_State> _states = std::vector<FSM_State>{};
-    //std::vector<FSM_Transition> _transitions = std::vector<FSM_Transition>{};
+	//List<FSM_State*>* _states = new List<FSM_State*>();
+	//List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
+    std::vector<FSM_State> *_states = new std::vector<FSM_State>;
+    std::vector<FSM_Transition> *_transitions = new std::vector<FSM_Transition>;
 
-    FSM_State* _current_state;
+    std::string _currentStateName;
 
 };
 
