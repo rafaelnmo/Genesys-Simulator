@@ -17,6 +17,8 @@
 #include "../../kernel/simulator/PluginInformation.h"
 #include "../../kernel/util/List.h"
 #include <vector>
+#include <map>
+#include <string>
 
 class FSM_State : public PersistentObject_base {
 public:
@@ -84,10 +86,12 @@ public:
 	// };
 public:
 
-	FSM_Transition(std::string parameterName, std::string originState, std::string destinationState, std::string guardExpression = ""):
+	FSM_Transition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions):
+		_guardExpression(guardExpression),
 		_originState(originState),
 		_destinationState(destinationState),
-		_guardExpression(guardExpression)
+		_outputActions(outputActions),
+		_setActions(setActions)
 	{}
 		// if (transitionType == nullptr)
 		// 	transitionType = new TransitionType();
@@ -108,7 +112,7 @@ public:
         return _guardExpression;
     }
 
-    std::string getOutputActions() {
+    std::map<std::string,int> getOutputActions() {
         return _outputActions;
     }
 
@@ -117,12 +121,11 @@ public:
     }
 
 private:
-	std::string _guardExpression = "";
+	std::string _guardExpression;
 	std::string _originState;
 	std::string _destinationState;
-	//TransitionType* _type;
-	std::string _outputActions;
-	std::string _setActions = "";
+	std::map<std::string,int> _outputActions;
+	std::string _setActions;
 };
 
 class FSM_Variable : public PersistentObject_base {
@@ -154,17 +157,17 @@ public: // static
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
 public:
 	virtual std::string show();
-    void fire(std::string inputs);
+    void fire(std::map<std::string,int> inputs);
     void postfire(std::string destinationState, std::string setActions);
-    bool parseAndCheck(std::string expression);
+    bool parseAndCheck(std::string expression, std::map<std::string,int> inputs);
     void updateVariables(std::string actions);
-	int getValue(std::string value_str);
+	int getValue(std::string value_str, std::map<std::string,int> inputs);
 	std::string getName(){
 		return _someString;
 	}
 
     void insertState(std::string name, bool isFinalState , bool isInitialState);
-    void insertTransition(std::string parameterName, std::string originState_str, std::string destinationState_str, std::string guardExpression);
+    void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions);
     void insertVariable(std::string name, int initialValue);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);

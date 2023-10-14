@@ -15,6 +15,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <map>
 //#include "Transition.h"
 //#include "State"
 
@@ -64,9 +65,9 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
     }
 }
 
-void ExtendedFSM::fire(std::string inputs) {
+void ExtendedFSM::fire(std::map<std::string,int> inputs) {
     //auto inputs = get_inputs(inputs_str);
-    auto outputActions = std::string();
+    std::map<std::string,int> outputActions;
     auto setActions = std::string();
     auto destinationState = std::string();
     auto transitionFound = false;
@@ -88,7 +89,7 @@ void ExtendedFSM::fire(std::string inputs) {
 
     for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
-            if (parseAndCheck(transition.getGuardExpression())) {
+            if (parseAndCheck(transition.getGuardExpression(), inputs)) {
                 outputActions = transition.getOutputActions();
                 setActions = transition.getSetActions();
                 destinationState = transition.getDestinationState();
@@ -121,11 +122,16 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
     return str.substr(strBegin, strRange);
 }
 
-int ExtendedFSM::getValue(std::string value_str) {
+int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs = std::map<std::string,int>{}) {
     try {
         return std::stoi(value_str);
     }
     catch(const std::invalid_argument& e) {
+        for (auto input: inputs) {
+            if (input.first == value_str) {
+                return input.second;
+            }
+        }
         for (auto variable: *_variables) {
             if (variable.getName() == value_str) {
                 return variable._value;
@@ -134,7 +140,7 @@ int ExtendedFSM::getValue(std::string value_str) {
     }
 }
 
-bool ExtendedFSM::parseAndCheck(std::string expression){
+bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int> inputs){
     if (expression == "") {
         return true;
     }
@@ -156,8 +162,8 @@ bool ExtendedFSM::parseAndCheck(std::string expression){
         operatorAction = trim(operatorAction);
         operand2_str = trim(operand2_str);
 
-        auto operand1 = getValue(operand1_str);
-        auto operand2 = getValue(operand2_str);
+        auto operand1 = getValue(operand1_str, inputs);
+        auto operand2 = getValue(operand2_str, inputs);
         
         if (operatorAction == "<") {
             if (not operand1 < operand2) {
@@ -237,124 +243,11 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
    _states->push_back(state);
 }
 
-void ExtendedFSM::insertTransition(std::string parameterName, std::string originState_str, std::string destinationState_str, std::string guardExpression = ""){
-    auto transition = FSM_Transition(parameterName, originState_str, destinationState_str, guardExpression); 
+void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions){
+    auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions); 
     _transitions->push_back(transition);
 }
 
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     auto variable = FSM_Variable(name, initialValue);
 }
-
-// Rafael begin
-
-// constructors
-
-ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
-	return new ExtendedFSM(model, name);
-}
-
-ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {
-}
-
-//public
-
-std::string ExtendedFSM::show() {
-	return ModelDataDefinition::show();
-}
-
-// public static 
-
-ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *fields) {
-	ExtendedFSM* newElement = new ExtendedFSM(model);
-	try {
-		newElement->_loadInstance(fields);
-	} catch (const std::exception& e) {
-
-	}
-	return newElement;
-}
-
-PluginInformation* ExtendedFSM::GetPluginInformation() {
-	PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
-	info->setDescriptionHelp("//@TODO");
-
-	return info;
-}
-
-// protected virtual -- must be overriden 
-
-bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
-	bool res = ModelDataDefinition::_loadInstance(fields);
-	if (res) {
-		try {
-			this->_someString = fields->loadField("someString", DEFAULT.someString);
-			this->_someUint = fields->loadField("someUint", DEFAULT.someUint);
-		} catch (...) {
-		}
-	}
-	return res;
-}
-
-void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
-	ModelDataDefinition::_saveInstance(fields, saveDefaultValues);
-	fields->saveField("someUint", _someUint, DEFAULT.someUint);
-	fields->saveField("someString", _someString, DEFAULT.someString);
-}
-
-	void addState(FSM_State* state){
-
-	}
-
-	void addTransition(FSM_Transition* transition){
-
-	}
-    
-	// Evaluate the guard expression.
-    bool evaluateGuardExpression(const std::string& expression) {
-        // Implement the logic to evaluate the expression, as previously discussed.
-        // ...
-    }
-
-    // Execute output actions if the guard is true.
-    void executeOutputActions(FSM_Transition* transition) {
-        // Implement how to execute output actions.
-        // ...
-    }
-
-    // Handle the case when no transition with a true guard is found.
-    void handleNoTrueGuardCase() {
-        // Implement the necessary logic for this case.
-        // ...
-    }
-
-
-// protected virtual -- could be overriden 
-
-//ParserChangesInformation* ExFiStatMac::_getParserChangesInformation() {}
-
-bool ExtendedFSM::_check(std::string* errorMessage) {
-	bool resultAll = true;
-	resultAll &= _someString != "";
-	resultAll &= _someUint > 0;
-	return resultAll;
-}
-
-void ExtendedFSM::_initBetweenReplications() {
-	_someString = "Test";
-	_someUint = 1;
-}
-
-void ExtendedFSM::_createInternalAndAttachedData() {
-	if (_reportStatistics) {
-		//if (_internal == nullptr) {
-		//	_internal = new StatisticsCollector(_parentModel, getName() + "." + "NumberInQueue", this); 
-		//	_internelElementsInsert("NumberInQueue", _internal);
-		//}
-	} else { //if (_cstatNumberInQueue != nullptr) {
-		this->_internalDataClear();
-	}
-}
-
-
-// Rafael end
