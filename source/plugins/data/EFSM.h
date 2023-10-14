@@ -157,9 +157,10 @@ public: // static
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
 public:
 	virtual std::string show();
-    std::map<std::string,int> fire(std::map<std::string,int> inputs);
+	std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);
     void postfire(std::string destinationState, std::string setActions);
-    bool parseAndCheck(std::string expression, std::map<std::string,int> inputs);
+    bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
+	bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
 	std::map<std::string,int> getOutputValues(std::string actions);
     void updateVariables(std::string actions);
 	int getValue(std::string value_str, std::map<std::string,int> inputs);

@@ -16,6 +16,7 @@
 #include <sstream>
 #include <iostream>
 #include <map>
+#include <utility>
 //#include "Transition.h"
 //#include "State"
 
@@ -65,27 +66,17 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
     }
 }
 
-std::map<std::string,int> ExtendedFSM::fire(std::map<std::string,int> inputs) {
-    //auto inputs = get_inputs(inputs_str);
-    std::map<std::string,int> outputActions;
+std::pair<bool,std::map<std::string,int>> ExtendedFSM::fire(std::map<std::string,int> inputs) {
+    auto outputActions = std::map<std::string,int>{};
+    for (auto state: *_states) {
+        if (state.getName() == _currentStateName and state.isFinalState()){
+            return std::pair<bool,std::map<std::string,int>>(true, outputActions);
+        }
+    }
+    
     auto setActions = std::string();
     auto destinationState = std::string();
     auto transitionFound = false;
-    //auto transition = _transitions->front();
-
-    //for(auto i = 0u; i < _transitions->size(); ++i){
-    //    if (transition->getOriginState() == _currentStateName){
-    //        if (parseAndCheck(transition->getGuardExpression())) {
-    //            outputActions = transition->getOutputActions();
-    //            setActions = transition->getSetActions();
-    //            destinationState = transition->getDestinationState();
-    //            transitionFound = true;
-    //            break;
-    //        }
-    //    }
-
-    //    transition = _transitions->next();
-    //}
 
     for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
@@ -104,7 +95,7 @@ std::map<std::string,int> ExtendedFSM::fire(std::map<std::string,int> inputs) {
         postfire(destinationState, setActions);
     }
 
-    return outputActions;
+    return std::pair<bool,std::map<std::string,int>>(false, outputActions);
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
@@ -138,18 +129,33 @@ int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> input
                 return variable._value;
             }
         }
+
+        throw std::invalid_argument(value_str + " not found!");
     }
 }
 
-bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int> inputs){
+bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int>& inputs){
     if (expression == "") {
         return true;
     }
+
     auto expression_ss = std::stringstream();
     expression_ss << expression;
-    auto action = std::string();
+    auto actions = std::string();
+    while(std::getline(expression_ss, actions, '|')) {
+        auto actions_ss = std::stringstream();
+        actions_ss << actions;
+        if (check(actions_ss, inputs)) {
+            return true;
+        }
+    }
 
-    while(std::getline(expression_ss, action, ';')) {
+    return false;
+}
+
+bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>& inputs) {
+    auto action = std::string();
+    while(std::getline(actions_ss, action, '&')) {
         auto action_ss = std::stringstream();
         auto operand1_str = std::string();
         auto operatorAction = std::string();
@@ -163,8 +169,14 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
         operatorAction = trim(operatorAction);
         operand2_str = trim(operand2_str);
 
-        auto operand1 = getValue(operand1_str, inputs);
-        auto operand2 = getValue(operand2_str, inputs);
+        int operand1, operand2;
+        try {
+            operand1 = getValue(operand1_str, inputs);
+            operand2 = getValue(operand2_str, inputs);
+        }
+        catch(const std::invalid_argument& e) {
+            return false;
+        }
         
         if (operatorAction == "<") {
             if (not operand1 < operand2) {
@@ -212,23 +224,28 @@ std::map<std::string,int> ExtendedFSM::getOutputValues(std::string actions) {
         auto value_str = std::string();
         auto operatorAction = std::string();
         std::getline(newValue_ss, value_str, ' ');
-        auto newValue = getValue(value_str);
+        try {
+            auto newValue = getValue(value_str);
 
-        while(std::getline(newValue_ss, operatorAction, ' ')){
-            std::getline(newValue_ss, value_str, ' ');
-            auto value = getValue(value_str);
-            if (operatorAction == "+") {
-                newValue += value;
-            } else if (operatorAction == "-") {
-                newValue -= value;
-            } else if (operatorAction == "*") {
-                newValue *= value;
-            } else if (operatorAction == "/") {
-                newValue /= value;
+            while(std::getline(newValue_ss, operatorAction, ' ')){
+                std::getline(newValue_ss, value_str, ' ');
+                auto value = getValue(value_str);
+                if (operatorAction == "+") {
+                    newValue += value;
+                } else if (operatorAction == "-") {
+                    newValue -= value;
+                } else if (operatorAction == "*") {
+                    newValue *= value;
+                } else if (operatorAction == "/") {
+                    newValue /= value;
+                }
             }
-        }
 
-        outputValues.insert(std::pair<std::string,int>(outputNAME, newValue));
+            outputValues.insert(std::pair<std::string,int>(outputNAME, newValue));
+        }
+        catch(const std::invalid_argument& e) {
+            outputValues.insert(std::pair<std::string,int>(e.what(), -1));
+        }
     }
 
     return outputValues;
@@ -281,6 +298,9 @@ void ExtendedFSM::updateVariables(std::string actions){
 }
 
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
+    if (isInitialState) {
+        _currentStateName = name;
+    }
     auto state = FSM_State(name, isFinalState, isInitialState);
    _states->push_back(state);
 }
