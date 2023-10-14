@@ -65,7 +65,7 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
     }
 }
 
-void ExtendedFSM::fire(std::map<std::string,int> inputs) {
+std::map<std::string,int> ExtendedFSM::fire(std::map<std::string,int> inputs) {
     //auto inputs = get_inputs(inputs_str);
     std::map<std::string,int> outputActions;
     auto setActions = std::string();
@@ -90,7 +90,7 @@ void ExtendedFSM::fire(std::map<std::string,int> inputs) {
     for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
             if (parseAndCheck(transition.getGuardExpression(), inputs)) {
-                outputActions = transition.getOutputActions();
+                outputActions = getOutputValues(transition.getOutputActions());
                 setActions = transition.getSetActions();
                 destinationState = transition.getDestinationState();
                 transitionFound = true;
@@ -101,9 +101,10 @@ void ExtendedFSM::fire(std::map<std::string,int> inputs) {
     
 
     if (transitionFound) {
-        // EXECUTE OUTPUT ACTIONS
         postfire(destinationState, setActions);
     }
+
+    return outputActions;
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
@@ -192,6 +193,47 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
     return true;
 }
 
+std::map<std::string,int> ExtendedFSM::getOutputValues(std::string actions) {
+    auto outputValues = std::map<std::string,int>{};
+    auto actions_ss = std::stringstream();
+    actions_ss << actions;
+    auto action = std::string();
+
+    while(std::getline(actions_ss, action, ';')) {
+        auto action_ss = std::stringstream();
+        auto outputNAME = std::string();
+        auto newValue_str = std::string();
+
+        std::getline(action_ss, outputNAME, '=');
+        std::getline(action_ss, newValue_str, ';');
+
+        auto newValue_ss = std::stringstream();
+        newValue_ss << newValue_str;
+        auto value_str = std::string();
+        auto operatorAction = std::string();
+        std::getline(newValue_ss, value_str, ' ');
+        auto newValue = getValue(value_str);
+
+        while(std::getline(newValue_ss, operatorAction, ' ')){
+            std::getline(newValue_ss, value_str, ' ');
+            auto value = getValue(value_str);
+            if (operatorAction == "+") {
+                newValue += value;
+            } else if (operatorAction == "-") {
+                newValue -= value;
+            } else if (operatorAction == "*") {
+                newValue *= value;
+            } else if (operatorAction == "/") {
+                newValue /= value;
+            }
+        }
+
+        outputValues.insert(std::pair<std::string,int>(outputNAME, newValue));
+    }
+
+    return outputValues;
+}
+
 void ExtendedFSM::updateVariables(std::string actions){
     if (actions == "") {
         return;
@@ -243,7 +285,7 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
    _states->push_back(state);
 }
 
-void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions){
+void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
     auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions); 
     _transitions->push_back(transition);
 }

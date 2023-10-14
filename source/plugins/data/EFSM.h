@@ -86,7 +86,7 @@ public:
 	// };
 public:
 
-	FSM_Transition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions):
+	FSM_Transition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions):
 		_guardExpression(guardExpression),
 		_originState(originState),
 		_destinationState(destinationState),
@@ -112,7 +112,7 @@ public:
         return _guardExpression;
     }
 
-    std::map<std::string,int> getOutputActions() {
+    std::string getOutputActions() {
         return _outputActions;
     }
 
@@ -124,7 +124,7 @@ private:
 	std::string _guardExpression;
 	std::string _originState;
 	std::string _destinationState;
-	std::map<std::string,int> _outputActions;
+	std::string _outputActions;
 	std::string _setActions;
 };
 
@@ -157,9 +157,10 @@ public: // static
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
 public:
 	virtual std::string show();
-    void fire(std::map<std::string,int> inputs);
+    std::map<std::string,int> fire(std::map<std::string,int> inputs);
     void postfire(std::string destinationState, std::string setActions);
     bool parseAndCheck(std::string expression, std::map<std::string,int> inputs);
+	std::map<std::string,int> getOutputValues(std::string actions);
     void updateVariables(std::string actions);
 	int getValue(std::string value_str, std::map<std::string,int> inputs);
 	std::string getName(){
@@ -167,7 +168,7 @@ public:
 	}
 
     void insertState(std::string name, bool isFinalState , bool isInitialState);
-    void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::map<std::string,int> outputActions, std::string setActions);
+    void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
     void insertVariable(std::string name, int initialValue);
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
