@@ -75,7 +75,6 @@ SOURCES += \
 	../../../../plugins/components/Create.cpp \
 	../../../../plugins/components/Decide.cpp \
 	../../../../plugins/components/Delay.cpp \
-	../../../../plugins/components/DiffEquations.cpp \
 	../../../../plugins/components/Dispose.cpp \
 	../../../../plugins/components/DropOff.cpp \
 	../../../../plugins/components/DummyComponent.cpp \
@@ -282,7 +281,7 @@ HEADERS += \
 	../../../../kernel/simulator/PluginConnector_if.h \
 	../../../../kernel/simulator/PluginInformation.h \
 	../../../../kernel/simulator/PluginManager.h \
-        ../../../../kernel/simulator/PropertyGenesys.h \
+	../../../../kernel/simulator/PropertyGenesys.h \
 	../../../../kernel/simulator/ScenarioExperiment_if.h \
 	../../../../kernel/simulator/SimulationControlAndResponse.h \
 	../../../../kernel/simulator/SimulationExperiment.h \
@@ -329,7 +328,6 @@ HEADERS += \
 	../../../../plugins/components/Create.h \
 	../../../../plugins/components/Decide.h \
 	../../../../plugins/components/Delay.h \
-	../../../../plugins/components/DiffEquations.h \
 	../../../../plugins/components/Dispose.h \
 	../../../../plugins/components/DropOff.h \
 	../../../../plugins/components/DummyComponent.h \

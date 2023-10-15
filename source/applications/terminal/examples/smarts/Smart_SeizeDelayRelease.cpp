@@ -46,7 +46,6 @@ int Smart_SeizeDelayRelease::main(int argc, char** argv) {
 	create1->setTimeBetweenCreationsExpression("expo(20)");
 	create1->setTimeUnit(Util::TimeUnit::second);
 	create1->setEntitiesPerCreation(1);
-	create1->setFirstCreation(0.0);
 	Resource* machine1 = plugins->newInstance<Resource>(model, "Machine_1");
 	machine1->setCapacity(1);
 	Queue* queueSeize1 = plugins->newInstance<Queue>(model, "Seize_1.Queue");
@@ -54,8 +53,9 @@ int Smart_SeizeDelayRelease::main(int argc, char** argv) {
 	Seize* seize1 = plugins->newInstance<Seize>(model);
 	seize1->getSeizeRequests()->insert(new SeizableItem(machine1, "1"));
 	seize1->setQueue(queueSeize1);
+	seize1->setAllocationType(Util::AllocationType::Transfer);
 	Delay* delay1 = plugins->newInstance<Delay>(model);
-	delay1->setDelayExpression("unif(15,30)", Util::TimeUnit::second);
+	delay1->setDelayExpression("unif(10,30)", Util::TimeUnit::second);
 	Release* release1 = plugins->newInstance<Release>(model);
 	release1->getReleaseRequests()->insert(new SeizableItem(machine1, "1"));
 	Dispose* dispose1 = plugins->newInstance<Dispose>(model);
@@ -66,8 +66,9 @@ int Smart_SeizeDelayRelease::main(int argc, char** argv) {
 	release1->getConnections()->insert(dispose1);
 	// set options, save and simulate
 	ModelSimulation* sim = model->getSimulation();
-	sim->setReplicationLength(120, Util::TimeUnit::second);
-	sim->setNumberOfReplications(2);
+	sim->setReplicationLength(1000, Util::TimeUnit::second);
+	sim->setNumberOfReplications(30);
+	model->getTracer()->setTraceLevel(TraceManager::Level::L2_results);
 	model->save("./models/Smart_SeizeDelayRelease.gen");
 	// execute the simulation
 	sim->start();
