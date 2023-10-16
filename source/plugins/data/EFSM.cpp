@@ -157,6 +157,7 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
     auto action = std::string();
     while(std::getline(actions_ss, action, '&')) {
         auto action_ss = std::stringstream();
+        action_ss << action;
         auto operand1_str = std::string();
         auto operatorAction = std::string();
         auto operand2_str = std::string();
@@ -213,6 +214,7 @@ std::map<std::string,int> ExtendedFSM::getOutputValues(std::string actions) {
 
     while(std::getline(actions_ss, action, ';')) {
         auto action_ss = std::stringstream();
+        action_ss << action;
         auto outputNAME = std::string();
         auto newValue_str = std::string();
 
@@ -261,6 +263,7 @@ void ExtendedFSM::updateVariables(std::string actions){
 
     while(std::getline(actions_ss, action, ';')) {
         auto action_ss = std::stringstream();
+        action_ss << action;
         auto variableNAME = std::string();
         auto newValue_str = std::string();
 
