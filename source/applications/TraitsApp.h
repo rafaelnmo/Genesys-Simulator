@@ -20,7 +20,11 @@
 //#include "terminal/examples/smarts/Smart_Buffer.h"
 
 //#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
-#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
+//#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
+#include "terminal/examples/smarts/Smart_EFSM1.h"
+//#include "terminal/examples/smarts/Smart_EFSM2.h"
+
+#include "terminal/examples/smarts/Smart_Dummy.h"
 
 template <typename T>
 struct TraitsApp {
@@ -35,7 +39,13 @@ template <> struct TraitsApp<GenesysApplication_if> {
 	static const bool runGraphicalUserInterface = true; ///< If false, a terminal application will be compiled and executed (See TraitsTerminalApp.h). If true, a GUI for a general simulator will be executed.
 
     //typedef Smart_ExtendedFSM Application;
-    typedef Smart_FiniteStateMachine Application;
+    //typedef Smart_FiniteStateMachine Application;
+    //typedef Smart_Buffer Application;
+    typedef Smart_EFSM1 Application;
+    //typedef Smart_EFSM2 Application;
+
+    //typedef Smart_Dummy Application;
+
 };
 /*
 template <> struct TraitsApp<GenesysApplication_if> {

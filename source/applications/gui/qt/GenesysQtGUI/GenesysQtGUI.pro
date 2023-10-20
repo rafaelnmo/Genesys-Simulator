@@ -81,7 +81,6 @@ SOURCES += \
 	../../../../plugins/components/Enter.cpp \
 	../../../../plugins/components/Exit.cpp \
 	../../../../plugins/components/FiniteStateMachine.cpp \
-    ../../../../plugins/components/ExtendedFinishStateMachine.cpp \
 	../../../../plugins/components/PickableStationItem.cpp \
 	../../../../plugins/components/Wait.cpp \
 	../../../../plugins/components/LSODE.cpp \
@@ -183,7 +182,8 @@ SOURCES += \
 	../../../terminal/examples/smarts/Smart_AssignWriteSeizes.cpp \
 	../../../terminal/examples/smarts/Smart_BatchSeparate.cpp \
 	../../../terminal/examples/smarts/Smart_Buffer.cpp \
-    ../../../terminal/examples/smarts/Smart_ExtendedFSM.cpp \
+	../../../terminal/examples/smarts/Smart_EFSM1.cpp \
+	../../../terminal/examples/smarts/Smart_EFSM2.cpp \
     ../../../terminal/examples/smarts/Smart_FiniteStateMachine.cpp \
 	../../../terminal/examples/smarts/Smart_CellularAutomata1.cpp \
 	../../../terminal/examples/smarts/Smart_CppForG.cpp \
@@ -334,7 +334,6 @@ HEADERS += \
 	../../../../plugins/components/Enter.h \
 	../../../../plugins/components/Exit.h \
 	../../../../plugins/components/FiniteStateMachine.h \
-    ../../../../plugins/components/ExtendedFinishStateMachine.h \
 	../../../../plugins/components/PickableStationItem.h \
 	../../../../plugins/components/Wait.h \
 	../../../../plugins/components/LSODE.h \
@@ -365,8 +364,6 @@ HEADERS += \
 	../../../../plugins/data/CppCompiler.h \
 	../../../../plugins/data/DummyElement.h \
 	../../../../plugins/data/EFSM.h \
-        ../../../../plugins/data/State.h \
-        ../../../../plugins/data/Transition.h \
 	../../../../plugins/data/EntityGroup.h \
 	../../../../plugins/data/Failure.h \
 	../../../../plugins/data/File.h \
@@ -447,7 +444,8 @@ HEADERS += \
 	../../../terminal/examples/smarts/Smart_AssignWriteSeizes.h \
 	../../../terminal/examples/smarts/Smart_BatchSeparate.h \
 	../../../terminal/examples/smarts/Smart_Buffer.h \
-    ../../../terminal/examples/smarts/Smart_ExtendedFSM.h \
+    ../../../terminal/examples/smarts/Smart_EFSM1.h \
+    ../../../terminal/examples/smarts/Smart_EFSM2.h \
 	../../../terminal/examples/smarts/Smart_FiniteStateMachine.h \
 	../../../terminal/examples/smarts/Smart_CellularAutomata1.h \
 	../../../terminal/examples/smarts/Smart_CppForG.h \

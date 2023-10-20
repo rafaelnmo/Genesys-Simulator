@@ -8,7 +8,9 @@
 // Model Components
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
-#include "../../../../plugins/components/ExtendedFinishStateMachine.h"
+//#include "../../../../plugins/components/ExtendedFinishStateMachine.h"
+#include "../../../../plugins/data/EFSM.h"
+
 #include "../../../TraitsApp.h"
 
 Smart_EFSM2::Smart_EFSM2() {
@@ -28,30 +30,30 @@ int Smart_EFSM2::main(int argc, char** argv) {
 	Model* model = genesys->getModels()->newModel();
 	
 	// initialize model parts
-	ExtendedFinishStateMachine* ExtendedExample = plugins->newInstance<ExtendedFinishMachine>(model, "ExtendedFinishMachine_1");
+	ExtendedFSM* ExtendedExample = plugins->newInstance<ExtendedFSM>(model, "ExtendedFinishMachine_1");
 	
 	// creating states of efsm
-	ExtendedExample.insertState('Green', false, false);
-    ExtendedExample.insertState('Yellow', false, false);
-    ExtendedExample.insertState('Red', false, true);
-    ExtendedExample.insertState('Pending', false, false);
+    ExtendedExample->insertState("Green", false, false);
+    ExtendedExample->insertState("Yellow", false, false);
+    ExtendedExample->insertState("Red", false, true);
+    ExtendedExample->insertState("Pending", false, false);
 
     // creating transitions of each state of efsm
-    ExtendedExample.insertTransition("count >= 60", "Red", "Green","sigG", "count = count + 1");
-    ExtendedExample.insertTransition("pedestrian & count < 60", "Green", "Pending", nullptr, "count = count + 1");
-    ExtendedExample.insertTransition("count >= 60", "Pending", "Yellow", "sigY", "count = 0");
-    ExtendedExample.insertTransition("count >= 5", "Yellow", "Red", "sigR", "count = 0");
-    ExtendedExample.insertTransition("pedestrian & count >= 60", "Green", "Yellow", "sigY", "count = 0");
-    ExtendedExample.insertTransition(nullptr, "Red", "Red", nullptr, "count = count + 1");
-    ExtendedExample.insertTransition("count < 60", "Green", "Green", nullptr, "count = count + 1");
-    ExtendedExample.insertTransition(nullptr, "Pending", "Pending", nullptr, "count = count + 1");
-    ExtendedExample.insertTransition(nullptr, "Yellow", "Yellow", nullptr, "count = count + 1");
+    ExtendedExample->insertTransition("count >= 60", "Red", "Green","sigG", "count = count + 1");
+    ExtendedExample->insertTransition("pedestrian & count < 60", "Green", "Pending", nullptr, "count = count + 1");
+    ExtendedExample->insertTransition("count >= 60", "Pending", "Yellow", "sigY", "count = 0");
+    ExtendedExample->insertTransition("count >= 5", "Yellow", "Red", "sigR", "count = 0");
+    ExtendedExample->insertTransition("pedestrian & count >= 60", "Green", "Yellow", "sigY", "count = 0");
+    ExtendedExample->insertTransition(nullptr, "Red", "Red", nullptr, "count = count + 1");
+    ExtendedExample->insertTransition("count < 60", "Green", "Green", nullptr, "count = count + 1");
+    ExtendedExample->insertTransition(nullptr, "Pending", "Pending", nullptr, "count = count + 1");
+    ExtendedExample->insertTransition(nullptr, "Yellow", "Yellow", nullptr, "count = count + 1");
 	
 	// run the simulation
-	auto output = ExtendedExample.fire();
-	auto output = ExtendedExample.fire();
-	auto output = ExtendedExample.fire();
-	sim->start();
+    //auto saida = ExtendedExample->fire();
+    //auto saida = ExtendedExample->fire();
+    //auto saida = ExtendedExample->fire();
+    //sim->start();
 	
 	// free memory
 	delete genesys;

@@ -53,6 +53,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/577f3b86/Smart_AutomaticStatisticsCollection.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_BasicModeling.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_BatchAndSeparate.o \
+	${OBJECTDIR}/_ext/577f3b86/Smart_Buffer.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_ContinuousFlowEntities.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_Create.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_DecideNWayByChance.o \
@@ -91,6 +92,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/296208d5/Smart_CppForG.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Delay.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o \
+	${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Failures.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_FiniteStateMachine.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_HoldSearchRemove.o \
@@ -550,6 +552,16 @@ ${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o: ../../source/applications/terminal/exa
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o ../../source/applications/terminal/examples/smarts/Smart_Dummy.cpp
+
+${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o: ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp
+
+${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o: ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp
 
 ${OBJECTDIR}/_ext/296208d5/Smart_Failures.o: ../../source/applications/terminal/examples/smarts/Smart_Failures.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
@@ -2016,6 +2028,32 @@ ${OBJECTDIR}/_ext/296208d5/Smart_Dummy_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smar
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_Dummy_nomain.o ../../source/applications/terminal/examples/smarts/Smart_Dummy.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o ${OBJECTDIR}/_ext/296208d5/Smart_Dummy_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/296208d5/Smart_Buffer_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/296208d5/Smart_Buffer_nomain.o ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o ${OBJECTDIR}/_ext/296208d5/Smart_Buffer_nomain.o;\
 	fi
 
 ${OBJECTDIR}/_ext/296208d5/Smart_Failures_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_Failures.o ../../source/applications/terminal/examples/smarts/Smart_Failures.cpp 

@@ -47,7 +47,7 @@ int Smart_FiniteStateMachine::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
 	PluginManager* plugins = genesys->getPlugins();
-	plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/source/applications/gui/qt/build-GenesysQtGUI-Desktop-Debug/autoloadplugins.txt");
+	plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 	Model* model = genesys->getModels()->newModel();
 	// crete model
 	Create *create1 = plugins->newInstance<Create>(model);

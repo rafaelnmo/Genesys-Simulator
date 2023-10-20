@@ -32,6 +32,7 @@ public: // static
 	ExtendedFSM* getInternalDataDefinition(){
 		return _internalDataDefinition;
 	}
+	virtual void _createInternalAndAttachedData();
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
@@ -39,9 +40,13 @@ protected: // must be overriden
 protected: // could be overriden .
 	virtual bool _check(std::string* errorMessage);
 	virtual void _initBetweenReplications();
-	virtual void _createInternalAndAttachedData();
+	//virtual void _createInternalAndAttachedData();
 	//virtual ParserChangesInformation* _getParserChangesInformation();
 private: // methods
+
+public:
+	ExtendedFSM* _internalDataDefinition = nullptr;
+
 private: // attributes 1:1
 
 	const struct DEFAULT_VALUES {
@@ -50,7 +55,7 @@ private: // attributes 1:1
 	} DEFAULT;
 	std::string _someString = DEFAULT.someString;
 	unsigned int _someUint = DEFAULT.someUint;
-	ExtendedFSM* _internalDataDefinition = nullptr;
+	//ExtendedFSM* _internalDataDefinition = nullptr;
 private: // attributes 1:n
 };
 

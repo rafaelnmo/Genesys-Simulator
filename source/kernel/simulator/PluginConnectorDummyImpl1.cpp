@@ -55,7 +55,7 @@
 #include "../../plugins/components/Write.h"
 #include "../../plugins/components/LSODE.h"
 
-#include "../../plugins/components/ExtendedFinishStateMachine.h"
+//#include "../../plugins/components/ExtendedFinishStateMachine.h"
 
 
 
@@ -75,8 +75,8 @@
 #include "../../plugins/data/Variable.h"
 #include "../../plugins/data/EFSM.h"
 
-#include "../../plugins/data/State.h"
-#include "../../plugins/data/Transition.h"
+//#include "../../plugins/data/State.h"
+//#include "../../plugins/data/Transition.h"
 
 //#include "../../plugins/data/Expression.h"
 //#include "../../plugins/data/Conveyor.h"

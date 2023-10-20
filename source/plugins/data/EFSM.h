@@ -157,7 +157,10 @@ public: // static
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
 public:
 	virtual std::string show();
-	std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);
+    //std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);
+    bool fire(std::map<std::string,int> inputs);
+    bool fire();
+
     void postfire(std::string destinationState, std::string setActions);
     bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
 	bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
@@ -171,12 +174,14 @@ public:
     void insertState(std::string name, bool isFinalState , bool isInitialState);
     void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
     void insertVariable(std::string name, int initialValue);
+
+
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 	void addState(FSM_State* state);
 	void addTransition(FSM_Transition* transition);
-	void fire();
+    //void fire();
 
 protected: // could be overriden .
 	virtual bool _check(std::string* errorMessage);
@@ -193,9 +198,9 @@ private:
 	unsigned int _someUint = DEFAULT.someUint;
 	//List<FSM_State*>* _states = new List<FSM_State*>();
 	//List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
-    std::vector<FSM_State> *_states = new std::vector<FSM_State>;
-    std::vector<FSM_Transition> *_transitions = new std::vector<FSM_Transition>;
-	std::vector<FSM_Variable> *_variables = new std::vector<FSM_Variable>;
+    std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
+    std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
+	std::vector<FSM_Variable*>*_variables = new std::vector<FSM_Variable*>;
 
     std::string _currentStateName;
 

@@ -39,6 +39,8 @@ bool FSM_State::_loadInstance(PersistenceRecord *fields) {
 	} catch (...) {
 		res = false;
     }
+
+    return res;
 }
 
 void FSM_Transition::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
@@ -64,13 +66,17 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
 	} catch (...) {
 		res = false;
     }
+
+    return res;
 }
 
-std::pair<bool,std::map<std::string,int>> ExtendedFSM::fire(std::map<std::string,int> inputs) {
+//std::pair<bool,std::map<std::string,int>> ExtendedFSM::fire(std::map<std::string,int> inputs) {
+bool ExtendedFSM::fire(std::map<std::string,int> inputs) {
     auto outputActions = std::map<std::string,int>{};
     for (auto state: *_states) {
         if (state.getName() == _currentStateName and state.isFinalState()){
-            return std::pair<bool,std::map<std::string,int>>(true, outputActions);
+            //return std::pair<bool,std::map<std::string,int>>(true, outputActions);
+            return true;
         }
     }
     
@@ -95,7 +101,15 @@ std::pair<bool,std::map<std::string,int>> ExtendedFSM::fire(std::map<std::string
         postfire(destinationState, setActions);
     }
 
-    return std::pair<bool,std::map<std::string,int>>(false, outputActions);
+    //return std::pair<bool,std::map<std::string,int>>(false, outputActions);
+    return false;
+
+}
+
+bool ExtendedFSM::fire() {
+    auto inputs = std::map<std::string,int>{};
+
+    return fire(inputs);
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
@@ -315,4 +329,22 @@ void ExtendedFSM::insertTransition(std::string guardExpression, std::string orig
 
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     auto variable = FSM_Variable(name, initialValue);
+}
+
+std::string ExtendedFSM::show(){}
+
+bool ExtendedFSM::_check(std::string* errorMessage){}
+
+void ExtendedFSM::_initBetweenReplications(){}
+
+void ExtendedFSM::_createInternalAndAttachedData(){}
+
+void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {}
+
+bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
+    bool res = true;
+    try {
+	} catch (...) {
+		res = false;
+    }
 }
