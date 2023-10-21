@@ -49,18 +49,20 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     dispose1->setReportStatistics(true);
 	
-    std::cout << "\n" << plugins->front();
+    std::cout << "\nplugins: " << plugins->front() << "\n";
 
 	// creating states of efsm
     fsm->_createInternalAndAttachedData();
 
     fsm->_internalDataDefinition->insertState("Counting", false, true);
-    //fsm->_internalDataDefinition->insertVariable("c", 0);
-    //fsm->_internalDataDefinition->insertVariable("M", 100);
+    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(0).getName() << "\n";
+    
+    fsm->_internalDataDefinition->insertVariable("c", 0);
+    fsm->_internalDataDefinition->insertVariable("M", 100);
 
     // creating transitions of each state of efsm
-    //fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","saida = c + 1", "c = c + 1");
-    //fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","saida = c - 1", "c = c - 1");
+    fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","saida = c + 1", "c = c + 1");
+    fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","saida = c - 1", "c = c - 1");
 	
 	// run the simulation
     //bool saida = fsm->_internalDataDefinition->fire();

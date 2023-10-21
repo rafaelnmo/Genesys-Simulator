@@ -91,13 +91,8 @@ void FiniteStateMachine::_initBetweenReplications() {
 
 void FiniteStateMachine::_createInternalAndAttachedData() {
 	if (_internalDataDefinition == nullptr) {
-		std::cout << "\nENTREI\n";
 		PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
-		std::cout << "PluginManager: " << pm->front();
-		std::cout << "\n_parentModel: " << _parentModel;
-		std::cout << "\nFiniteStateMachine name: " << getName();
-		_internalDataDefinition = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "JustaDummy");
-		std::cout << "\n " << _internalDataDefinition << " \n";
+		_internalDataDefinition = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "JustaDumm");
 		_internalDataInsert("JustaDummy", _internalDataDefinition);
 	}
 }

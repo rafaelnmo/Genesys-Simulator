@@ -15,6 +15,7 @@
 
 #include "../../kernel/simulator/ModelDataDefinition.h"
 #include "../../kernel/simulator/PluginInformation.h"
+//#include "../../kernel/simulator/ModelDataManager.h"
 #include "../../kernel/util/List.h"
 #include <vector>
 #include <map>
@@ -120,6 +121,7 @@ public:
         return _setActions;
     }
 
+
 private:
 	std::string _guardExpression;
 	std::string _originState;
@@ -174,6 +176,10 @@ public:
     void insertState(std::string name, bool isFinalState , bool isInitialState);
     void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
     void insertVariable(std::string name, int initialValue);
+	
+	std::vector<FSM_State>* getStates() {
+        return _states;
+    }
 
 
 protected: // must be overriden 
@@ -198,9 +204,9 @@ private:
 	unsigned int _someUint = DEFAULT.someUint;
 	//List<FSM_State*>* _states = new List<FSM_State*>();
 	//List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
-    std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
-    std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
-	std::vector<FSM_Variable*>*_variables = new std::vector<FSM_Variable*>;
+    std::vector<FSM_State>* _states = new std::vector<FSM_State>;
+    std::vector<FSM_Transition>* _transitions = new std::vector<FSM_Transition>;
+	std::vector<FSM_Variable>* _variables = new std::vector<FSM_Variable>;
 
     std::string _currentStateName;
 

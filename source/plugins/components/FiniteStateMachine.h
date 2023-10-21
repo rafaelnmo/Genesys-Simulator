@@ -46,6 +46,7 @@ private: // methods
 
 public:
 	ExtendedFSM* _internalDataDefinition = nullptr;
+	
 
 private: // attributes 1:1
 

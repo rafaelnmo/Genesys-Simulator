@@ -348,3 +348,26 @@ bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
 		res = false;
     }
 }
+
+PluginInformation* ExtendedFSM::GetPluginInformation() {
+	PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
+	return info;
+}
+
+ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
+    return new ExtendedFSM(model, name);
+}
+
+ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *fields) {
+	ExtendedFSM* newElement = new ExtendedFSM(model);
+	try {
+		newElement->_loadInstance(fields);
+	} catch (const std::exception& e) {
+
+	}
+	return newElement;
+}
+
+ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {
+	//_elems = elems;
+}

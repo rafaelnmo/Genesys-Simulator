@@ -17,7 +17,7 @@
 #include "GenesysApplication_if.h"
 #include "../kernel/simulator/TraceManager.h"
 
-//#include "terminal/examples/smarts/Smart_Buffer.h"
+#include "terminal/examples/smarts/Smart_Buffer.h"
 
 //#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
 //#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
