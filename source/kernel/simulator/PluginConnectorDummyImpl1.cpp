@@ -120,8 +120,10 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &Assign::GetPluginInformation;
 	else if (fn == "buffer.so")
 		GetInfo = &Buffer::GetPluginInformation;
-	else if (fn == "efsm.so")
+	else if (fn == "fsm.so")
 		GetInfo = &FiniteStateMachine::GetPluginInformation;
+	else if (fn == "efsm.so")
+		GetInfo = &ExtendedFSM::GetPluginInformation;
 	else if (fn == "entitygroup.so")
 		GetInfo = &EntityGroup::GetPluginInformation;
 	else if (fn == "failure.so")
