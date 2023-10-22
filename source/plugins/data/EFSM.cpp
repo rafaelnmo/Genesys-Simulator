@@ -145,6 +145,7 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
     expression_ss << expression;
     auto actions = std::string();
     while(std::getline(expression_ss, actions, '|')) {
+        actions = trim(actions);
         auto actions_ss = std::stringstream();
         actions_ss << actions;
         if (check(actions_ss, inputs)) {
@@ -158,6 +159,7 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
 bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>& inputs) {
     auto action = std::string();
     while(std::getline(actions_ss, action, '&')) {
+        action = trim(action);
         auto action_ss = std::stringstream();
         action_ss << action;
         auto operand1_str = std::string();
@@ -182,29 +184,28 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
         }
         
         if (operatorAction == "<") {
-            if (not operand1 < operand2) {
+            if (not (operand1 < operand2)) {
                 return false;
             }
         } else if (operatorAction == "<=") {
-            if (not operand1 <= operand2) {
+            if (not (operand1 <= operand2)) {
                 return false;
             }
         } else if (operatorAction == "=") {
-            if (not operand1 == operand2) {
+            if (not (operand1 == operand2)) {
                 return false;
             }
         } else if (operatorAction == ">") {
-            if (not operand1 > operand2) {
+            if (not (operand1 > operand2)) {
                 return false;
             }
         } else if (operatorAction == ">=") {
-            if (not operand1 >= operand2) {
+            if (not (operand1 >= operand2)) {
                 return false;
             }
         }
 
     }
-
     return true;
 }
 
@@ -244,7 +245,6 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
                     newValue /= value;
                 }
             }
-
             outputValues.insert(std::pair<std::string,int>(outputNAME, newValue));
         }
         catch(const std::invalid_argument& e) {

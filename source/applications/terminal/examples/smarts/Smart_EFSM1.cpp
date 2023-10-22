@@ -60,8 +60,8 @@ int Smart_EFSM1::main(int argc, char** argv) {
     fsm->_internalDataDefinition->insertVariable("M", 100);
 
     // creating transitions of each state of efsm
-    //fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
-    fsm->_internalDataDefinition->insertTransition("", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
+    fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
+    //fsm->_internalDataDefinition->insertTransition("", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
     std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
     fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","carsAmount = c - 1", "c = c - 1");
 	
@@ -73,19 +73,20 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     bool isfinalState;
     for (int i = 1; i <= 10; i++){
+        outputActions.clear();
         isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
         std::cout << "isfinalState: " << isfinalState <<std::endl;
         std::cout << "OUTPUT_ACTIONS " << std::endl;
         for(auto outputAction: outputActions){
             std::cout << outputAction.first << " = " << outputAction.second << std::endl;
         }
-        std::cout << "-----------" << std::endl;
+        std::cout << "" << std::endl;
        
     }
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(1);
-	model->getSimulation()->setReplicationLength(60, Util::TimeUnit::second);
+	model->getSimulation()->setReplicationLength(5, Util::TimeUnit::second);
 	//model->getSimulation()->setTerminatingCondition("count(Dispose_1.CountNumberIn)>30");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM1.gen");
