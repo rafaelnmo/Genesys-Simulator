@@ -22,7 +22,7 @@
 //#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
 //#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
 #include "terminal/examples/smarts/Smart_EFSM1.h"
-//#include "terminal/examples/smarts/Smart_EFSM2.h"
+#include "terminal/examples/smarts/Smart_EFSM2.h"
 
 #include "terminal/examples/smarts/Smart_Dummy.h"
 
@@ -41,8 +41,8 @@ template <> struct TraitsApp<GenesysApplication_if> {
     //typedef Smart_ExtendedFSM Application;
     //typedef Smart_FiniteStateMachine Application;
     //typedef Smart_Buffer Application;
-    typedef Smart_EFSM1 Application;
-    //typedef Smart_EFSM2 Application;
+    //typedef Smart_EFSM1 Application;
+    typedef Smart_EFSM2 Application;
 
     //typedef Smart_Dummy Application;
 

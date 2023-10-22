@@ -323,7 +323,9 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
 }
 
 void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
+    std::cout << "ENTREI insertTransition\n";
     auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions); 
+    //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
 }
 
@@ -333,7 +335,11 @@ void ExtendedFSM::insertVariable(std::string name, int initialValue) {
 
 std::string ExtendedFSM::show(){}
 
-bool ExtendedFSM::_check(std::string* errorMessage){}
+bool ExtendedFSM::_check(std::string* errorMessage){
+	bool resultAll = true;
+	*errorMessage += "";
+	return resultAll;
+}
 
 void ExtendedFSM::_initBetweenReplications(){}
 

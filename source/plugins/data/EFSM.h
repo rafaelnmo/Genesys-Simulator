@@ -181,6 +181,10 @@ public:
         return _states;
     }
 
+	std::vector<FSM_Transition>* getTransitions() {
+        return _transitions;
+    }
+
 
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);

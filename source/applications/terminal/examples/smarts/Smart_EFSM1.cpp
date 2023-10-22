@@ -8,10 +8,9 @@
 // Model Components
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
-//#include "../../../../plugins/components/ExtendedFinishStateMachine.h"
 #include "../../../../plugins/data/EFSM.h"
-#include "../../../TraitsApp.h"
 #include "../../../../plugins/components/FiniteStateMachine.h"
+#include "../../../TraitsApp.h"
 
 
 Smart_EFSM1::Smart_EFSM1() {
@@ -62,6 +61,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     // creating transitions of each state of efsm
     fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","saida = c + 1", "c = c + 1");
+    std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
     fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","saida = c - 1", "c = c - 1");
 	
 	// run the simulation

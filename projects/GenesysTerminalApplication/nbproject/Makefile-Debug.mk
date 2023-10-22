@@ -93,6 +93,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/296208d5/Smart_Delay.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o \
+	${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_Failures.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_FiniteStateMachine.o \
 	${OBJECTDIR}/_ext/296208d5/Smart_HoldSearchRemove.o \
@@ -500,6 +501,10 @@ ${OBJECTDIR}/_ext/296208d5/Smart_Dummy.o: ../../source/applications/terminal/exa
 ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o: ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
 	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp
+
+${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o: ../../source/applications/terminal/examples/smarts/Smart_EFSM2.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o ../../source/applications/terminal/examples/smarts/Smart_EFSM2.cpp
 
 ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o: ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
@@ -1781,6 +1786,18 @@ ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smar
 	    $(COMPILE.cc) -g -I../../source/gtest -std=c++14 -Dmain=__nomain -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o ../../source/applications/terminal/examples/smarts/Smart_EFSM1.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1.o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM1_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/296208d5/Smart_EFSM2_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o ../../source/applications/terminal/examples/smarts/Smart_EFSM2.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/296208d5
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    $(COMPILE.cc) -g -I../../source/gtest -std=c++14 -Dmain=__nomain -o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2_nomain.o ../../source/applications/terminal/examples/smarts/Smart_EFSM2.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2.o ${OBJECTDIR}/_ext/296208d5/Smart_EFSM2_nomain.o;\
 	fi
 
 ${OBJECTDIR}/_ext/296208d5/Smart_Buffer_nomain.o: ${OBJECTDIR}/_ext/296208d5/Smart_Buffer.o ../../source/applications/terminal/examples/smarts/Smart_Buffer.cpp
