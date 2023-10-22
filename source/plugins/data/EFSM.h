@@ -160,7 +160,7 @@ public: // static
 public:
 	virtual std::string show();
     //std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);
-    bool fire(std::map<std::string,int> inputs);
+    bool fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions);
     bool fire();
 
     void postfire(std::string destinationState, std::string setActions);
