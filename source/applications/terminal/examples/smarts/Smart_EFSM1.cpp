@@ -75,11 +75,11 @@ int Smart_EFSM1::main(int argc, char** argv) {
     for (int i = 1; i <= 10; i++){
         isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
         std::cout << "isfinalState: " << isfinalState <<std::endl;
-        std::cout << "outputActions: " << std::endl;
+        std::cout << "OUTPUT_ACTIONS " << std::endl;
         for(auto outputAction: outputActions){
             std::cout << outputAction.first << " = " << outputAction.second << std::endl;
-
         }
+        std::cout << "-----------" << std::endl;
        
     }
 
