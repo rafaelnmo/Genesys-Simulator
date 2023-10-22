@@ -59,7 +59,6 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
 }
 
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
-    auto outputActions = std::map<std::string,int>{};
     for (auto state: *_states) {
         if (state.getName() == _currentStateName and state.isFinalState()){
             return true;
@@ -305,7 +304,6 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
 }
 
 void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
-    std::cout << "ENTREI insertTransition\n";
     auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions); 
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);

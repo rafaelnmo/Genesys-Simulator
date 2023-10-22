@@ -1,4 +1,5 @@
 #include "Smart_EFSM1.h"
+#include <map>
 
 // you have to included need libs
 
@@ -32,7 +33,6 @@ int Smart_EFSM1::main(int argc, char** argv) {
     Create* create1 = plugins->newInstance<Create>(model);
 	
 	// initialize model parts
-    //ExtendedFSM* ExtendedExample = plugins->newInstance<ExtendedFSM>(model, "ExtendedFinishMachine_1");
     FiniteStateMachine* fsm = plugins->newInstance<FiniteStateMachine>(model, "ExtendedFinishMachine_1");
 	fsm->setName("fsm_1");
     std::cout << fsm->getName() << "\n";
@@ -61,22 +61,25 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     // creating transitions of each state of efsm
     fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
+    //fsm->_internalDataDefinition->insertTransition("", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
     std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
     fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","carsAmount = c - 1", "c = c - 1");
 	
 	// run the simulation
-    //auto isFinalState = fsm->_internalDataDefinition->fire();
-    //std::cout <<  "isFinalState: " << isFinalState << std::endl;
-    //isFinalState = fsm->_internalDataDefinition->fire();
-    //isFinalState = fsm->_internalDataDefinition->fire();
     auto outputActions = std::map<std::string,int>{};
     auto input = std::map<std::string,int>{};
+    input.insert(std::pair<std::string,int>("up", 1));
+    input.insert(std::pair<std::string,int>("down", 0));
 
-    //std::pair<bool,std::map<std::string,int>*> efsmOutput;
     bool isfinalState;
-    for (int i = 1; 1 <= 10; i++){
+    for (int i = 1; i <= 10; i++){
         isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
-        std::cout << "efsmOut: " << isfinalState <<std::endl;
+        std::cout << "isfinalState: " << isfinalState <<std::endl;
+        //std::cout << "outputActions: " << std::endl;
+        for(auto outputAction: outputActions){
+            std::cout << outputAction.first << " = " << outputAction.second << std::endl;
+
+        }
        
     }
 
