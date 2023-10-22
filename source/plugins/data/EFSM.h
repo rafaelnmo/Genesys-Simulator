@@ -166,7 +166,7 @@ public:
     void postfire(std::string destinationState, std::string setActions);
     bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
 	bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
-	std::map<std::string,int> getOutputValues(std::string actions);
+    void getOutputValues(std::string actions, std::map<std::string,int>& outputValues);
     void updateVariables(std::string actions);
 	int getValue(std::string value_str, std::map<std::string,int> inputs);
 	std::string getName(){

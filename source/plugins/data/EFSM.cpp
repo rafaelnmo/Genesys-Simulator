@@ -73,7 +73,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
             if (parseAndCheck(transition.getGuardExpression(), inputs)) {
-                outputActions = getOutputValues(transition.getOutputActions());
+                getOutputValues(transition.getOutputActions(), outputActions);
                 setActions = transition.getSetActions();
                 destinationState = transition.getDestinationState();
                 transitionFound = true;
@@ -205,8 +205,7 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
     return true;
 }
 
-std::map<std::string,int> ExtendedFSM::getOutputValues(std::string actions) {
-    auto outputValues = std::map<std::string,int>{};
+void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>& outputValues) {
     auto actions_ss = std::stringstream();
     actions_ss << actions;
     auto action = std::string();
@@ -248,8 +247,6 @@ std::map<std::string,int> ExtendedFSM::getOutputValues(std::string actions) {
             outputValues.insert(std::pair<std::string,int>(e.what(), -1));
         }
     }
-
-    return outputValues;
 }
 
 void ExtendedFSM::updateVariables(std::string actions){
