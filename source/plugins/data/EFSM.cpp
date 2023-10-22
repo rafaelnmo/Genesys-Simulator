@@ -72,6 +72,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     for (auto& transition: *_transitions) {
         if (transition.getOriginState() == _currentStateName){
             if (parseAndCheck(transition.getGuardExpression(), inputs)) {
+                std::cout << "getOutputActions: " <<transition.getOutputActions()<<std::endl;
                 getOutputValues(transition.getOutputActions(), outputActions);
                 setActions = transition.getSetActions();
                 destinationState = transition.getDestinationState();
@@ -110,6 +111,10 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
     const auto strRange = strEnd - strBegin + 1;
 
     return str.substr(strBegin, strRange);
+}
+
+void print(std::string name, std::string value){
+    std::cout << name <<": " << value << std::endl;
 }
 
 int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs = std::map<std::string,int>{}) {
@@ -217,6 +222,7 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
 
         std::getline(action_ss, outputNAME, '=');
         std::getline(action_ss, newValue_str, ';');
+        newValue_str = trim(newValue_str);
 
         auto newValue_ss = std::stringstream();
         newValue_ss << newValue_str;
@@ -225,7 +231,6 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
         std::getline(newValue_ss, value_str, ' ');
         try {
             auto newValue = getValue(value_str);
-
             while(std::getline(newValue_ss, operatorAction, ' ')){
                 std::getline(newValue_ss, value_str, ' ');
                 auto value = getValue(value_str);
@@ -264,6 +269,8 @@ void ExtendedFSM::updateVariables(std::string actions){
 
         std::getline(action_ss, variableNAME, '=');
         std::getline(action_ss, newValue_str, ';');
+        newValue_str = trim(newValue_str);
+
 
         auto newValue_ss = std::stringstream();
         newValue_ss << newValue_str;
@@ -311,6 +318,7 @@ void ExtendedFSM::insertTransition(std::string guardExpression, std::string orig
 
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     auto variable = FSM_Variable(name, initialValue);
+    _variables->push_back(variable);
 }
 
 std::string ExtendedFSM::show(){}
