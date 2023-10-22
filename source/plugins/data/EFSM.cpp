@@ -73,7 +73,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
         if (transition.getOriginState() == _currentStateName){
             if (parseAndCheck(transition.getGuardExpression(), inputs)) {
                 std::cout << "getOutputActions: " <<transition.getOutputActions()<<std::endl;
-                getOutputValues(transition.getOutputActions(), outputActions);
+                getOutputValues(transition.getOutputActions(), inputs, outputActions);
                 setActions = transition.getSetActions();
                 destinationState = transition.getDestinationState();
                 transitionFound = true;
@@ -84,7 +84,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     
 
     if (transitionFound) {
-        postfire(destinationState, setActions);
+        postfire(destinationState, setActions, inputs);
     }
 
     return false;
@@ -97,8 +97,8 @@ bool ExtendedFSM::fire() {
     return fire(inputs, outputActions);
 }
 
-void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
-    updateVariables(setActions);
+void ExtendedFSM::postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs){
+    updateVariables(setActions, inputs);
     _currentStateName = destinationState;
 }
 
@@ -117,7 +117,7 @@ void print(std::string name, std::string value){
     std::cout << name <<": " << value << std::endl;
 }
 
-int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs = std::map<std::string,int>{}) {
+int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs) {
     try {
         return std::stoi(value_str);
     }
@@ -209,7 +209,7 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
     return true;
 }
 
-void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>& outputValues) {
+void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues) {
     auto actions_ss = std::stringstream();
     actions_ss << actions;
     auto action = std::string();
@@ -230,10 +230,10 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
         auto operatorAction = std::string();
         std::getline(newValue_ss, value_str, ' ');
         try {
-            auto newValue = getValue(value_str);
+            auto newValue = getValue(value_str, inputs);
             while(std::getline(newValue_ss, operatorAction, ' ')){
                 std::getline(newValue_ss, value_str, ' ');
-                auto value = getValue(value_str);
+                auto value = getValue(value_str, inputs);
                 if (operatorAction == "+") {
                     newValue += value;
                 } else if (operatorAction == "-") {
@@ -253,7 +253,7 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
     }
 }
 
-void ExtendedFSM::updateVariables(std::string actions){
+void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>& inputs){
     if (actions == "") {
         return;
     }
@@ -277,11 +277,11 @@ void ExtendedFSM::updateVariables(std::string actions){
         auto value_str = std::string();
         auto operatorAction = std::string();
         std::getline(newValue_ss, value_str, ' ');
-        auto newValue = getValue(value_str);
+        auto newValue = getValue(value_str, inputs);
 
         while(std::getline(newValue_ss, operatorAction, ' ')){
             std::getline(newValue_ss, value_str, ' ');
-            auto value = getValue(value_str);
+            auto value = getValue(value_str, inputs);
             if (operatorAction == "+") {
                 newValue += value;
             } else if (operatorAction == "-") {

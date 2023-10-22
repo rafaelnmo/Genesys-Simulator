@@ -163,11 +163,11 @@ public:
     bool fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions);
     bool fire();
 
-    void postfire(std::string destinationState, std::string setActions);
+    void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
     bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
 	bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
-    void getOutputValues(std::string actions, std::map<std::string,int>& outputValues);
-    void updateVariables(std::string actions);
+    void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
+    void updateVariables(std::string actions, std::map<std::string,int>& inputs);
 	int getValue(std::string value_str, std::map<std::string,int> inputs);
 	std::string getName(){
 		return _someString;
