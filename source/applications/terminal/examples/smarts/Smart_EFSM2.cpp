@@ -62,26 +62,41 @@ int Smart_EFSM2::main(int argc, char** argv) {
     fsm->_internalDataDefinition->insertState("Pending", false, false);
     std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(3).getName() << "\n";
 
+    fsm->_internalDataDefinition->insertVariable("count", 0);
+    //fsm->_internalDataDefinition->insertVariable("M", 100);
 
     // creating transitions of each state of efsm
-    fsm->_internalDataDefinition->insertTransition("count >= 60", "Red", "Green","sigG", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("pedestrian & count < 60", "Green", "Pending", nullptr, "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY", "count = 0");
-    fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("count >= 60", "Red", "Green","sigG = 1", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("pedestrian & count < 60", "Green", "Pending", "", "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY = 1", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR = 1", "count = 0");
     fsm->_internalDataDefinition->insertTransition("pedestrian & count >= 60", "Green", "Yellow", "sigY", "count = 0");
-    fsm->_internalDataDefinition->insertTransition(nullptr, "Red", "Red", nullptr, "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", nullptr, "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition(nullptr, "Pending", "Pending", nullptr, "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition(nullptr, "Yellow", "Yellow", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count < 60", "Red", "Red", "", "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", "", "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count < 60", "Pending", "Pending", "", "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count < 5", "Yellow", "Yellow", "", "count = count + 1");
 	
 	// run the simulation
-    //auto saida = fsm->_internalDataDefinition->fire();
-    //auto saida = fsm->_internalDataDefinition->fire();
-    //auto saida = fsm->_internalDataDefinition->fire();
-    //sim->start();
+    auto outputActions = std::map<std::string,int>{};
+    auto input = std::map<std::string,int>{};
+    input.insert(std::pair<std::string,int>("pedestrian", 1));
+    //input.insert(std::pair<std::string,int>("pedestrian", 0));
+
+    bool isfinalState;
+    for (int i = 1; i <= 240; i++){
+        outputActions.clear();
+        isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
+        std::cout << "currentState: " << fsm->_internalDataDefinition->getCurrentState() <<std::endl;
+        for(auto outputAction: outputActions){
+            std::cout << outputAction.first << " = " << outputAction.second << std::endl;
+        }
+    }
+
+    std::cout << "" << std::endl;
+
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(1);
-	model->getSimulation()->setReplicationLength(60, Util::TimeUnit::second);
+	model->getSimulation()->setReplicationLength(3, Util::TimeUnit::second);
 	//model->getSimulation()->setTerminatingCondition("count(Dispose_1.CountNumberIn)>30");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM2.gen");

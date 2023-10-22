@@ -185,6 +185,10 @@ public:
         return _transitions;
     }
 
+	std::string getCurrentState(){
+		return _currentStateName;
+	}
+
 
 protected: // must be overriden 
 	virtual bool _loadInstance(PersistenceRecord *fields);
