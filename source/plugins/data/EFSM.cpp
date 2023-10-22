@@ -1,15 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/cppFiles/class.cc to edit this template
- */
-
-/* 
- * File:   ExFiStatMac.cpp
- * Author: rlcancian
- * 
- * Created on 7 de agosto de 2022, 12:14
- */
-
 #include "EFSM.h"
 #include <vector>
 #include <string>
@@ -70,12 +58,10 @@ bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
     return res;
 }
 
-//std::pair<bool,std::map<std::string,int>> ExtendedFSM::fire(std::map<std::string,int> inputs) {
-bool ExtendedFSM::fire(std::map<std::string,int> inputs) {
+bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     auto outputActions = std::map<std::string,int>{};
     for (auto state: *_states) {
         if (state.getName() == _currentStateName and state.isFinalState()){
-            //return std::pair<bool,std::map<std::string,int>>(true, outputActions);
             return true;
         }
     }
@@ -101,15 +87,14 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs) {
         postfire(destinationState, setActions);
     }
 
-    //return std::pair<bool,std::map<std::string,int>>(false, outputActions);
     return false;
-
 }
 
 bool ExtendedFSM::fire() {
     auto inputs = std::map<std::string,int>{};
+    auto outputActions = std::map<std::string,int>{};
 
-    return fire(inputs);
+    return fire(inputs, outputActions);
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions){
