@@ -61,7 +61,6 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     // creating transitions of each state of efsm
     fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
-    //fsm->_internalDataDefinition->insertTransition("", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
     std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
     fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","carsAmount = c - 1", "c = c - 1");
 	
@@ -83,6 +82,19 @@ int Smart_EFSM1::main(int argc, char** argv) {
         std::cout << "" << std::endl;
        
     }
+
+    input.clear();
+    input.insert(std::pair<std::string,int>("up", 0));
+    input.insert(std::pair<std::string,int>("down", 1));
+
+    outputActions.clear();
+    isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
+    std::cout << "isfinalState: " << isfinalState <<std::endl;
+    std::cout << "OUTPUT_ACTIONS " << std::endl;
+    for(auto outputAction: outputActions){
+        std::cout << outputAction.first << " = " << outputAction.second << std::endl;
+    }
+    std::cout << "" << std::endl;
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(1);
