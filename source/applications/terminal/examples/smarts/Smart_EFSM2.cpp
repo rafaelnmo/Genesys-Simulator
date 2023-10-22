@@ -65,14 +65,14 @@ int Smart_EFSM2::main(int argc, char** argv) {
 
     // creating transitions of each state of efsm
     fsm->_internalDataDefinition->insertTransition("count >= 60", "Red", "Green","sigG", "count = count + 1");
-    //fsm->_internalDataDefinition->insertTransition("pedestrian & count < 60", "Green", "Pending", nullptr, "count = count + 1");
-    //fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY", "count = 0");
-    //fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR", "count = 0");
-    //fsm->_internalDataDefinition->insertTransition("pedestrian & count >= 60", "Green", "Yellow", "sigY", "count = 0");
-    //fsm->_internalDataDefinition->insertTransition(nullptr, "Red", "Red", nullptr, "count = count + 1");
-    //fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", nullptr, "count = count + 1");
-    //fsm->_internalDataDefinition->insertTransition(nullptr, "Pending", "Pending", nullptr, "count = count + 1");
-    //fsm->_internalDataDefinition->insertTransition(nullptr, "Yellow", "Yellow", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("pedestrian & count < 60", "Green", "Pending", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("pedestrian & count >= 60", "Green", "Yellow", "sigY", "count = 0");
+    fsm->_internalDataDefinition->insertTransition(nullptr, "Red", "Red", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition(nullptr, "Pending", "Pending", nullptr, "count = count + 1");
+    fsm->_internalDataDefinition->insertTransition(nullptr, "Yellow", "Yellow", nullptr, "count = count + 1");
 	
 	// run the simulation
     //auto saida = fsm->_internalDataDefinition->fire();

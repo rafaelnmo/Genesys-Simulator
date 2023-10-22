@@ -60,15 +60,25 @@ int Smart_EFSM1::main(int argc, char** argv) {
     fsm->_internalDataDefinition->insertVariable("M", 100);
 
     // creating transitions of each state of efsm
-    fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","saida = c + 1", "c = c + 1");
+    fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
     std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
-    fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","saida = c - 1", "c = c - 1");
+    fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","carsAmount = c - 1", "c = c - 1");
 	
 	// run the simulation
-    //bool saida = fsm->_internalDataDefinition->fire();
-    //auto saida = ExtendedExample->fire();
-    //auto saida = ExtendedExample->fire();
-    //sim->start();
+    //auto isFinalState = fsm->_internalDataDefinition->fire();
+    //std::cout <<  "isFinalState: " << isFinalState << std::endl;
+    //isFinalState = fsm->_internalDataDefinition->fire();
+    //isFinalState = fsm->_internalDataDefinition->fire();
+    auto outputActions = std::map<std::string,int>{};
+    auto input = std::map<std::string,int>{};
+
+    //std::pair<bool,std::map<std::string,int>*> efsmOutput;
+    bool isfinalState;
+    for (int i = 1; 1 <= 10; i++){
+        isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
+        std::cout << "efsmOut: " << isfinalState <<std::endl;
+       
+    }
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(1);
