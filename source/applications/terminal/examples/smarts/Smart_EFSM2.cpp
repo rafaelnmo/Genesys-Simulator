@@ -71,7 +71,7 @@ int Smart_EFSM2::main(int argc, char** argv) {
     fsm->_internalDataDefinition->insertTransition("count < 60 & pedestrian = 1", "Green", "Pending", "", "count = count + 1");
     fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY = 1", "count = 0");
     fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR = 1", "count = 0");
-    fsm->_internalDataDefinition->insertTransition("pedestrian = 1 & count >= 60", "Green", "Yellow", "sigY", "count = 0");
+    fsm->_internalDataDefinition->insertTransition("pedestrian = 0 & count >= 60", "Green", "Yellow", "sigY", "count = 0");
     fsm->_internalDataDefinition->insertTransition("count < 60", "Red", "Red", "", "count = count + 1");
     fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", "", "count = count + 1");
     fsm->_internalDataDefinition->insertTransition("count < 60", "Pending", "Pending", "", "count = count + 1");
