@@ -5,8 +5,7 @@
 #include <iostream>
 #include <map>
 #include <utility>
-//#include "Transition.h"
-//#include "State"
+
 
 #ifdef PLUGINCONNECT_DYNAMIC
 
@@ -14,49 +13,6 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 	return &ExtendedFSM::GetPluginInformation;
 }
 #endif
-
-void FSM_State::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
-	fields->saveField("name", _name, "");
-}
-
-bool FSM_State::_loadInstance(PersistenceRecord *fields) {
-    bool res = true;
-    try {
-        _name = fields->loadField("name", "");
-        //_isInitialState = fields->loadField("isInitialState", );
-	} catch (...) {
-		res = false;
-    }
-
-    return res;
-}
-
-void FSM_Transition::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
-    //fields->saveField("name", _name, "");
-}
-
-bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
-    bool res = true;
-    try {
-	} catch (...) {
-		res = false;
-    }
-}
-
-void FSM_Variable::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {
-	fields->saveField("name", _name, "");
-}
-
-bool FSM_Variable::_loadInstance(PersistenceRecord *fields) {
-    bool res = true;
-    try {
-        _name = fields->loadField("name", "");
-	} catch (...) {
-		res = false;
-    }
-
-    return res;
-}
 
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     for (auto state: *_states) {
