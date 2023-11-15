@@ -13,6 +13,7 @@ dispose.so
 dropoff.so
 dummy.so
 efsm.so
+fsm.so
 efsmData.so
 enter.so
 entitygroup.so

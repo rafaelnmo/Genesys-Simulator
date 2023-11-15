@@ -24,7 +24,7 @@
 #include "../../plugins/components/Create.h"
 #include "../../plugins/components/Decide.h"
 #include "../../plugins/components/Delay.h"
-#include "../../plugins/components/DiffEquations.h"
+//#include "../../plugins/components/DiffEquations.h"
 #include "../../plugins/components/Dispose.h"
 #include "../../plugins/components/DropOff.h"
 #include "../../plugins/components/DummyComponent.h"
@@ -55,7 +55,7 @@
 #include "../../plugins/components/Write.h"
 #include "../../plugins/components/LSODE.h"
 
-#include "../../plugins/components/ExtendedFinishStateMachine.h"
+//#include "../../plugins/components/ExtendedFinishStateMachine.h"
 
 
 
@@ -75,8 +75,8 @@
 #include "../../plugins/data/Variable.h"
 #include "../../plugins/data/EFSM.h"
 
-#include "../../plugins/data/State.h"
-#include "../../plugins/data/Transition.h"
+//#include "../../plugins/data/State.h"
+//#include "../../plugins/data/Transition.h"
 
 //#include "../../plugins/data/Expression.h"
 //#include "../../plugins/data/Conveyor.h"
@@ -120,8 +120,10 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &Assign::GetPluginInformation;
 	else if (fn == "buffer.so")
 		GetInfo = &Buffer::GetPluginInformation;
-	else if (fn == "efsm.so")
+	else if (fn == "fsm.so")
 		GetInfo = &FiniteStateMachine::GetPluginInformation;
+	else if (fn == "efsm.so")
+		GetInfo = &ExtendedFSM::GetPluginInformation;
 	else if (fn == "entitygroup.so")
 		GetInfo = &EntityGroup::GetPluginInformation;
 	else if (fn == "failure.so")
@@ -173,12 +175,10 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &Dispose::GetPluginInformation;
 	else if (fn == "dummy.so")
 		GetInfo = &DummyComponent::GetPluginInformation;
-	else if (fn == "diffequations.so")
-		GetInfo = &DiffEquations::GetPluginInformation;
+//	else if (fn == "diffequations.so")
+//		GetInfo = &DiffEquations::GetPluginInformation;
 	else if (fn == "dropoff.so")
 		GetInfo = &DropOff::GetPluginInformation;
-	else if (fn == "efsmData.so")
-        GetInfo = &ExtendedFinishStateMachine::GetPluginInformation;
 	else if (fn == "enter.so")
 		GetInfo = &Enter::GetPluginInformation;
 	else if (fn == "exit.so")
