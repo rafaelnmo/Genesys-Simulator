@@ -10,7 +10,12 @@
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
 #include "../../../../plugins/data/EFSM.h"
-#include "../../../../plugins/components/FiniteStateMachine.h"
+#include "../../../../plugins/components/FSM_State.h"
+#include "../../../../plugins/components/FSM_Transition.h"
+#include "../../../../plugins/components/FSM_Variable.h"
+
+
+//#include "../../../../plugins/components/FiniteStateMachine.h"
 #include "../../../TraitsApp.h"
 
 
@@ -31,18 +36,25 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	// create model
 	Model* model = genesys->getModels()->newModel();
     Create* create1 = plugins->newInstance<Create>(model);
+
+    ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
+    std::cout << efsm1->getName() << "\n";
+
 	
+    /*
 	// initialize model parts
     FiniteStateMachine* fsm = plugins->newInstance<FiniteStateMachine>(model, "ExtendedFinishMachine_1");
 	fsm->setName("fsm_1");
     std::cout << fsm->getName() << "\n";
 	std::cout << fsm->show() << "\n";
+    */
     
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
     std::cout << dispose1->getName();
     std::cout << dispose1->getId();
 
-	// connect model components to create a "workflow"
+	/*
+    // connect model components to create a "workflow"
 	create1->getConnections()->insert(fsm);
 	fsm->getConnections()->insert(dispose1);
 
@@ -95,6 +107,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
         std::cout << outputAction.first << " = " << outputAction.second << std::endl;
     }
     std::cout << "" << std::endl;
+    */
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(1);
