@@ -30,6 +30,9 @@
 #include "../../plugins/components/DummyComponent.h"
 #include "../../plugins/components/Enter.h"
 #include "../../plugins/components/Exit.h"
+#include "../../plugins/components/FSM_State.h"
+#include "../../plugins/components/FSM_Variable.h"
+#include "../../plugins/components/FSM_Transition.h"
 #include "../../plugins/components/FiniteStateMachine.h"
 #include "../../plugins/components/Leave.h"
 #include "../../plugins/components/Match.h"
@@ -183,6 +186,12 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &Enter::GetPluginInformation;
 	else if (fn == "exit.so")
 		GetInfo = &Exit::GetPluginInformation;
+	else if (fn == "fsm_state.so")
+		GetInfo = &FSM_State::GetPluginInformation;
+	else if (fn == "fsm_transition.so")
+		GetInfo = &FSM_Transition::GetPluginInformation;
+	else if (fn == "fsm_variable.so")
+		GetInfo = &FSM_Variable::GetPluginInformation;
 	else if (fn == "hold.so")
 		GetInfo = &Wait::GetPluginInformation;
 	else if (fn == "leave.so")
