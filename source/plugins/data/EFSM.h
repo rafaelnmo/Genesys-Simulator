@@ -17,9 +17,9 @@
 #include "../../kernel/simulator/PluginInformation.h"
 //#include "../../kernel/simulator/ModelDataManager.h"
 #include "../../kernel/util/List.h"
-#include "../components/Transition.h"
-#include "../components/State.h"
-#include "../components/Variable.h"
+#include "../components/FSM_Transition.h"
+#include "../components/FSM_State.h"
+#include "../components/FSM_Variable.h"
 #include <vector>
 #include <map>
 #include <string>

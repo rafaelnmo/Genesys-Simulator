@@ -263,22 +263,32 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
     if (isInitialState) {
         _currentStateName = name;
     }
-    auto state = FSM_State(name, isFinalState, isInitialState);
+    //auto state = FSM_State(name, isFinalState, isInitialState);
+    auto state = FSM_State(_parentModel, name);
+    state.setIsFinalState(isFinalState);
+    state.setIsInitialState(isInitialState);
    _states->push_back(state);
 }
 
 void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
-    auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions); 
+    //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);
+    //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);  
+    auto transition = FSM_Transition(_parentModel, "");
+
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
 }
 
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
-    auto variable = FSM_Variable(name, initialValue);
+    //auto variable = FSM_Variable(name, initialValue);
+    auto variable = FSM_Variable(_parentModel, name);
+    variable.setInitialValue(initialValue);
     _variables->push_back(variable);
 }
 
-std::string ExtendedFSM::show(){}
+std::string ExtendedFSM::show(){
+    return "ExtendedFSM";
+}
 
 bool ExtendedFSM::_check(std::string* errorMessage){
 	bool resultAll = true;
@@ -298,6 +308,8 @@ bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
 	} catch (...) {
 		res = false;
     }
+
+    return res;
 }
 
 PluginInformation* ExtendedFSM::GetPluginInformation() {
