@@ -10,6 +10,7 @@
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
 #include "../../../../plugins/data/EFSM.h"
+#include "../../../../plugins/components/FSM_ModalModel.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
 #include "../../../../plugins/components/FSM_Variable.h"
@@ -32,12 +33,13 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
 	// create model
 	Model* model = genesys->getModels()->newModel();
     Create* create1 = plugins->newInstance<Create>(model);
+    //FSM_ModalModel* modalModel = plugins->newInstance<FSM_ModalModel>(model);
 
-    ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
+    EFSM* efsm1 = plugins->newInstance<EFSM>(model, "efsm_1");
     std::cout << efsm1->getName() << "\n";
 
 	

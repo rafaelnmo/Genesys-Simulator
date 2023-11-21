@@ -30,6 +30,7 @@
 #include "../../plugins/components/DummyComponent.h"
 #include "../../plugins/components/Enter.h"
 #include "../../plugins/components/Exit.h"
+#include "../../plugins/components/FSM_ModalModel.h"
 #include "../../plugins/components/FSM_State.h"
 #include "../../plugins/components/FSM_Variable.h"
 #include "../../plugins/components/FSM_Transition.h"
@@ -126,7 +127,7 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 	else if (fn == "fsm.so")
 		GetInfo = &FiniteStateMachine::GetPluginInformation;
 	else if (fn == "efsm.so")
-		GetInfo = &ExtendedFSM::GetPluginInformation;
+		GetInfo = &EFSM::GetPluginInformation;
 	else if (fn == "entitygroup.so")
 		GetInfo = &EntityGroup::GetPluginInformation;
 	else if (fn == "failure.so")
@@ -187,6 +188,8 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 	else if (fn == "exit.so")
 		GetInfo = &Exit::GetPluginInformation;
 	else if (fn == "fsm_state.so")
+		GetInfo = &FSM_ModalModel::GetPluginInformation;
+	else if (fn == "fsm_transition.so")
 		GetInfo = &FSM_State::GetPluginInformation;
 	else if (fn == "fsm_transition.so")
 		GetInfo = &FSM_Transition::GetPluginInformation;

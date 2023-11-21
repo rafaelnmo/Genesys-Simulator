@@ -10,11 +10,11 @@
 #ifdef PLUGINCONNECT_DYNAMIC
 
 extern "C" StaticGetPluginInformation GetPluginInformation() {
-	return &ExtendedFSM::GetPluginInformation;
+	return &EFSM::GetPluginInformation;
 }
 #endif
 
-bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
+bool EFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     for (auto state: *_states) {
         if (state.getName() == _currentStateName and state.isFinalState()){
             return true;
@@ -45,14 +45,14 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     return false;
 }
 
-bool ExtendedFSM::fire() {
+bool EFSM::fire() {
     auto inputs = std::map<std::string,int>{};
     auto outputActions = std::map<std::string,int>{};
 
     return fire(inputs, outputActions);
 }
 
-void ExtendedFSM::postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs){
+void EFSM::postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs){
     updateVariables(setActions, inputs);
     _currentStateName = destinationState;
 }
@@ -72,7 +72,7 @@ void print(std::string name, std::string value){
     std::cout << name <<": " << value << std::endl;
 }
 
-int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs) {
+int EFSM::getValue(std::string value_str, std::map<std::string,int> inputs) {
     try {
         return std::stoi(value_str);
     }
@@ -92,7 +92,7 @@ int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> input
     }
 }
 
-bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int>& inputs){
+bool EFSM::parseAndCheck(std::string expression, std::map<std::string,int>& inputs){
     if (expression == "") {
         return true;
     }
@@ -112,7 +112,7 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
     return false;
 }
 
-bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>& inputs) {
+bool EFSM::check(std::stringstream& actions_ss, std::map<std::string,int>& inputs) {
     auto action = std::string();
     while(std::getline(actions_ss, action, '&')) {
         action = trim(action);
@@ -165,7 +165,7 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
     return true;
 }
 
-void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues) {
+void EFSM::getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues) {
     auto actions_ss = std::stringstream();
     actions_ss << actions;
     auto action = std::string();
@@ -209,7 +209,7 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
     }
 }
 
-void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>& inputs){
+void EFSM::updateVariables(std::string actions, std::map<std::string,int>& inputs){
     if (actions == "") {
         return;
     }
@@ -259,7 +259,7 @@ void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>
     }
 }
 
-void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
+void EFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     if (isInitialState) {
         _currentStateName = name;
     }
@@ -270,7 +270,7 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
    _states->push_back(state);
 }
 
-void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
+void EFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);  
     auto transition = FSM_Transition(_parentModel, "");
@@ -279,30 +279,30 @@ void ExtendedFSM::insertTransition(std::string guardExpression, std::string orig
     _transitions->push_back(transition);
 }
 
-void ExtendedFSM::insertVariable(std::string name, int initialValue) {
+void EFSM::insertVariable(std::string name, int initialValue) {
     //auto variable = FSM_Variable(name, initialValue);
     auto variable = FSM_Variable(_parentModel, name);
     variable.setInitialValue(initialValue);
     _variables->push_back(variable);
 }
 
-std::string ExtendedFSM::show(){
-    return "ExtendedFSM";
+std::string EFSM::show(){
+    return "EFSM";
 }
 
-bool ExtendedFSM::_check(std::string* errorMessage){
+bool EFSM::_check(std::string* errorMessage){
 	bool resultAll = true;
 	*errorMessage += "";
 	return resultAll;
 }
 
-void ExtendedFSM::_initBetweenReplications(){}
+void EFSM::_initBetweenReplications(){}
 
-void ExtendedFSM::_createInternalAndAttachedData(){}
+void EFSM::_createInternalAndAttachedData(){}
 
-void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {}
+void EFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {}
 
-bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
+bool EFSM::_loadInstance(PersistenceRecord *fields) {
     bool res = true;
     try {
 	} catch (...) {
@@ -312,17 +312,17 @@ bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
     return res;
 }
 
-PluginInformation* ExtendedFSM::GetPluginInformation() {
-	PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
+PluginInformation* EFSM::GetPluginInformation() {
+	PluginInformation* info = new PluginInformation(Util::TypeOf<EFSM>(), &EFSM::LoadInstance, &EFSM::NewInstance);
 	return info;
 }
 
-ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
-    return new ExtendedFSM(model, name);
+ModelDataDefinition* EFSM::NewInstance(Model* model, std::string name) {
+    return new EFSM(model, name);
 }
 
-ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *fields) {
-	ExtendedFSM* newElement = new ExtendedFSM(model);
+ModelDataDefinition* EFSM::LoadInstance(Model* model, PersistenceRecord *fields) {
+	EFSM* newElement = new EFSM(model);
 	try {
 		newElement->_loadInstance(fields);
 	} catch (const std::exception& e) {
@@ -331,6 +331,6 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
 	return newElement;
 }
 
-ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {
+EFSM::EFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<EFSM>(), name) {
 	//_elems = elems;
 }

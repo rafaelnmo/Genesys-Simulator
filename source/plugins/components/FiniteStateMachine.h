@@ -29,7 +29,7 @@ public: // static
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
 	static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
-	ExtendedFSM* getInternalDataDefinition(){
+	EFSM* getInternalDataDefinition(){
 		return _internalDataDefinition;
 	}
 	virtual void _createInternalAndAttachedData();
@@ -45,7 +45,7 @@ protected: // could be overriden .
 private: // methods
 
 public:
-	ExtendedFSM* _internalDataDefinition = nullptr;
+	EFSM* _internalDataDefinition = nullptr;
 	
 
 private: // attributes 1:1
@@ -56,7 +56,7 @@ private: // attributes 1:1
 	} DEFAULT;
 	std::string _someString = DEFAULT.someString;
 	unsigned int _someUint = DEFAULT.someUint;
-	//ExtendedFSM* _internalDataDefinition = nullptr;
+	//EFSM* _internalDataDefinition = nullptr;
 private: // attributes 1:n
 };
 

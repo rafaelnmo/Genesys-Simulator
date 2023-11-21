@@ -24,10 +24,10 @@
 #include <map>
 #include <string>
 
-class ExtendedFSM : public ModelDataDefinition {
+class EFSM : public ModelDataDefinition {
 public:
-	ExtendedFSM(Model* model, std::string name = "");
-	virtual ~ExtendedFSM() = default;
+	EFSM(Model* model, std::string name = "");
+	virtual ~EFSM() = default;
 public: // static
 	static ModelDataDefinition* LoadInstance(Model* model, PersistenceRecord *fields);
 	static PluginInformation* GetPluginInformation();
