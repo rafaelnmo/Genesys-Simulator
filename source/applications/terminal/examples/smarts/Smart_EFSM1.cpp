@@ -17,6 +17,7 @@
 #include "../../../../plugins/components/FSM_Variable.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_ModalModel.h"
+
 #include "../../../../plugins/data/EFSM.h"
 
 
@@ -44,16 +45,16 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	Model* model = genesys->getModels()->newModel();
     Create* create1 = plugins->newInstance<Create>(model);
     create1->setDescription("Enter Garage");
-    create->setEntityType(entityType);
-    create->setTimeBetweenCreationsExpression("EXPO(5)")
-    create->setTimeUnit(Util::TimeUnit::minute);
+    create1->setEntityType(entityType);
+    create1->setTimeBetweenCreationsExpression("EXPO(5)")
+    create1->setTimeUnit(Util::TimeUnit::minute);
 
     Assign* assign1 = new Assign(model);
-    assign->setDescription("Verify if has car");
+    assign1->setDescription("Verify if has car");
     Assignment* assigment1 = new Assignment("hasCar", "1");
-    assign->getAssignments()->insert(assigment1);
+    assign1->getAssignments()->insert(assigment1);
     new Attribute(model, "hasCar")
-    create->getConnections()->insert(assign1);
+    create1->getConnections()->insert(assign1);
 
     EFSM* efsm1 = plugins->newInstance<EFSM>(model, "efsm_1");
     //std::cout << "NAME: " << efsm1->getName() << "\n";
