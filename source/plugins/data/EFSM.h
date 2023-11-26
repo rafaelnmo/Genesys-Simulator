@@ -24,10 +24,10 @@
 #include <map>
 #include <string>
 
-class ExtendedFSM : public ModelDataDefinition {
+class EFSM : public ModelDataDefinition {
 public: /// constructors
-	ExtendedFSM(Model* model, std::string name = "");
-	virtual ~ExtendedFSM() = default;
+	EFSM(Model* model, std::string name = "");
+	virtual ~EFSM() = default;
 
 public: /// new public user methods for this component
     //std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);

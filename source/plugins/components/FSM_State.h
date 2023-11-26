@@ -2,6 +2,7 @@
 #define FSM_STATE_H
 
 #include "../../kernel/simulator/ModelComponent.h"
+#include "../data/EFSM.h"
 #include <string>
 
 class FSM_State : public ModelComponent {
@@ -44,7 +45,7 @@ public:
 		return _isInitialState;
 	}
 
-	void insertEFSM(ExtendedFSM* efsm){
+	void insertEFSM(EFSM* efsm){
 		_efsm = efsm;
 	}
 
@@ -70,7 +71,7 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _name;
-    ExtendedFSM* _efsm;
+    EFSM* _efsm;
 	bool _isInitialState = false;
 	bool _isFinalState = false;
 	// std::string _refinementName;

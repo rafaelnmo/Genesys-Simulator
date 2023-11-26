@@ -12,12 +12,13 @@
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Assign.h"
 #include "../../../../plugins/components/Dispose.h"
-#include "../../../../plugins/data/EFSM.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
 #include "../../../../plugins/components/FSM_Variable.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_ModalModel.h"
+#include "../../../../plugins/data/EFSM.h"
+
 
 
 
@@ -54,7 +55,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     new Attribute(model, "hasCar")
     create->getConnections()->insert(assign1);
 
-    ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
+    EFSM* efsm1 = plugins->newInstance<EFSM>(model, "efsm_1");
     //std::cout << "NAME: " << efsm1->getName() << "\n";
     //std::cout << "ID: " << efsm1->getId() << "\n";
     //std::cout << "SHOW: " << efsm1->show() << "\n";
@@ -101,7 +102,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     state1->getConnections()->insert(transition2);
     transition2->getConnections()->insert(state1);
 
-    FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_2");
+    FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_3");
     transition3->setGuardExpression("");
     //transition3->setOriginState("Counting");
     //transition3->setDestinationState("Counting");

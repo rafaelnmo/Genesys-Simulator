@@ -19,7 +19,7 @@ public:
     //bool _loadInstance(PersistenceRecord *fields);
     //void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
-	std::string setName(std::string name){
+	void setName(std::string name){
 		_name = name;
 	}
 
@@ -27,7 +27,7 @@ public:
 		return _name;
 	}
 
-	void insertEFSM(ExtendedFSM* efsm){
+	void insertEFSM(EFSM* efsm){
 		_efsm = efsm;
 	}
 
@@ -49,7 +49,7 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _name;
-    ExtendedFSM* _efsm;
+    EFSM* _efsm;
 };
 
 #endif /* FSM_MODALMODEL_H */
