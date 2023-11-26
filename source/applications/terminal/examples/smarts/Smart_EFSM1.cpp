@@ -69,7 +69,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     //std::cout << "TEST" << "\n";
     //std::cout << "NAME: " << state1->getName() << "\n";
 
-    /*
+/*
     FSM_Variable* variable1 = plugins->newInstance<FSM_Variable>(model, "c");
     variable1->setInitialValue(0);
     efsm1->insertVariable(variable1);

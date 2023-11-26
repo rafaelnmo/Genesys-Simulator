@@ -25,6 +25,7 @@
 #include "terminal/examples/smarts/Smart_EFSM2.h"
 
 #include "terminal/examples/smarts/Smart_Dummy.h"
+#include "terminal/examples/smarts/Smart_Record.h"
 
 template <typename T>
 struct TraitsApp {
@@ -42,6 +43,7 @@ template <> struct TraitsApp<GenesysApplication_if> {
     //typedef Smart_FiniteStateMachine Application;
     //typedef Smart_Buffer Application;
     typedef Smart_EFSM1 Application;
+	//typedef Smart_Record Application;
     //typedef Smart_EFSM2 Application;
 
     //typedef Smart_Dummy Application;

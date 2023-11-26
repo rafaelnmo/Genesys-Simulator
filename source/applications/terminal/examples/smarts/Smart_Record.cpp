@@ -75,7 +75,7 @@ int Smart_Record::main(int argc, char** argv) {
     ModelSimulation* simulation = model->getSimulation();
     simulation->setReplicationLength(10);
     simulation->setReplicationLengthTimeUnit(Util::TimeUnit::minute);
-    simulation->setNumberOfReplications(300);
+    simulation->setNumberOfReplications(2);
     simulation->setWarmUpPeriod(0.05);
     simulation->setWarmUpPeriodTimeUnit(Util::TimeUnit::minute);
     model->save("./models/Smart_Record.gen");
