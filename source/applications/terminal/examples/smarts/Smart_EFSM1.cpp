@@ -38,9 +38,49 @@ int Smart_EFSM1::main(int argc, char** argv) {
     Create* create1 = plugins->newInstance<Create>(model);
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
-    std::cout << efsm1->getName() << "\n";
+    //std::cout << "NAME: " << efsm1->getName() << "\n";
+    //std::cout << "ID: " << efsm1->getId() << "\n";
+    //std::cout << "SHOW: " << efsm1->show() << "\n";
+    //std::cout << "STATE: " << efsm1->get() << "\n";
 
-	
+
+
+    FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
+    //state1->setIsFinalState(false);
+    //state1->setIsInitialState(true);
+    //efsm1->insertState(state1);
+    //std::cout << "TEST" << "\n";
+    //std::cout << "NAME: " << state1->getName() << "\n";
+
+
+    FSM_Variable* variable1 = plugins->newInstance<FSM_Variable>(model, "c");
+    variable1->setInitialValue(0);
+    efsm1->insertVariable(variable1);
+    //std::cout << "NAME: " << variable1->getName() << "\n";
+
+    FSM_Variable* variable2 = plugins->newInstance<FSM_Variable>(model, "M");
+    variable2->setInitialValue(100);
+    efsm1->insertVariable(variable2);
+    std::cout << "EFSM VARIABLE VECTOR: " << efsm1->getVariables()->front()->getName() << "\n";
+
+
+    FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
+    transition1->setGuardExpression("up = 1 & down = 0 & c < M");
+    transition1->setOriginState("Counting");
+    transition1->setDestinationState("Counting");
+    transition1->setOutputActions("carsAmount = c + 1");
+    transition1->setSetActions("c = c + 1");
+    efsm1->insertTransition(transition1);
+
+    FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
+    transition2->setGuardExpression("down = 1 & up = 0 & c > 0");
+    transition2->setOriginState("Counting");
+    transition2->setDestinationState("Counting");
+    transition2->setOutputActions("carsAmount = c - 1");
+    transition2->setSetActions("c = c - 1");
+    efsm1->insertTransition(transition2);
+
+
     /*
 	// initialize model parts
     FiniteStateMachine* fsm = plugins->newInstance<FiniteStateMachine>(model, "ExtendedFinishMachine_1");
@@ -52,6 +92,20 @@ int Smart_EFSM1::main(int argc, char** argv) {
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
     std::cout << dispose1->getName();
     std::cout << dispose1->getId();
+
+    //create1->getConnections()->insert(efsm1);
+    create1->getConnections()->insert(state1);
+    create1->getConnections()->insert(variable1);
+    create1->getConnections()->insert(variable2);
+    create1->getConnections()->insert(transition1);
+    create1->getConnections()->insert(transition2);
+
+	//efsm1->getConnections()->insert(dispose1);
+
+    dispose1->setReportStatistics(true);
+	
+    std::cout << "\nplugins: " << plugins->front() << "\n";
+
 
 	/*
     // connect model components to create a "workflow"
