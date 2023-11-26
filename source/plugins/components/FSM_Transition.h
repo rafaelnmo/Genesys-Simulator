@@ -109,6 +109,28 @@ public:
 		_immediate = immediate;
 	}
 
+	bool isNondeterministic() {
+		return _nondeterministic;
+	}
+
+	bool isDefault() {
+		return _default;
+	}
+
+	bool isPreemptive() {
+		return _preemptive;
+	}
+
+	bool isHistory() {
+		return _history;
+	}
+
+	bool isImmediate() {
+		return _immediate;
+	}
+
+	bool isEnabled();
+
 public: // static
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);

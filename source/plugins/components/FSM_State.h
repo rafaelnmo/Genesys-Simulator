@@ -4,21 +4,13 @@
 #include "../../kernel/simulator/ModelComponent.h"
 #include <string>
 
+#include "FSM_Transition.h"
+
 class FSM_State : public ModelComponent {
 public:
 
-	/*FSM_State(std::string name, bool isFinalState = false, bool isInitialState = false):
-		_name(name),
-		// _refinementName(refinementName),
-		_isInitialState(isInitialState),
-		_isFinalState(isFinalState)
-	{}*/
 	FSM_State(Model* model, std::string name = "");
 	virtual ~FSM_State() = default;
-
-
-    //bool _loadInstance(PersistenceRecord *fields);
-    //void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
 	void setName(std::string name) {
 		_name = name;
@@ -37,20 +29,16 @@ public:
 	}
 
 	void setIsInitialState(bool isInitialState) {
-		_isInitialState = isInitialState;
-	}
-
-	bool isInitialState() const {
-		return _isInitialState;
+		_efsm->setCurrentState(this);
+		//_isInitialState = isInitialState;
 	}
 
 	// void setRefinementName(std::string refinementName) {
 	// 	_refinementName = refinementName;
 	// }
 
-	// std::string getRefinementName() const {
-	// 	return _refinementName;
-	// }
+	FSM_State* fire(bool mustBeImmediate = false);
+
 public: // static
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
@@ -66,8 +54,8 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _name;
-	bool _isInitialState = false;
 	bool _isFinalState = false;
-	// std::string _refinementName;
+	ExtendedFSM* _efsm;
+	ExtendedFSM* _refinementName;
 };
 #endif /* FSM_STATE_H */

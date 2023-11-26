@@ -50,6 +50,10 @@ public: /// new public user methods for this component
         return _currentState->getName();
     }
 
+	void setCurrentState(FSM_State* state) {
+		_currentState = state;
+	}
+
     void insertNewVariable(std::string variableName, double variableValue) {
         auto var = std::make_pair(variableName, variableValue);
         _variables->insert(var);
