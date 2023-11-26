@@ -38,7 +38,8 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/home/kuru/andre/ufsc/modsim/Genesys-Simulator/autoloadplugins.txt");
+
 	// create model
 	Model* model = genesys->getModels()->newModel();
 
@@ -53,10 +54,11 @@ int Smart_EFSM1::main(int argc, char** argv) {
     assign1->setDescription("Verify if has car");
     Assignment* assigment1 = new Assignment("hasCar", "1");
     assign1->getAssignments()->insert(assigment1);
-    new Attribute(model, "hasCar");
     create1->getConnections()->insert(assign1);
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
+    efsm1->insertNewVariable("carsParked", 10);
+    efsm1->insertNewVariable("maxCarsParked", 20);
     //std::cout << "NAME: " << efsm1->getName() << "\n";
     //std::cout << "ID: " << efsm1->getId() << "\n";
     //std::cout << "SHOW: " << efsm1->show() << "\n";
