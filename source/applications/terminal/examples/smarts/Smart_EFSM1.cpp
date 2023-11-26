@@ -13,6 +13,9 @@
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
 #include "../../../../plugins/components/FSM_Variable.h"
+#include "../../../../plugins/components/FSM_State.h"
+#include "../../../../plugins/components/FSM_ModalModel.h"
+
 
 
 //#include "../../../../plugins/components/FiniteStateMachine.h"
@@ -44,6 +47,8 @@ int Smart_EFSM1::main(int argc, char** argv) {
     //std::cout << "STATE: " << efsm1->get() << "\n";
 
 
+    FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
+    std::cout << "NAME: " << modalmodel1->getName() << "\n";
 
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
     //state1->setIsFinalState(false);
