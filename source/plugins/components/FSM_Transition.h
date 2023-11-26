@@ -81,6 +81,34 @@ public:
          _setActions = setActions;
     }
 
+/* Transition:
+  Nondeterministic: if not must be the only enabled transition.
+  Default: if given a value true, specifies that this transition is enabled if no other non-default transition is enabled and if its guard evaluates to true
+  Preemptive: if so the refinement of its source state is not fired.
+  History: If false reset the refinment of its destination state.
+  Immediate: if so must be taken as soon as its source state is entered, in the same iteration.
+  */
+
+	void setNondeterministic(bool nondeterministic) {
+		_nondeterministic = nondeterministic;
+	}
+
+	void setDefault(bool defaultTransition) {
+		_default = defaultTransition;
+	}
+
+	void setPreemptive(bool preemptive) {
+		_preemptive = preemptive;
+	}
+
+	void setHistory(bool history) {
+		_history = history;
+	}
+
+	void setImmediate(bool immediate) {
+		_immediate = immediate;
+	}
+
 public: // static
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
@@ -100,6 +128,11 @@ private:
 	std::string _destinationState;
 	std::string _outputActions;
 	std::string _setActions;
+	bool _nondeterministic = false;
+	bool _default = false;
+	bool _preemptive = false;
+	bool _history = false;
+	bool _immediate = false;
 };
 
 

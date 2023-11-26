@@ -13,6 +13,8 @@ FSM_State::FSM_State(Model* model, std::string name) : ModelComponent(model, Uti
 PluginInformation* FSM_State::GetPluginInformation() {
 	PluginInformation* info = new PluginInformation(Util::TypeOf<FSM_State>(), &FSM_State::LoadInstance, &FSM_State::NewInstance);
 	info->setDescriptionHelp("//@TODO");
+	info->setReceiveTransfer(true);
+	info->setSendTransfer(true);
     //info->setAuthor("...");
 	//info->setDate("...");
 	//info->setObservation("...");
