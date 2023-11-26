@@ -6,6 +6,7 @@ ModelDataDefinition* FSM_Variable::NewInstance(Model* model, std::string name) {
 }
 
 FSM_Variable::FSM_Variable(Model* model, std::string name) : ModelComponent(model, Util::TypeOf<FSM_Variable>(), name) {
+	_name = name;
 }
 
 PluginInformation* FSM_Variable::GetPluginInformation() {

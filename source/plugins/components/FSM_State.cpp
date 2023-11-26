@@ -6,6 +6,8 @@ ModelDataDefinition* FSM_State::NewInstance(Model* model, std::string name) {
 }
 
 FSM_State::FSM_State(Model* model, std::string name) : ModelComponent(model, Util::TypeOf<FSM_State>(), name) {
+	_name = name;
+	//std::cout << "STATE CONSTRUCTOR" << "\n";
 }
 
 PluginInformation* FSM_State::GetPluginInformation() {
