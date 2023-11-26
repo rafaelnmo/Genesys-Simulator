@@ -21,6 +21,7 @@ exit.so
 fsm_state.so
 fsm_transition.so
 fsm_variable.so
+fsm_modalmodel.so
 failure.so
 file.so
 formula.so
