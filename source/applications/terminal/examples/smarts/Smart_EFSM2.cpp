@@ -36,7 +36,7 @@ int Smart_EFSM2::main(int argc, char** argv) {
 	fsm->setName("fsm_1");
     std::cout << fsm->getName() << "\n";
 	std::cout << fsm->show() << "\n";
-    
+    /*
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
     std::cout << dispose1->getName();
     std::cout << dispose1->getId();
@@ -92,7 +92,7 @@ int Smart_EFSM2::main(int argc, char** argv) {
             std::cout << outputAction.first << " = " << outputAction.second << std::endl;
         }
     }
-
+*/
     std::cout << "" << std::endl;
 
     // set options, save and simulate
