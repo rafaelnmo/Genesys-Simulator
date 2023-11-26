@@ -178,6 +178,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/f13e5db9/FSM_State.o \
 	${OBJECTDIR}/_ext/f13e5db9/FSM_Transition.o \
 	${OBJECTDIR}/_ext/f13e5db9/FSM_Variable.o \
+	${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o \
 	${OBJECTDIR}/_ext/f13e5db9/CellularAutomata.o \
 	${OBJECTDIR}/_ext/f13e5db9/Clone.o \
 	${OBJECTDIR}/_ext/f13e5db9/CppForG.o \
@@ -976,6 +977,11 @@ ${OBJECTDIR}/_ext/f13e5db9/Buffer.o: ../../source/plugins/components/Buffer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/Buffer.o ../../source/plugins/components/Buffer.cpp
+
+${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o: ../../source/plugins/components/FSM_ModalModel.cpp nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o ../../source/plugins/components/FSM_ModalModel.cpp
 
 ${OBJECTDIR}/_ext/f13e5db9/FSM_State.o: ../../source/plugins/components/FSM_State.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
@@ -3144,6 +3150,19 @@ ${OBJECTDIR}/_ext/f13e5db9/Buffer_nomain.o: ${OBJECTDIR}/_ext/f13e5db9/Buffer.o 
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/Buffer_nomain.o ../../source/plugins/components/Buffer.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/f13e5db9/Buffer.o ${OBJECTDIR}/_ext/f13e5db9/Buffer_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel_nomain.o: ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o ../../source/plugins/components/FSM_ModalModel.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel_nomain.o ../../source/plugins/components/FSM_ModalModel.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel.o ${OBJECTDIR}/_ext/f13e5db9/FSM_ModalModel_nomain.o;\
 	fi
 
 ${OBJECTDIR}/_ext/f13e5db9/FSM_State_nomain.o: ${OBJECTDIR}/_ext/f13e5db9/FSM_State.o ../../source/plugins/components/FSM_State.cpp
