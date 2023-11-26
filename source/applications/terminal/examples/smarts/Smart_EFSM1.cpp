@@ -4,10 +4,13 @@
 // you have to included need libs
 
 // GEnSyS Simulator
+#include "../../../../kernel/simulator/EntityType.h"
+#include "../../../../kernel/simulator/ModelSimulation.h"
 #include "../../../../kernel/simulator/Simulator.h"
 
 // Model Components
 #include "../../../../plugins/components/Create.h"
+#include "../../../../plugins/components/Assign.h"
 #include "../../../../plugins/components/Dispose.h"
 #include "../../../../plugins/data/EFSM.h"
 #include "../../../../plugins/components/FSM_State.h"
@@ -39,6 +42,17 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	// create model
 	Model* model = genesys->getModels()->newModel();
     Create* create1 = plugins->newInstance<Create>(model);
+    create1->setDescription("Enter Garage");
+    create->setEntityType(entityType);
+    create->setTimeBetweenCreationsExpression("EXPO(5)")
+    create->setTimeUnit(Util::TimeUnit::minute);
+
+    Assign* assign1 = new Assign(model);
+    assign->setDescription("Verify if has car");
+    Assignment* assigment1 = new Assignment("hasCar", "1");
+    assign->getAssignments()->insert(assigment1);
+    new Attribute(model, "hasCar")
+    create->getConnections()->insert(assign1);
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     //std::cout << "NAME: " << efsm1->getName() << "\n";
@@ -47,44 +61,56 @@ int Smart_EFSM1::main(int argc, char** argv) {
     //std::cout << "STATE: " << efsm1->get() << "\n";
 
 
-    FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
-    std::cout << "NAME: " << modalmodel1->getName() << "\n";
-
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
+    state1->insertEFSM(efsm1);
+    state1->setIsInitialState(true);
     //state1->setIsFinalState(false);
-    //state1->setIsInitialState(true);
     //efsm1->insertState(state1);
     //std::cout << "TEST" << "\n";
     //std::cout << "NAME: " << state1->getName() << "\n";
 
 
-    FSM_Variable* variable1 = plugins->newInstance<FSM_Variable>(model, "c");
+    FSM_Variable* variable1 = plugins->newInstance<FSM_Variable>(model, "carsParked");
     variable1->setInitialValue(0);
     efsm1->insertVariable(variable1);
     //std::cout << "NAME: " << variable1->getName() << "\n";
 
-    FSM_Variable* variable2 = plugins->newInstance<FSM_Variable>(model, "M");
+    FSM_Variable* variable2 = plugins->newInstance<FSM_Variable>(model, "maxCarsParked");
     variable2->setInitialValue(100);
     efsm1->insertVariable(variable2);
     std::cout << "EFSM VARIABLE VECTOR: " << efsm1->getVariables()->front()->getName() << "\n";
 
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
-    transition1->setGuardExpression("up = 1 & down = 0 & c < M");
-    transition1->setOriginState("Counting");
-    transition1->setDestinationState("Counting");
-    transition1->setOutputActions("carsAmount = c + 1");
-    transition1->setSetActions("c = c + 1");
+    transition1->setGuardExpression("hasCar = 1 & carsParked < maxCarsParked");
+    //transition1->setOriginState("Counting");
+    //transition1->setDestinationState("Counting");
+    transition1->setOutputActions("hasCar = 0");
+    transition1->setSetActions("carsParked = carsParked + 1");
     efsm1->insertTransition(transition1);
+    state1->getConnections()->insert(transition1);
+    transition1->getConnections()->insert(state1);
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
-    transition2->setGuardExpression("down = 1 & up = 0 & c > 0");
-    transition2->setOriginState("Counting");
-    transition2->setDestinationState("Counting");
-    transition2->setOutputActions("carsAmount = c - 1");
-    transition2->setSetActions("c = c - 1");
+    transition2->setGuardExpression("hasCar = 0 & carsParked > 0");
+    //transition2->setOriginState("Counting");
+    //transition2->setDestinationState("Counting");
+    transition2->setOutputActions("hasCar = 1");
+    transition2->setSetActions("carsParked = carsParked - 1");
     efsm1->insertTransition(transition2);
+    state1->getConnections()->insert(transition2);
+    transition2->getConnections()->insert(state1);
 
+    FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_2");
+    transition3->setGuardExpression("");
+    //transition3->setOriginState("Counting");
+    //transition3->setDestinationState("Counting");
+    transition3->setOutputActions("");
+    transition3->setSetActions("");
+    transition3->setDefault(true);
+    efsm1->insertTransition(transition3);
+    state1->getConnections()->insert(transition3);
+    transition3->getConnections()->insert(state1);
 
     /*
 	// initialize model parts
@@ -93,10 +119,15 @@ int Smart_EFSM1::main(int argc, char** argv) {
     std::cout << fsm->getName() << "\n";
 	std::cout << fsm->show() << "\n";
     */
+
+    FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
+    std::cout << "NAME: " << modalmodel1->getName() << "\n";
+    modalmodel1->insertEFSM(efsm1)
+    assign1->getConnections()->insert(modalmodel1);
     
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
-    std::cout << dispose1->getName();
-    std::cout << dispose1->getId();
+    dispose1->setDescription("Leave Garage")
+    modalmodel1->getConnections->insert(dispose1);
 
     //create1->getConnections()->insert(efsm1);
     create1->getConnections()->insert(state1);

@@ -44,6 +44,10 @@ public:
 		return _isInitialState;
 	}
 
+	void insertEFSM(ExtendedFSM* efsm){
+		_efsm = efsm;
+	}
+
 	// void setRefinementName(std::string refinementName) {
 	// 	_refinementName = refinementName;
 	// }
@@ -66,6 +70,7 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _name;
+    ExtendedFSM* _efsm;
 	bool _isInitialState = false;
 	bool _isFinalState = false;
 	// std::string _refinementName;
