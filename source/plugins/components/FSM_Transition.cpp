@@ -7,7 +7,7 @@ ModelDataDefinition* FSM_Transition::NewInstance(Model* model, std::string name)
 }
 
 FSM_Transition::FSM_Transition(Model* model, std::string name) : ModelComponent(model, Util::TypeOf<FSM_Transition>(), name) {
-		_name = name;
+		//_name = name;
 }
 
 PluginInformation* FSM_Transition::GetPluginInformation() {
