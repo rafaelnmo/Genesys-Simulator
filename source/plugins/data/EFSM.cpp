@@ -16,7 +16,7 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     for (auto state: *_states) {
-        if (state.getName() == _currentStateName and state.isFinalState()){
+        if (state->getName() == _currentStateName and state->isFinalState()){
             return true;
         }
     }
@@ -26,11 +26,11 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     auto transitionFound = false;
 
     for (auto& transition: *_transitions) {
-        if (transition.getOriginState() == _currentStateName){
-            if (parseAndCheck(transition.getGuardExpression(), inputs)) {
-                getOutputValues(transition.getOutputActions(), inputs, outputActions);
-                setActions = transition.getSetActions();
-                destinationState = transition.getDestinationState();
+        if (transition->getOriginState() == _currentStateName){
+            if (parseAndCheck(transition->getGuardExpression(), inputs)) {
+                getOutputValues(transition->getOutputActions(), inputs, outputActions);
+                setActions = transition->getSetActions();
+                destinationState = transition->getDestinationState();
                 transitionFound = true;
                 break;
             }
@@ -83,8 +83,8 @@ int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> input
             }
         }
         for (auto variable: *_variables) {
-            if (variable.getName() == value_str) {
-                return variable._value;
+            if (variable->getName() == value_str) {
+                return variable->_value;
             }
         }
 
@@ -251,14 +251,14 @@ void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>
             }
         }
         for (auto& variable: *_variables) {
-            if (variable.getName() == variableNAME) {
-                variable._value = newValue;
+            if (variable->getName() == variableNAME) {
+                variable->_value = newValue;
             }
         }
 
     }
 }
-
+/*
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     if (isInitialState) {
         _currentStateName = name;
@@ -268,22 +268,39 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
     state.setIsFinalState(isFinalState);
     state.setIsInitialState(isInitialState);
    _states->push_back(state);
+}*/
+
+void ExtendedFSM::insertState(FSM_State* state){
+   _states->push_back(state);
 }
 
-void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
+/*void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);  
     auto transition = FSM_Transition(_parentModel, "");
 
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
-}
+}*/
 
+void ExtendedFSM::insertTransition(FSM_Transition* transition){
+    _transitions->push_back(transition);
+}
+/*
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     //auto variable = FSM_Variable(name, initialValue);
     auto variable = FSM_Variable(_parentModel, name);
     variable.setInitialValue(initialValue);
     _variables->push_back(variable);
+}*/
+
+void ExtendedFSM::insertVariable(FSM_Variable* variable) {
+    std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
+    std::cout << "VARIABLE SIZE BEFORE: " << _variables->size() << "\n";
+
+    _variables->push_back(variable);
+    std::cout << "VARIABLE SIZE AFTER: " << _variables->size() << "\n";
+
 }
 
 std::string ExtendedFSM::show(){
