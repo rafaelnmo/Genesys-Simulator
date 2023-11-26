@@ -837,20 +837,17 @@ ${OBJECTDIR}/_ext/f13e5db9/Buffer.o: ../../source/plugins/components/Buffer.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
 	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/f13e5db9/Buffer.o ../../source/plugins/components/Buffer.cpp
 
-${OBJECTDIR}/_ext/f13e5db9/FSM_State.o: ../../source/plugins/components/FSM_State.cpp nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/f13e5db9/FSM_Variable.o: ../../source/plugins/components/FSM_Variable.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/FSM_State.o ../../source/plugins/components/FSM_State.cpp
+	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/f13e5db9/FSM_Variable.o ../../source/plugins/components/FSM_Variable.cpp
 
-${OBJECTDIR}/_ext/f13e5db9/FSM_Variable.o: ../../source/plugins/components/FSM_Variable.cpp nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/f13e5db9/FSM_State.o: ../../source/plugins/components/FSM_State.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/FSM_Variable.o ../../source/plugins/components/FSM_Variable.cpp
+	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/f13e5db9/FSM_State.o ../../source/plugins/components/FSM_State.cpp
 
-${OBJECTDIR}/_ext/f13e5db9/FSM_Transition.o: ../../source/plugins/components/FSM_Transition.cpp nbproject/Makefile-${CND_CONF}.mk
+${OBJECTDIR}/_ext/f13e5db9/FSM_Transition.o: ../../source/plugins/components/FSM_Transition.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/f13e5db9/FSM_Transition.o ../../source/plugins/components/FSM_Transition.cpp
+	$(COMPILE.cc) -g -I../../source/gtest -std=c++14 -o ${OBJECTDIR}/_ext/f13e5db9/FSM_Transition.o ../../source/plugins/components/FSM_Transition.cpp
 
 ${OBJECTDIR}/_ext/f13e5db9/CellularAutomata.o: ../../source/plugins/components/CellularAutomata.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/f13e5db9
