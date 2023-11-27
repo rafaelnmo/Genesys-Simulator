@@ -59,6 +59,24 @@ public: /// new public user methods for this component
         _variables->insert(var);
     }
 
+    void ExtendedFSM::insertState(FSM_State* state){
+        _states->push_back(state);
+    }
+
+    void ExtendedFSM::insertTransition(FSM_Transition* transition){
+        _transitions->push_back(transition);
+    }
+
+    //void ExtendedFSM::insertVariable(FSM_Variable* variable) {
+    //    std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
+    //    std::cout << "VARIABLE SIZE BEFORE: " << _variables->size() << "\n";
+
+    //    _variables->push_back(variable);
+    //    std::cout << "VARIABLE SIZE AFTER: " << _variables->size() << "\n";
+
+    //}
+
+
     void useEFSM() {
         for(auto var: *_variables){
             _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
