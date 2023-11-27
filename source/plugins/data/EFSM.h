@@ -10,8 +10,8 @@
  * Created on 7 de agosto de 2022, 12:14
  */
 
-#ifndef EXFISTATMAC_H
-#define EXFISTATMAC_H
+#ifndef EFSM_H
+#define EFSM_H
 
 #include "../../kernel/simulator/ModelDataDefinition.h"
 #include "../../kernel/simulator/PluginInformation.h"
@@ -59,11 +59,11 @@ public: /// new public user methods for this component
         _variables->insert(var);
     }
 
-    void ExtendedFSM::insertState(FSM_State* state){
+    void insertState(FSM_State* state){
         _states->push_back(state);
     }
 
-    void ExtendedFSM::insertTransition(FSM_Transition* transition){
+    void insertTransition(FSM_Transition* transition){
         _transitions->push_back(transition);
     }
 
@@ -77,20 +77,7 @@ public: /// new public user methods for this component
     //}
 
 
-    void useEFSM() {
-        for(auto var: *_variables){
-            _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
-        }
-
-        //_currentState = _currentState->fire();
-
-        for(auto it = _variables->begin(); it != _variables->end(); ++it) {
-            double value = _parentModel->parseExpression(it->first);
-            auto var = std::make_pair(it->first, value);
-            _variables->insert(it, var);
-        }
-    }
-
+    void useEFSM();
     void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
     bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
     bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
@@ -102,10 +89,6 @@ public: /// new public user methods for this component
     //void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
     //void insertVariable(std::string name, int initialValue);
     
-    void insertState(FSM_State* state);
-    void insertTransition(FSM_Transition* transition);
-    void insertVariable(FSM_Variable* variable);
-
 public: /// virtual public methods
     virtual std::string show();
 
@@ -143,5 +126,5 @@ private:
 
 };
 
-#endif /* EXFISTATMAC_H */
+#endif /* EFSM_H */
 
