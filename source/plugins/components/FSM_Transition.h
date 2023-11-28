@@ -83,6 +83,9 @@ public:
          _setActions = setActions;
     }
 
+	std::string trim(const std::string& str, const std::string& whitespace);
+
+
 /* Transition:
   Nondeterministic: if not must be the only enabled transition.
   Default: if given a value true, specifies that this transition is enabled if no other non-default transition is enabled and if its guard evaluates to true

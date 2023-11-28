@@ -54,7 +54,7 @@ std::string FSM_Transition::show(){
     return "Transition";
 }
 
-std::string trim(const std::string& str, const std::string& whitespace = " \t") {
+std::string FSM_Transition::trim(const std::string& str, const std::string& whitespace = " \t") {
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
         return "";
