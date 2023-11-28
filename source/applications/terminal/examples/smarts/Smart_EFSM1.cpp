@@ -12,6 +12,7 @@
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
 #include "../../../../plugins/components/Assign.h"
+#include "../../../../plugins/data/Variable.h"
 #include "../../../../plugins/data/EFSM.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
@@ -58,11 +59,25 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     std::cout << "TEST" << "\n";
 
+	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
+    var1->insertDimentionSize(2); // Not sure why this
+	var1->setInitialValue(1.0, "0"); //x[0] = 1.0
+	var1->setInitialValue(0.0, "1"); //x[1] = 0.0
+
+	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
+    var2->insertDimentionSize(2);
+	var2->setInitialValue(1.0, "0"); //x[0] = 1.0
+	var2->setInitialValue(0.0, "1"); //x[1] = 0.0
+
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     std::cout << "NAME: " << efsm1->getName() << "\n";
 
-    efsm1->insertNewVariable("carsParked", 10.0);
-    efsm1->insertNewVariable("maxCarsParked", 20.0);
+    efsm1->_createInternalAndAttachedData();
+
+
+
+    //efsm1->insertNewVariable("carsParked", 10.0);
+    //efsm1->insertNewVariable("maxCarsParked", 20.0);
     //std::cout << "NAME: " << efsm1->getName() << "\n";
     //std::cout << "ID: " << efsm1->getId() << "\n";
     //std::cout << "SHOW: " << efsm1->show() << "\n";
