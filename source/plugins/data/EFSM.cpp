@@ -16,8 +16,9 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 
 
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
+    /*
     for (auto state: *_states) {
-        if (state->getName() == _currentStateName and state->isFinalState()){
+        if (state->getName() == _currentState->getName() and state->isFinalState()){
             return true;
         }
     }
@@ -27,7 +28,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     auto transitionFound = false;
 
     for (auto& transition: *_transitions) {
-        if (transition->getOriginState() == _currentStateName){
+        if (transition->getOriginState() == _currentState->getName()){
             if (parseAndCheck(transition->getGuardExpression(), inputs)) {
                 getOutputValues(transition->getOutputActions(), inputs, outputActions);
                 setActions = transition->getSetActions();
@@ -42,7 +43,7 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     if (transitionFound) {
         postfire(destinationState, setActions, inputs);
     }
-
+*/
     return false;
 }
 
@@ -54,11 +55,11 @@ bool ExtendedFSM::fire() {
 }
 
 void ExtendedFSM::postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs){
-    updateVariables(setActions, inputs);
-    _currentStateName = destinationState;
+    //updateVariables(setActions, inputs);
+    _currentState->getName() = destinationState;
 }
 
-std::string trim(const std::string& str, const std::string& whitespace = " \t") {
+std::string ExtendedFSM::trim(const std::string& str, const std::string& whitespace = " \t") {
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
         return "";
@@ -73,6 +74,7 @@ void print(std::string name, std::string value){
     std::cout << name <<": " << value << std::endl;
 }
 
+/*
 int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> inputs) {
     try {
         return std::stoi(value_str);
@@ -84,15 +86,16 @@ int ExtendedFSM::getValue(std::string value_str, std::map<std::string,int> input
             }
         }
         for (auto variable: *_variables) {
-            if (variable->getName() == value_str) {
+            if (variable.first == value_str) {
                 return variable->_value;
             }
         }
 
         throw std::invalid_argument(value_str + " not found!");
     }
-}
+}*/
 
+/*
 bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int>& inputs){
     if (expression == "") {
         return true;
@@ -111,8 +114,9 @@ bool ExtendedFSM::parseAndCheck(std::string expression, std::map<std::string,int
     }
 
     return false;
-}
+}*/
 
+/*
 bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>& inputs) {
     auto action = std::string();
     while(std::getline(actions_ss, action, '&')) {
@@ -164,8 +168,9 @@ bool ExtendedFSM::check(std::stringstream& actions_ss, std::map<std::string,int>
 
     }
     return true;
-}
+}*/
 
+/*
 void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues) {
     auto actions_ss = std::stringstream();
     actions_ss << actions;
@@ -208,8 +213,9 @@ void ExtendedFSM::getOutputValues(std::string actions, std::map<std::string,int>
             outputValues.insert(std::pair<std::string,int>(e.what(), -1));
         }
     }
-}
+}*/
 
+/*
 void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>& inputs){
     if (actions == "") {
         return;
@@ -259,6 +265,7 @@ void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>
 
     }
 }
+*/
 /*
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     if (isInitialState) {

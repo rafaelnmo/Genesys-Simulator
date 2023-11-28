@@ -16,6 +16,9 @@
 #include "../../kernel/simulator/ModelDataDefinition.h"
 #include "../../kernel/simulator/PluginInformation.h"
 //#include "../../kernel/simulator/ModelDataManager.h"
+#include "../../kernel/simulator/Attribute.h"
+#include "../data/AssignmentItem.h"
+#include "../data/Variable.h"
 #include "../../kernel/util/List.h"
 #include "../components/FSM_Transition.h"
 #include "../components/FSM_State.h"
@@ -70,11 +73,11 @@ public: /// new public user methods for this component
 
     void useEFSM();
     void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
-    bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
-    bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
-    void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
-    void updateVariables(std::string actions, std::map<std::string,int>& inputs);
-    int getValue(std::string value_str, std::map<std::string,int> inputs);
+    //bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
+    //bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
+    //void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
+    //void updateVariables(std::string actions, std::map<std::string,int>& inputs);
+    //int getValue(std::string value_str, std::map<std::string,int> inputs);
 
     //void insertState(std::string name, bool isFinalState , bool isInitialState);
     //void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
@@ -83,6 +86,9 @@ public: /// new public user methods for this component
     //void insertState(FSM_State* state);
     //void insertTransition(FSM_Transition* transition);
     //void insertVariable(FSM_Variable* variable);
+
+    std::string trim(const std::string& str, const std::string& whitespace);
+
 
 public: /// virtual public methods
     virtual std::string show();
@@ -116,6 +122,9 @@ private:
     std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
     //std::vector<FSM_Variable*>* _variables = new std::vector<FSM_Variable*>;
     std::map<std::string,double>* _variables;
+
+	List<Assignment*>* _assignments = new List<Assignment*>();
+
 
     FSM_State* _currentState;
 
