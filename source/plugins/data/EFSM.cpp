@@ -14,7 +14,7 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 }
 #endif
 
-/*
+
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     for (auto state: *_states) {
         if (state->getName() == _currentStateName and state->isFinalState()){
@@ -258,7 +258,7 @@ void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>
         }
 
     }
-}*/
+}
 /*
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     if (isInitialState) {
@@ -308,7 +308,25 @@ bool ExtendedFSM::_check(std::string* errorMessage){
 
 void ExtendedFSM::_initBetweenReplications(){}
 
-void ExtendedFSM::_createInternalAndAttachedData(){}
+void ExtendedFSM::_createInternalAndAttachedData(){
+    ModelDataManager* elems = _parentModel->getDataManager();
+	for (Assignment* ass : *_assignments->list()) {
+		ModelDataDefinition* elem;
+		std::string name;
+		if (ass->isAttributeNotVariable()) {
+			name = "Attribute";
+			elem = elems->getDataDefinition(Util::TypeOf<Attribute>(), ass->getDestination());
+		} else {
+			name = "Variable";
+			elem = elems->getDataDefinition(Util::TypeOf<Variable>(), ass->getDestination());
+		}
+		//assert elem != nullptr
+		if (elem != nullptr) {
+			this->_attachedDataInsert(name + "_" + ass->getDestination(), elem);
+		}
+	}
+
+}
 
 void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValues) {}
 

@@ -56,10 +56,7 @@ public: /// new public user methods for this component
 	}
 
     void insertNewVariable(std::string variableName, double variableValue) {
-         std::cout << "VARIABLE: " << variableName << std::endl;
-         std::cout << "VARIABLE VALUE: " << variableValue << std::endl;
         auto var = std::make_pair(variableName, variableValue);
-        //std::cout << "VAR: " << var << std::endl;
         _variables->insert(var);
     }
 
@@ -70,16 +67,6 @@ public: /// new public user methods for this component
     void insertTransition(FSM_Transition* transition){
         _transitions->push_back(transition);
     }
-
-    //void ExtendedFSM::insertVariable(FSM_Variable* variable) {
-    //    std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
-    //    std::cout << "VARIABLE SIZE BEFORE: " << _variables->size() << "\n";
-
-    //    _variables->push_back(variable);
-    //    std::cout << "VARIABLE SIZE AFTER: " << _variables->size() << "\n";
-
-    //}
-
 
     void useEFSM();
     void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
@@ -93,8 +80,8 @@ public: /// new public user methods for this component
     //void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
     //void insertVariable(std::string name, int initialValue);
     
-    void insertState(FSM_State* state);
-    void insertTransition(FSM_Transition* transition);
+    //void insertState(FSM_State* state);
+    //void insertTransition(FSM_Transition* transition);
     //void insertVariable(FSM_Variable* variable);
 
 public: /// virtual public methods
