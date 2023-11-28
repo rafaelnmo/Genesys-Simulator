@@ -139,13 +139,6 @@ private:
 	bool check(std::stringstream& actions_ss);
 	void executeActions(std::string actions);
 
-  void executeOutputActions();
-  void executeSetActions();
-
-private:
-  bool check(std::stringstream& actions_ss);
-  void executeActions(std::string actions);
-
 public: // static
 	static PluginInformation* GetPluginInformation();
 	static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
