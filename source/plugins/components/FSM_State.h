@@ -2,10 +2,9 @@
 #define FSM_STATE_H
 
 #include "../../kernel/simulator/ModelComponent.h"
-#include "../data/EFSM.h"
+#include "FSM_Transition.h"
 #include <string>
 
-#include "FSM_Transition.h"
 class ExtendedFSM;
 
 class FSM_State : public ModelComponent {
@@ -30,10 +29,7 @@ public:
         return _isFinalState;
     }
 
-    void setIsInitialState(bool isInitialState) {
-        _efsm->setCurrentState(this);
-        //_isInitialState = isInitialState;
-    }
+    void setIsInitialState(bool isInitialState);
 
     // void setRefinementName(std::string refinementName) {
     //  _refinementName = refinementName;

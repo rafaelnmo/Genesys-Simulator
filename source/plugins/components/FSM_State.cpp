@@ -1,7 +1,6 @@
-#include <stdexcept>
-
+#include <stdexcept>s
 #include "FSM_State.h"
-
+#include "../data/EFSM.h"
 
 ModelDataDefinition* FSM_State::NewInstance(Model* model, std::string name) {
 	return new FSM_State(model, name);
@@ -55,6 +54,11 @@ void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
 
 std::string FSM_State::show(){
     return "show";
+}
+
+void FSM_State::setIsInitialState(bool isInitialState) {
+    _efsm->setCurrentState(this);
+    //_isInitialState = isInitialState;
 }
 
 FSM_State* FSM_State::fire(bool mustBeImmediate){
@@ -113,3 +117,4 @@ FSM_State* FSM_State::fire(bool mustBeImmediate){
 	auto stateDestination = dynamic_cast<FSM_State*>(connections->begin()->second->component);
 	return stateDestination; //->fire(true);
 }
+
