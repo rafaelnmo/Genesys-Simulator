@@ -10,7 +10,7 @@
 #ifdef PLUGINCONNECT_DYNAMIC
 
 extern "C" StaticGetPluginInformation GetPluginInformation() {
-	return &ExtendedFSM::GetPluginInformation;
+    return &ExtendedFSM::GetPluginInformation;
 }
 #endif
 
@@ -271,10 +271,6 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
    _states->push_back(state);
 }*/
 
-void ExtendedFSM::insertState(FSM_State* state){
-   _states->push_back(state);
-}
-
 /*void ExtendedFSM::insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions){
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);
     //auto transition = FSM_Transition(guardExpression, originState, destinationState, outputActions, setActions);  
@@ -283,10 +279,6 @@ void ExtendedFSM::insertState(FSM_State* state){
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
 }*/
-
-void ExtendedFSM::insertTransition(FSM_Transition* transition){
-    _transitions->push_back(transition);
-}
 /*
 void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     //auto variable = FSM_Variable(name, initialValue);
@@ -309,9 +301,9 @@ std::string ExtendedFSM::show(){
 }
 
 bool ExtendedFSM::_check(std::string* errorMessage){
-	bool resultAll = true;
-	*errorMessage += "";
-	return resultAll;
+    bool resultAll = true;
+    *errorMessage += "";
+    return resultAll;
 }
 
 void ExtendedFSM::_initBetweenReplications(){}
@@ -323,16 +315,16 @@ void ExtendedFSM::_saveInstance(PersistenceRecord *fields, bool saveDefaultValue
 bool ExtendedFSM::_loadInstance(PersistenceRecord *fields) {
     bool res = true;
     try {
-	} catch (...) {
-		res = false;
+    } catch (...) {
+        res = false;
     }
 
     return res;
 }
 
 PluginInformation* ExtendedFSM::GetPluginInformation() {
-	PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
-	return info;
+    PluginInformation* info = new PluginInformation(Util::TypeOf<ExtendedFSM>(), &ExtendedFSM::LoadInstance, &ExtendedFSM::NewInstance);
+    return info;
 }
 
 ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
@@ -340,15 +332,29 @@ ModelDataDefinition* ExtendedFSM::NewInstance(Model* model, std::string name) {
 }
 
 ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *fields) {
-	ExtendedFSM* newElement = new ExtendedFSM(model);
-	try {
-		newElement->_loadInstance(fields);
-	} catch (const std::exception& e) {
+    ExtendedFSM* newElement = new ExtendedFSM(model);
+    try {
+        newElement->_loadInstance(fields);
+    } catch (const std::exception& e) {
 
-	}
-	return newElement;
+    }
+    return newElement;
 }
 
 ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {
-	//_elems = elems;
+    //_elems = elems;
+}
+
+void ExtendedFSM::useEFSM() {
+    for(auto var: *_variables){
+        _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
+    }
+
+    _currentState = _currentState->fire();
+
+    for(auto it = _variables->begin(); it != _variables->end(); ++it) {
+        double value = _parentModel->parseExpression(it->first);
+        auto var = std::make_pair(it->first, value);
+        _variables->insert(it, var);
+    }
 }

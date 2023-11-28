@@ -132,6 +132,12 @@ public:
 	}
 
 	bool isEnabled();
+	void executeOutputActions();
+	void executeSetActions();
+
+private:
+	bool check(std::stringstream& actions_ss);
+	void executeActions(std::string actions);
 
   void executeOutputActions();
   void executeSetActions();

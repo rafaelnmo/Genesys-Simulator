@@ -10,8 +10,8 @@
  * Created on 7 de agosto de 2022, 12:14
  */
 
-#ifndef EXFISTATMAC_H
-#define EXFISTATMAC_H
+#ifndef EFSM_H
+#define EFSM_H
 
 #include "../../kernel/simulator/ModelDataDefinition.h"
 #include "../../kernel/simulator/PluginInformation.h"
@@ -63,26 +63,31 @@ public: /// new public user methods for this component
         _variables->insert(var);
     }
 
-    void useEFSM() {
-        for(auto var: *_variables){
-            _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
-        }
-
-        //_currentState = _currentState->fire();
-
-        for(auto it = _variables->begin(); it != _variables->end(); ++it) {
-            double value = _parentModel->parseExpression(it->first);
-            auto var = std::make_pair(it->first, value);
-            _variables->insert(it, var);
-        }
+    void insertState(FSM_State* state){
+        _states->push_back(state);
     }
 
-    //void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
-    //bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
-    //bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
-   // void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
-    //void updateVariables(std::string actions, std::map<std::string,int>& inputs);
-    //int getValue(std::string value_str, std::map<std::string,int> inputs);
+    void insertTransition(FSM_Transition* transition){
+        _transitions->push_back(transition);
+    }
+
+    //void ExtendedFSM::insertVariable(FSM_Variable* variable) {
+    //    std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
+    //    std::cout << "VARIABLE SIZE BEFORE: " << _variables->size() << "\n";
+
+    //    _variables->push_back(variable);
+    //    std::cout << "VARIABLE SIZE AFTER: " << _variables->size() << "\n";
+
+    //}
+
+
+    void useEFSM();
+    void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
+    bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
+    bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
+    void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
+    void updateVariables(std::string actions, std::map<std::string,int>& inputs);
+    int getValue(std::string value_str, std::map<std::string,int> inputs);
 
     //void insertState(std::string name, bool isFinalState , bool isInitialState);
     //void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
@@ -129,5 +134,5 @@ private:
 
 };
 
-#endif /* EXFISTATMAC_H */
+#endif /* EFSM_H */
 
