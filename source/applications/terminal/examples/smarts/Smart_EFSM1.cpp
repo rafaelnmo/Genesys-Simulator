@@ -38,7 +38,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/home/kuru/andre/ufsc/modsim/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -56,15 +56,22 @@ int Smart_EFSM1::main(int argc, char** argv) {
     assign1->getAssignments()->insert(assigment1);
     create1->getConnections()->insert(assign1);
 
+    std::cout << "TEST" << "\n";
+
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
-    efsm1->insertNewVariable("carsParked", 10);
-    efsm1->insertNewVariable("maxCarsParked", 20);
+    std::cout << "NAME: " << efsm1->getName() << "\n";
+
+    efsm1->insertNewVariable("carsParked", 10.0);
+    efsm1->insertNewVariable("maxCarsParked", 20.0);
     //std::cout << "NAME: " << efsm1->getName() << "\n";
     //std::cout << "ID: " << efsm1->getId() << "\n";
     //std::cout << "SHOW: " << efsm1->show() << "\n";
     //std::cout << "STATE: " << efsm1->get() << "\n";
 
+    std::cout << "NAME: " << efsm1->getName() << "\n";
+
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
+    std::cout << "NAME: " << state1->getName() << "\n";
     //state1->setIsFinalState(false);
     //state1->setIsInitialState(true);
     //efsm1->insertState(state1);

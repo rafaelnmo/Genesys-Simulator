@@ -2,6 +2,8 @@
 #define FSM_TRANSITION_H
 
 #include "../../kernel/simulator/ModelComponent.h"
+#include "../../kernel/simulator/Model.h"
+
 #include <string>
 
 
@@ -130,6 +132,13 @@ public:
 	}
 
 	bool isEnabled();
+
+  void executeOutputActions();
+  void executeSetActions();
+
+private:
+  bool check(std::stringstream& actions_ss);
+  void executeActions(std::string actions);
 
 public: // static
 	static PluginInformation* GetPluginInformation();

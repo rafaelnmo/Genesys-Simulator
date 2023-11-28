@@ -1,6 +1,5 @@
 #include "FSM_ModalModel.h"
 
-
 ModelDataDefinition* FSM_ModalModel::NewInstance(Model* model, std::string name) {
 	return new FSM_ModalModel(model, name);
 }

@@ -99,11 +99,11 @@ FSM_State* FSM_State::fire(bool mustBeImmediate){
 	if (enableds <= 0) {
 		transitionChosen = transitionDefault;
 	}
-
+/*
 	if (not transitionChosen->isPreemptive()) {
 		_refinementName->useEFSM();
 	}
-
+*/
 	//_parentModel->parseExpression(transitionChosen->getOutputActions());
 
 	//postfire

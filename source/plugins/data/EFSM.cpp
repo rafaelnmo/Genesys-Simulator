@@ -14,6 +14,7 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 }
 #endif
 
+/*
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
     for (auto state: *_states) {
         if (state->getName() == _currentStateName and state->isFinalState()){
@@ -257,7 +258,7 @@ void ExtendedFSM::updateVariables(std::string actions, std::map<std::string,int>
         }
 
     }
-}
+}*/
 /*
 void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool isInitialState = false){
     if (isInitialState) {
@@ -293,7 +294,7 @@ void ExtendedFSM::insertVariable(std::string name, int initialValue) {
     variable.setInitialValue(initialValue);
     _variables->push_back(variable);
 }*/
-
+/*
 void ExtendedFSM::insertVariable(FSM_Variable* variable) {
     std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
     std::cout << "VARIABLE SIZE BEFORE: " << _variables->size() << "\n";
@@ -301,7 +302,7 @@ void ExtendedFSM::insertVariable(FSM_Variable* variable) {
     _variables->push_back(variable);
     std::cout << "VARIABLE SIZE AFTER: " << _variables->size() << "\n";
 
-}
+}*/
 
 std::string ExtendedFSM::show(){
     return "ExtendedFSM";

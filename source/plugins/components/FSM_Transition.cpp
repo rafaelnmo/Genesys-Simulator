@@ -1,4 +1,6 @@
 #include "FSM_Transition.h"
+#include <iostream>
+#include <sstream>
 
 
 
@@ -48,4 +50,109 @@ void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumb
 
 std::string FSM_Transition::show(){
     return "Transition";
+}
+
+std::string trim(const std::string& str, const std::string& whitespace = " \t") {
+    const auto strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return "";
+
+    const auto strEnd = str.find_last_not_of(whitespace);
+    const auto strRange = strEnd - strBegin + 1;
+
+    return str.substr(strBegin, strRange);
+}
+
+bool FSM_Transition::isEnabled(){
+    if (_guardExpression == "") {
+        return true;
+    }
+
+    auto expression_ss = std::stringstream();
+    expression_ss << _guardExpression;
+    auto actions = std::string();
+    while(std::getline(expression_ss, actions, '|')) {
+        actions = trim(actions);
+        auto actions_ss = std::stringstream();
+        actions_ss << actions;
+        if (check(actions_ss)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool FSM_Transition::check(std::stringstream& actions_ss) {
+    auto action = std::string();
+    while(std::getline(actions_ss, action, '&')) {
+        action = trim(action);
+        auto action_ss = std::stringstream();
+        action_ss << action;
+        auto operand1_str = std::string();
+        auto operatorAction = std::string();
+        auto operand2_str = std::string();
+
+        std::getline(action_ss, operand1_str, ' ');
+        std::getline(action_ss, operatorAction, ' ');
+        std::getline(action_ss, operand2_str, ' ');
+
+        operand1_str = trim(operand1_str);
+        operatorAction = trim(operatorAction);
+        operand2_str = trim(operand2_str);
+
+        double operand1, operand2;
+        try {
+            operand1 = _parentModel->parseExpression(operand1_str);
+            operand2 = _parentModel->parseExpression(operand2_str);
+        }
+        catch(const std::invalid_argument& e) {
+            return false;
+        }
+        
+        if (operatorAction == "<") {
+            if (not (operand1 < operand2)) {
+                return false;
+            }
+        } else if (operatorAction == "<=") {
+            if (not (operand1 <= operand2)) {
+                return false;
+            }
+        } else if (operatorAction == "=") {
+            if (not (operand1 == operand2)) {
+                return false;
+            }
+        } else if (operatorAction == ">") {
+            if (not (operand1 > operand2)) {
+                return false;
+            }
+        } else if (operatorAction == ">=") {
+            if (not (operand1 >= operand2)) {
+                return false;
+            }
+        }
+
+    }
+    return true;
+}
+
+void FSM_Transition::executeActions(std::string actions){
+    if (actions == "") {
+        return;
+    }
+    auto actions_ss = std::stringstream();
+    actions_ss << actions;
+    auto action = std::string();
+
+    while(std::getline(actions_ss, action, ';')) {
+    _parentModel->parseExpression(action);
+  }
+}
+
+void FSM_Transition::executeOutputActions() {
+  executeActions(_outputActions);
+}
+
+void FSM_Transition::executeSetActions() {
+  executeActions(_setActions);
 }

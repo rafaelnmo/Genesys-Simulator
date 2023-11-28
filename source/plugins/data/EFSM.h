@@ -23,6 +23,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <iostream>
 
 class ExtendedFSM : public ModelDataDefinition {
 public: /// constructors
@@ -55,7 +56,10 @@ public: /// new public user methods for this component
 	}
 
     void insertNewVariable(std::string variableName, double variableValue) {
+         std::cout << "VARIABLE: " << variableName << std::endl;
+         std::cout << "VARIABLE VALUE: " << variableValue << std::endl;
         auto var = std::make_pair(variableName, variableValue);
+        //std::cout << "VAR: " << var << std::endl;
         _variables->insert(var);
     }
 
@@ -73,12 +77,12 @@ public: /// new public user methods for this component
         }
     }
 
-    void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
-    bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
-    bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
-    void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
-    void updateVariables(std::string actions, std::map<std::string,int>& inputs);
-    int getValue(std::string value_str, std::map<std::string,int> inputs);
+    //void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
+    //bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
+    //bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
+   // void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
+    //void updateVariables(std::string actions, std::map<std::string,int>& inputs);
+    //int getValue(std::string value_str, std::map<std::string,int> inputs);
 
     //void insertState(std::string name, bool isFinalState , bool isInitialState);
     //void insertTransition(std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions);
@@ -86,7 +90,7 @@ public: /// new public user methods for this component
     
     void insertState(FSM_State* state);
     void insertTransition(FSM_Transition* transition);
-    void insertVariable(FSM_Variable* variable);
+    //void insertVariable(FSM_Variable* variable);
 
 public: /// virtual public methods
     virtual std::string show();
