@@ -55,55 +55,28 @@ int Smart_EFSM1::main(int argc, char** argv) {
     assign1->setDescription("Verify if has car");
     Assignment* assigment1 = new Assignment("hasCar", "1");
     assign1->getAssignments()->insert(assigment1);
-    create1->getConnections()->insert(assign1);
-
-    std::cout << "TEST" << "\n";
+    //create1->getConnections()->insert(assign1);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
     var1->insertDimentionSize(2); // Not sure why this
 	var1->setInitialValue(1.0, "0"); //x[0] = 1.0
-	var1->setInitialValue(0.0, "1"); //x[1] = 0.0
+	var1->setInitialValue(0.0, "10"); //x[1] = 0.0
 
 	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
     var2->insertDimentionSize(2);
 	var2->setInitialValue(1.0, "0"); //x[0] = 1.0
-	var2->setInitialValue(0.0, "1"); //x[1] = 0.0
+	var2->setInitialValue(0.0, "20"); //x[1] = 0.0
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
-    std::cout << "NAME: " << efsm1->getName() << "\n";
+    efsm1->insertVariable(var1);
+    efsm1->insertVariable(var2);
+    
+    efsm1->CreateInternalData(efsm1);
+    efsm1->CreateInternalData(efsm1);
 
-    efsm1->_createInternalAndAttachedData();
-
-
-
-    //efsm1->insertNewVariable("carsParked", 10.0);
-    //efsm1->insertNewVariable("maxCarsParked", 20.0);
-    //std::cout << "NAME: " << efsm1->getName() << "\n";
-    //std::cout << "ID: " << efsm1->getId() << "\n";
-    //std::cout << "SHOW: " << efsm1->show() << "\n";
-    //std::cout << "STATE: " << efsm1->get() << "\n";
-
-    std::cout << "NAME: " << efsm1->getName() << "\n";
-
+    std::cout << "SHOW: " << efsm1->show() << "\n";
+    
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
-    std::cout << "NAME: " << state1->getName() << "\n";
-    //state1->setIsFinalState(false);
-    //state1->setIsInitialState(true);
-    //efsm1->insertState(state1);
-    //std::cout << "TEST" << "\n";
-    //std::cout << "NAME: " << state1->getName() << "\n";
-
-/*
-    FSM_Variable* variable1 = plugins->newInstance<FSM_Variable>(model, "c");
-    variable1->setInitialValue(0);
-    efsm1->insertVariable(variable1);
-    //std::cout << "NAME: " << variable1->getName() << "\n";
-
-    FSM_Variable* variable2 = plugins->newInstance<FSM_Variable>(model, "M");
-    variable2->setInitialValue(100);
-    efsm1->insertVariable(variable2);
-    std::cout << "EFSM VARIABLE VECTOR: " << efsm1->getVariables()->front()->getName() << "\n";
-*/
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
     transition1->setGuardExpression("hasCar = 1 & carsParked < maxCarsParked");
@@ -136,82 +109,32 @@ int Smart_EFSM1::main(int argc, char** argv) {
     state1->getConnections()->insert(transition3);
     transition3->getConnections()->insert(state1);
 
-
     FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
-    std::cout << "NAME: " << modalmodel1->getName() << "\n";
-    assign1->getConnections()->insert(modalmodel1);
+    modalmodel1->setEFSM(efsm1);
 
-    /*
-	// initialize model parts
-    FiniteStateMachine* fsm = plugins->newInstance<FiniteStateMachine>(model, "ExtendedFinishMachine_1");
-	fsm->setName("fsm_1");
-    std::cout << fsm->getName() << "\n";
-	std::cout << fsm->show() << "\n";
-    */
-    
+    modalmodel1->CreateInternalData(modalmodel1);
+	modalmodel1->show();
+
+    std::cout << "INTERNAL NAME: " << modalmodel1->getInternalDataDefinition()->getName() << "\n";
+	//modalmodel1->getInternalDataDefinition()->getName();
+	//modalmodel1->getInternalDataDefinition()->show();
+    std::cout << "INTERNAL NAME: " << modalmodel1->getInternalDataDefinition()->show() << "\n";
+
+
+
+    //assign1->getConnections()->insert(modalmodel1);
+
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
-	modalmodel1->getConnections()->insert(dispose1);
-
+	//modalmodel1->getConnections()->insert(dispose1);
     dispose1->setReportStatistics(true);
 	
-    std::cout << "\nplugins: " << plugins->front() << "\n";
-
-
-	/*
-    // connect model components to create a "workflow"
-	create1->getConnections()->insert(fsm);
-	fsm->getConnections()->insert(dispose1);
-
-    dispose1->setReportStatistics(true);
-	
-    std::cout << "\nplugins: " << plugins->front() << "\n";
-
-	// creating states of efsm
-    fsm->_createInternalAndAttachedData();
-
-    fsm->_internalDataDefinition->insertState("Counting", false, true);
-    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(0).getName() << "\n";
+    //std::cout << "\nplugins: " << plugins->front() << "\n";
     
-    fsm->_internalDataDefinition->insertVariable("c", 0);
-    fsm->_internalDataDefinition->insertVariable("M", 100);
+    // connect model components to create a "workflow"
+    create1->getConnections()->insert(assign1);
+    assign1->getConnections()->insert(modalmodel1);
+    modalmodel1->getConnections()->insert(dispose1);
 
-    // creating transitions of each state of efsm
-    fsm->_internalDataDefinition->insertTransition("up = 1 & down = 0 & c < M", "Counting", "Counting","carsAmount = c + 1", "c = c + 1");
-    std::cout <<  "Guard Expression: " << fsm->_internalDataDefinition->getTransitions()->at(0).getGuardExpression() << "\n";
-    fsm->_internalDataDefinition->insertTransition("down = 1 & up = 0 & c > 0", "Counting", "Counting","carsAmount = c - 1", "c = c - 1");
-	
-	// run the simulation
-    auto outputActions = std::map<std::string,int>{};
-    auto input = std::map<std::string,int>{};
-    input.insert(std::pair<std::string,int>("up", 1));
-    input.insert(std::pair<std::string,int>("down", 0));
-
-    bool isfinalState;
-    for (int i = 1; i <= 10; i++){
-        outputActions.clear();
-        isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
-        std::cout << "isfinalState: " << isfinalState <<std::endl;
-        std::cout << "OUTPUT_ACTIONS " << std::endl;
-        for(auto outputAction: outputActions){
-            std::cout << outputAction.first << " = " << outputAction.second << std::endl;
-        }
-        std::cout << "" << std::endl;
-       
-    }
-
-    input.clear();
-    input.insert(std::pair<std::string,int>("up", 0));
-    input.insert(std::pair<std::string,int>("down", 1));
-
-    outputActions.clear();
-    isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
-    std::cout << "isfinalState: " << isfinalState <<std::endl;
-    std::cout << "OUTPUT_ACTIONS " << std::endl;
-    for(auto outputAction: outputActions){
-        std::cout << outputAction.first << " = " << outputAction.second << std::endl;
-    }
-    std::cout << "" << std::endl;
-    */
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(3);
