@@ -1,4 +1,6 @@
 #include "FSM_ModalModel.h"
+#include "../../kernel/simulator/Simulator.h"
+#include "../../kernel/simulator/PluginManager.h"
 
 ModelDataDefinition* FSM_ModalModel::NewInstance(Model* model, std::string name) {
 	return new FSM_ModalModel(model, name);
@@ -49,4 +51,20 @@ void FSM_ModalModel::_onDispatchEvent(Entity* entity, unsigned int inputPortNumb
 
 std::string FSM_ModalModel::show(){
     return "Variable";
+}
+
+void FSM_ModalModel::setEFSM(ExtendedFSM* efsm) {
+	_efsm = efsm;
+}
+
+ExtendedFSM* FSM_ModalModel::getEFSM() const {
+	return _efsm;
+}
+
+void FSM_ModalModel::_createInternalAndAttachedData() {
+	if (_efsm == nullptr) {
+		PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
+		_efsm = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "efsm");
+		_internalDataInsert("JustaDummy", _efsm);
+	}
 }

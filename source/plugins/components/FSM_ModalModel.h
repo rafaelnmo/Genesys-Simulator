@@ -27,8 +27,13 @@ public:
 		return _name;
 	}
 
-	void insertEFSM(ExtendedFSM* efsm){
-		_efsm = efsm;
+	void setEFSM(ExtendedFSM* efsm);
+
+	ExtendedFSM* getEFSM() const;
+
+	ExtendedFSM* getInternalDataDefinition(){
+		//return _internalDataDefinition;
+		return _efsm;
 	}
 
 	int _value;
@@ -41,6 +46,7 @@ public: // static
 public: // virtual
 	virtual std::string show();
 protected: /// virtual protected method that must be overriden
+	virtual void _createInternalAndAttachedData();
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 	/// new virtual methods for all ModelComponents
@@ -49,7 +55,10 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _name;
-    ExtendedFSM* _efsm;
+    ExtendedFSM* _efsm = nullptr;
+
+	//ExtendedFSM* _internalDataDefinition = nullptr;
+
 };
 
 #endif /* FSM_MODALMODEL_H */
