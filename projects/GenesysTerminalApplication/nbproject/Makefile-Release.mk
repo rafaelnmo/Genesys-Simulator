@@ -65,6 +65,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/_ext/577f3b86/Smart_EvaluatingConditionsBeforeEnteringQueue.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_Expression.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts.o \
+	${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_MaxArrivalsField.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_ModelRunUntil1000Parts.o \
 	${OBJECTDIR}/_ext/577f3b86/Smart_ModuleDisplayVariables.o \
@@ -422,6 +423,11 @@ ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts.o: ../../source/applic
 	${MKDIR} -p ${OBJECTDIR}/_ext/577f3b86
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts.o ../../source/applications/terminal/examples/arenaSmarts/Smart_InventoryAndHoldingCosts.cpp
+
+${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o: ../../source/applications/terminal/examples/arenaSmarts/Smart_LSODE.cpp nbproject/Makefile-${CND_CONF}.mk
+	${MKDIR} -p ${OBJECTDIR}/_ext/577f3b86
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o ../../source/applications/terminal/examples/arenaSmarts/Smart_LSODE.cpp
 
 ${OBJECTDIR}/_ext/577f3b86/Smart_MaxArrivalsField.o: ../../source/applications/terminal/examples/arenaSmarts/Smart_MaxArrivalsField.cpp nbproject/Makefile-${CND_CONF}.mk
 	${MKDIR} -p ${OBJECTDIR}/_ext/577f3b86
@@ -1707,6 +1713,19 @@ ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts_nomain.o: ${OBJECTDIR}
 	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts_nomain.o ../../source/applications/terminal/examples/arenaSmarts/Smart_InventoryAndHoldingCosts.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts.o ${OBJECTDIR}/_ext/577f3b86/Smart_InventoryAndHoldingCosts_nomain.o;\
+	fi
+
+${OBJECTDIR}/_ext/577f3b86/Smart_LSODE_nomain.o: ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o ../../source/applications/terminal/examples/arenaSmarts/Smart_LSODE.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/577f3b86
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} "$@.d";\
+	    $(COMPILE.cc) -O2 -Dmain=__nomain -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE_nomain.o ../../source/applications/terminal/examples/arenaSmarts/Smart_LSODE.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE.o ${OBJECTDIR}/_ext/577f3b86/Smart_LSODE_nomain.o;\
 	fi
 
 ${OBJECTDIR}/_ext/577f3b86/Smart_MaxArrivalsField_nomain.o: ${OBJECTDIR}/_ext/577f3b86/Smart_MaxArrivalsField.o ../../source/applications/terminal/examples/arenaSmarts/Smart_MaxArrivalsField.cpp 
