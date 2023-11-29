@@ -286,13 +286,12 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
 }*/
-/*
-void ExtendedFSM::insertVariable(std::string name, int initialValue) {
+void ExtendedFSM::insertVariable(Variable* variable) {
     //auto variable = FSM_Variable(name, initialValue);
-    auto variable = FSM_Variable(_parentModel, name);
-    variable.setInitialValue(initialValue);
-    _variables->push_back(variable);
-}*/
+    //auto variable = FSM_Variable(_parentModel, name);
+    //variable.setInitialValue(initialValue);
+    _variables->insert(variable);
+}
 /*
 void ExtendedFSM::insertVariable(FSM_Variable* variable) {
     std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
@@ -304,7 +303,15 @@ void ExtendedFSM::insertVariable(FSM_Variable* variable) {
 }*/
 
 std::string ExtendedFSM::show(){
-    return "ExtendedFSM";
+
+    std::string txt = ModelDataDefinition::show() + ",assignments=[";
+	for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
+		txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
+	}
+	txt = txt.substr(0, txt.length() - 1) + "]";
+	return txt;
+
+    //return "ExtendedFSM";
 }
 
 bool ExtendedFSM::_check(std::string* errorMessage){
@@ -313,9 +320,18 @@ bool ExtendedFSM::_check(std::string* errorMessage){
     return resultAll;
 }
 
+
 void ExtendedFSM::_initBetweenReplications(){}
 
+void ExtendedFSM::addVariable(Variable* var){
+    //_check("ERROR MESSAGE TEST");
+
+    _createInternalAndAttachedData();
+}
+
 void ExtendedFSM::_createInternalAndAttachedData(){
+
+    std::cout << "ENTREI _createInternalAndAttachedData" << std::endl;
     ModelDataManager* elems = _parentModel->getDataManager();
 	for (Assignment* ass : *_assignments->list()) {
 		ModelDataDefinition* elem;
@@ -371,6 +387,7 @@ ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(m
 }
 
 void ExtendedFSM::useEFSM() {
+    /*
     for(auto var: *_variables){
         _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
     }
@@ -381,5 +398,5 @@ void ExtendedFSM::useEFSM() {
         double value = _parentModel->parseExpression(it->first);
         auto var = std::make_pair(it->first, value);
         _variables->insert(it, var);
-    }
+    }*/
 }

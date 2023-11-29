@@ -58,11 +58,12 @@ public: /// new public user methods for this component
 		_currentState = state;
 	}
 
+/*
     void insertNewVariable(std::string variableName, double variableValue) {
         auto var = std::make_pair(variableName, variableValue);
         _variables->insert(var);
     }
-
+*/
     void insertState(FSM_State* state){
         _states->push_back(state);
     }
@@ -85,7 +86,7 @@ public: /// new public user methods for this component
     
     //void insertState(FSM_State* state);
     //void insertTransition(FSM_Transition* transition);
-    //void insertVariable(FSM_Variable* variable);
+    void insertVariable(Variable* variable);
 
     std::string trim(const std::string& str, const std::string& whitespace);
 
@@ -97,6 +98,8 @@ public: /// static public methods that must have implementations (Load and New j
     static PluginInformation* GetPluginInformation();
     static ModelDataDefinition* LoadInstance(Model* model, PersistenceRecord *fields);
     static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
+
+    void addVariable(Variable* var);
 
 protected: /// virtual protected method that must be overriden
     virtual bool _loadInstance(PersistenceRecord *fields);
@@ -121,10 +124,11 @@ private:
     std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
     std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
     //std::vector<FSM_Variable*>* _variables = new std::vector<FSM_Variable*>;
-    std::map<std::string,double>* _variables;
+    //std::map<std::string,double>* _variables;
 
-	List<Assignment*>* _assignments = new List<Assignment*>();
+	List<Variable*>* _variables = new List<Variable*>();
 
+    List<Assignment*>* _assignments = new List<Assignment*>();
 
     FSM_State* _currentState;
 
