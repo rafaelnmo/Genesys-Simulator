@@ -20,13 +20,15 @@
 #include "terminal/examples/smarts/Smart_Buffer.h"
 
 //#include "terminal/examples/smarts/Smart_ExtendedFSM.h"
-//#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
+#include "terminal/examples/smarts/Smart_FiniteStateMachine.h"
 #include "terminal/examples/smarts/Smart_EFSM1.h"
 #include "terminal/examples/smarts/Smart_EFSM2.h"
+#include "terminal/examples/smarts/Smart_Buffer.h"
 
 #include "terminal/examples/smarts/Smart_Dummy.h"
 #include "terminal/examples/smarts/Smart_Record.h"
 #include "terminal/examples/smarts/Smart_LSODE.h"
+#include "terminal/examples/smarts/Smart_Failures.h"
 
 #include "terminal/examples/smarts/Smart_AssignWriteSeizes.h"
 
@@ -46,7 +48,10 @@ template <> struct TraitsApp<GenesysApplication_if> {
     //typedef Smart_ExtendedFSM Application;
     //typedef Smart_FiniteStateMachine Application;
     //typedef Smart_Buffer Application;
-    typedef Smart_EFSM1 Application;
+    //typedef Smart_FiniteStateMachine Application;
+	typedef Smart_EFSM1 Application;
+	//typedef Smart_Buffer Application;
+	//typedef Smart_Failures Application;
 	//typedef Smart_AssignWriteSeizes Application;
 	//typedef Smart_LSODE Application;
 	//typedef Smart_Record Application;
