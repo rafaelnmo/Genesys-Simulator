@@ -331,7 +331,7 @@ void ExtendedFSM::addVariable(Variable* var){
 
 void ExtendedFSM::_createInternalAndAttachedData(){
 
-    std::cout << "ENTREI _createInternalAndAttachedData" << std::endl;
+    //std::cout << "ENTREI _createInternalAndAttachedData" << std::endl;
     ModelDataManager* elems = _parentModel->getDataManager();
 	for (Assignment* ass : *_assignments->list()) {
 		ModelDataDefinition* elem;
@@ -347,6 +347,10 @@ void ExtendedFSM::_createInternalAndAttachedData(){
 		if (elem != nullptr) {
 			this->_attachedDataInsert(name + "_" + ass->getDestination(), elem);
 		}
+	}
+
+    for (Variable* variable : *_variables->list()) {
+		_attachedDataInsert(getName() + "." + variable->getName(), variable);
 	}
 
 }

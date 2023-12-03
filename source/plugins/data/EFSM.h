@@ -46,9 +46,9 @@ public: /// new public user methods for this component
         return _transitions;
     }
 
-    // std::vector<FSM_Variable*>* getVariables() {
-    //     return _variables;
-    // }
+    List<Variable*>* getVariables() {
+         return _variables;
+    }
 
     std::string getCurrentState(){
         return _currentState->getName();
