@@ -43,6 +43,7 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
     } catch (...) {
         res = false;
     }
+    return res;
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
