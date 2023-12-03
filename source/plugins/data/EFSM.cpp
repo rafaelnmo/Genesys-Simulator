@@ -391,14 +391,14 @@ ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(m
 }
 
 void ExtendedFSM::useEFSM() {
-    /*
-    for(auto var: *_variables){
+    
+    /*for(auto var: *_variables){
         _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
-    }
+    }*/
 
     _currentState = _currentState->fire();
 
-    for(auto it = _variables->begin(); it != _variables->end(); ++it) {
+    /*for(auto it = _variables->begin(); it != _variables->end(); ++it) {
         double value = _parentModel->parseExpression(it->first);
         auto var = std::make_pair(it->first, value);
         _variables->insert(it, var);
