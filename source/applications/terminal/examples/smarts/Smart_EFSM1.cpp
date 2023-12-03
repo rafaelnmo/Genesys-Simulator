@@ -110,9 +110,9 @@ int Smart_EFSM1::main(int argc, char** argv) {
     transition3->getConnections()->insert(state1);
 
     FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
-    modalmodel1->setEFSM(efsm1);
+    modalmodel1->setEFSMData(efsm1);
 
-    modalmodel1->CreateInternalData(modalmodel1);
+    //modalmodel1->CreateInternalData(modalmodel1);
 	modalmodel1->show();
 
     std::cout << "INTERNAL NAME: " << modalmodel1->getInternalDataDefinition()->getName() << "\n";
