@@ -58,21 +58,21 @@ int Smart_EFSM1::main(int argc, char** argv) {
     //create1->getConnections()->insert(assign1);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
-    var1->insertDimentionSize(2); // Not sure why this
-	var1->setInitialValue(1.0, "0"); //x[0] = 1.0
-	var1->setInitialValue(0.0, "10"); //x[1] = 0.0
+    //var1->insertDimentionSize(2); // Not sure why this
+	var1->setInitialValue(10.0, "carsParked"); //x[0] = 1.0
+	//var1->setInitialValue(0.0, "10"); //x[1] = 0.0
 
 	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
-    var2->insertDimentionSize(2);
-	var2->setInitialValue(1.0, "0"); //x[0] = 1.0
-	var2->setInitialValue(0.0, "20"); //x[1] = 0.0
+    //var2->insertDimentionSize(2);
+	var2->setInitialValue(20.0, "maxCarsParked"); //x[0] = 1.0
+	//var2->setInitialValue(0.0, "20"); //x[1] = 0.0
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm1->insertVariable(var1);
     efsm1->insertVariable(var2);
     
     efsm1->CreateInternalData(efsm1);
-    efsm1->CreateInternalData(efsm1);
+    //efsm1->CreateInternalData(efsm1);
 
     std::cout << "SHOW: " << efsm1->show() << "\n";
     
