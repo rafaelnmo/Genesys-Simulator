@@ -27,7 +27,7 @@ public:
 		return _name;
 	}
 
-	void setEFSM(ExtendedFSM* efsm);
+	void setEFSMData(ExtendedFSM* efsm);
 
 	ExtendedFSM* getEFSM() const;
 

@@ -53,7 +53,7 @@ std::string FSM_ModalModel::show(){
     return "Variable";
 }
 
-void FSM_ModalModel::setEFSM(ExtendedFSM* efsm) {
+void FSM_ModalModel::setEFSMData(ExtendedFSM* efsm) {
 	_efsm = efsm;
 }
 
@@ -62,9 +62,19 @@ ExtendedFSM* FSM_ModalModel::getEFSM() const {
 }
 
 void FSM_ModalModel::_createInternalAndAttachedData() {
-	if (_efsm == nullptr) {
-		PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
+	
+	PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
+	// internal data
+	/*if (_efsm == nullptr) {
 		_efsm = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "efsm");
-		_internalDataInsert("JustaDummy", _efsm);
+		_internalDataInsert("EFSM", _efsm);
+	}*/
+
+	// attached
+	if (_efsm == nullptr) {
+		_efsm = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "efsm");
 	}
+
+	_attachedDataInsert("EFSM", _efsm);
+
 }
