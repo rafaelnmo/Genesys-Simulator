@@ -19,6 +19,8 @@
 #include "../../../../plugins/components/FSM_Variable.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_ModalModel.h"
+#include "../../../../plugins/components/Delay.h"
+
 
 
 
@@ -56,6 +58,11 @@ int Smart_EFSM1::main(int argc, char** argv) {
     Assignment* assigment1 = new Assignment("hasCar", "1");
     assign1->getAssignments()->insert(assigment1);
     //create1->getConnections()->insert(assign1);
+
+	Delay* delay1 = plugins->newInstance<Delay>(model); // the default delay time is 1.0 s
+    delay1->setDescription("Browse");
+    delay1->setDelayExpression("tria(3, 7, 11)");
+    delay1->setDelayTimeUnit(Util::TimeUnit::minute);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
     //var1->insertDimentionSize(2); // Not sure why this
@@ -132,14 +139,15 @@ int Smart_EFSM1::main(int argc, char** argv) {
     
     // connect model components to create a "workflow"
     create1->getConnections()->insert(assign1);
-    assign1->getConnections()->insert(modalmodel1);
+    assign1->getConnections()->insert(delay1);
+    delay1->getConnections()->insert(modalmodel1);
     modalmodel1->getConnections()->insert(dispose1);
 
 
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(3);
 	model->getSimulation()->setReplicationLength(5, Util::TimeUnit::second);
-	//model->getSimulation()->setTerminatingCondition("count(Dispose_1.CountNumberIn)>30");
+	model->getSimulation()->setTerminatingCondition("");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM1.gen");
 	model->getSimulation()->start();	

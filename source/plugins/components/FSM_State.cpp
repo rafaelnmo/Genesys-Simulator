@@ -49,7 +49,7 @@ bool FSM_State::_loadInstance(PersistenceRecord *fields) {
 }
 void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
     traceSimulation(this, "I'm just a dummy model and I'll just send the entity forward");
-	//this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection());
+	this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection());
 }
 
 std::string FSM_State::show(){
