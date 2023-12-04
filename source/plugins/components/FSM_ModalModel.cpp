@@ -45,10 +45,8 @@ bool FSM_ModalModel::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_ModalModel::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-	std::cout << _efsm->getName() << std::endl;
-   //_efsm->useEFSM();
+   _efsm->useEFSM(entity);
    this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection()); 
-
 }
 
 std::string FSM_ModalModel::show(){

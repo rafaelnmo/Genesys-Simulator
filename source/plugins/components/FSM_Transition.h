@@ -9,37 +9,9 @@
 
 class FSM_Transition : public ModelComponent {
 public:
-
-	// struct TransitionType {
-	// 	bool isdefault = false;
-	// 	bool nondeterministic = false;
-	// 	bool immediatbe = false;
-	// 	bool preemptive = false;
-	// 	bool history = false;
-	// 	bool error = false;
-	// 	bool termination = false;
-	// };
-public:
-
-	/*FSM_Transition(Model* model, std::string guardExpression, std::string originState, std::string destinationState, std::string outputActions, std::string setActions):
-		_guardExpression(guardExpression),
-		_originState(originState),
-		_destinationState(destinationState),
-		_outputActions(outputActions),
-		_setActions(setActions)
-	{}*/
-
 	FSM_Transition(Model* model, std::string name = "");
 
-
 	virtual ~FSM_Transition() = default;
-
-		// if (transitionType == nullptr)
-		// 	transitionType = new TransitionType();
-		// _type = transitionType;
-
-    //bool _loadInstance(PersistenceRecord *fields);
-    //void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 
 	// getters
     std::string getOriginState() {
@@ -82,9 +54,6 @@ public:
     void setSetActions(std::string setActions) {
          _setActions = setActions;
     }
-
-	std::string trim(const std::string& str, const std::string& whitespace);
-
 
 /* Transition:
   Nondeterministic: if not must be the only enabled transition.
@@ -149,6 +118,7 @@ public: // static
 
 public: // virtual
 	virtual std::string show();
+
 protected: /// virtual protected method that must be overriden
 	virtual bool _loadInstance(PersistenceRecord *fields);
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);

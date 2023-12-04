@@ -111,7 +111,6 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
     FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
     modalmodel1->setEFSMData(efsm1);
-
     delay1->getConnections()->insert(modalmodel1);
 
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);

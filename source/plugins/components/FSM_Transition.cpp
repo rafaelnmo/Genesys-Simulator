@@ -47,7 +47,6 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    traceSimulation(this, "I'm just a dummy model and I'll just send the entity forward");
     this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection());
 }
 
@@ -55,7 +54,7 @@ std::string FSM_Transition::show(){
     return "Transition";
 }
 
-std::string FSM_Transition::trim(const std::string& str, const std::string& whitespace = " \t") {
+std::string trim(const std::string& str, const std::string& whitespace = " \t") {
     const auto strBegin = str.find_first_not_of(whitespace);
     if (strBegin == std::string::npos)
         return "";
@@ -71,17 +70,17 @@ bool FSM_Transition::isEnabled(){
         return true;
     }
 
-    auto expression_ss = std::stringstream();
-    expression_ss << _guardExpression;
-    auto actions = std::string();
-    while(std::getline(expression_ss, actions, '|')) {
-        actions = trim(actions);
-        auto actions_ss = std::stringstream();
-        actions_ss << actions;
-        if (check(actions_ss)) {
-            return true;
-        }
-    }
+    //auto expression_ss = std::stringstream();
+    //expression_ss << _guardExpression;
+    //auto actions = std::string();
+    //while(std::getline(expression_ss, actions, '|')) {
+    //    actions = trim(actions);
+    //    auto actions_ss = std::stringstream();
+    //    actions_ss << actions;
+    //    if (check(actions_ss)) {
+    //        return true;
+    //    }
+    //}
 
     return false;
 }

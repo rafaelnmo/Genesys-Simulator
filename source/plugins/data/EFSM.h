@@ -35,8 +35,8 @@ public: /// constructors
 
 public: /// new public user methods for this component
     //std::pair<bool,std::map<std::string,int>> fire(std::map<std::string,int> inputs);
-    bool fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions);
-    bool fire();
+    //bool fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions);
+    //bool fire();
 
     std::vector<FSM_State*>* getStates() {
         return _states;
@@ -72,8 +72,6 @@ public: /// new public user methods for this component
         _transitions->push_back(transition);
     }
 
-    void useEFSM();
-    void postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs);
     //bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
     //bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
     //void getOutputValues(std::string actions, std::map<std::string,int>& inputs, std::map<std::string,int>& outputValues);
@@ -87,9 +85,8 @@ public: /// new public user methods for this component
     //void insertState(FSM_State* state);
     //void insertTransition(FSM_Transition* transition);
     void insertVariable(Variable* variable);
-
-    std::string trim(const std::string& str, const std::string& whitespace);
-
+    void useEFSM(Entity* entity);
+    void reset();
 
 public: /// virtual public methods
     virtual std::string show();

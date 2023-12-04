@@ -47,74 +47,91 @@ bool FSM_State::_loadInstance(PersistenceRecord *fields) {
 
     return res;
 }
-void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    traceSimulation(this, "I'm just a dummy model and I'll just send the entity forward");
-	this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection());
-}
 
 std::string FSM_State::show(){
     return "show";
 }
 
-void FSM_State::setIsInitialState(bool isInitialState) {
+void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){}
+
+void FSM_State::setAsInitialState() {
     _efsm->setCurrentState(this);
-    //_isInitialState = isInitialState;
 }
 
-FSM_State* FSM_State::fire(bool mustBeImmediate){
-	//FSM_Transition let;
-	//auto enableds = std::vector<FSM_Transition*>{};
+void FSM_State::setRefinementName(ExtendedFSM* refinement) {
+    _refinement = refinement;
+}
+
+void FSM_State::fire(Entity* entity, bool mustBeImmediate){
 	auto enableds = 0;
-	auto hasDeterministic = false;
-	//auto hasNondefault = false; // to ignore default
-	auto hasDefault = false; // found a default to use if none is enabled
+	auto hasDeterministicEnabled = false;
+	auto hasDefaultConnected = false; // found a default to use if none is enabled
 	auto connections = this->getConnections()->connections();
 
 	auto transitionDefault = dynamic_cast<FSM_Transition*>(connections->begin()->second->component);
 	auto transitionChosen = transitionDefault;
 
 	if (transitionDefault->isDefault()) {
-		hasDefault = true;
+		hasDefaultConnected = true;
 	}
+
 	for(auto connection: *connections){
 		auto transition = dynamic_cast<FSM_Transition*>(connection.second->component);
-		if (not hasDefault and transition->isDefault()) {
+		if (not hasDefaultConnected and transition->isDefault()) {
 			transitionDefault = transition;
-			hasDefault = true;
+			hasDefaultConnected = true;
 		}
 
-		if (transition->isEnabled()) {
-			//enableds.push_back(transition);
-			++enableds;
+		if  (transition->isEnabled() and 
+                (not mustBeImmediate or 
+                    (mustBeImmediate and transition->isImmediate())
+                )
+            ){
 			if (not transition->isNondeterministic()) {
-				hasDeterministic = true;
+				hasDeterministicEnabled = true;
 			}
 			if (not transition->isDefault()) {
 				//hasNondefault = true;
 				transitionChosen = transition;
-			}
+			} else if (enableds <= 0 and mustBeImmediate)
+            {
+                transitionChosen = transition;
+            }
+			++enableds;
+            
 		}
 	}
 
-	if (hasDeterministic and enableds > 1) {
+	if (hasDeterministicEnabled and enableds > 1) {
 		throw std::domain_error("More than a transition and at least one is deterministic.");
 	}
 
-	if (enableds <= 0) {
-		transitionChosen = transitionDefault;
-	}
-/*
-	if (not transitionChosen->isPreemptive()) {
-		_refinementName->useEFSM();
-	}
-*/
-	//_parentModel->parseExpression(transitionChosen->getOutputActions());
+    if(enableds <= 0) {
+        if (mustBeImmediate) {
+            _efsm->setCurrentState(this);
+            return;
+        } else {
+            transitionChosen = transitionDefault;
+        }
+    }
 
-	//postfire
-	//_parentModel->parseExpression(transitionChosen->getSetActions());
+    if (not transitionChosen->isPreemptive()) {
+        _refinement->useEFSM(entity);
+    }
 
-	connections = transitionChosen->getConnections()->connections();
-	auto stateDestination = dynamic_cast<FSM_State*>(connections->begin()->second->component);
-	return stateDestination; //->fire(true);
+    //_parentModel->parseExpression(transitionChosen->getOutputActions());
+
+    //postfire
+    //_parentModel->parseExpression(transitionChosen->getSetActions());
+
+    connections = transitionChosen->getConnections()->connections();
+    auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
+
+    if (not transitionChosen->isHistory()) {
+        nextState->_refinement->reset();
+    }
+
+    nextState->fire(entity, true);
+    //return stateDestination; //->fire(true);
 }
 

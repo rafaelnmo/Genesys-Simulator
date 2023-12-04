@@ -29,13 +29,11 @@ public:
         return _isFinalState;
     }
 
-    void setIsInitialState(bool isInitialState);
+    void setAsInitialState();
 
-    // void setRefinementName(std::string refinementName) {
-    //  _refinementName = refinementName;
-    // }
+    void setRefinementName(ExtendedFSM* refinement);
 
-    FSM_State* fire(bool mustBeImmediate = false);
+    void fire(Entity* entity, bool mustBeImmediate = false);
 
 public: // static
     static PluginInformation* GetPluginInformation();
@@ -54,6 +52,6 @@ private:
     std::string _name;
     bool _isFinalState = false;
     ExtendedFSM* _efsm;
-    ExtendedFSM* _refinementName;
+    ExtendedFSM* _refinement;
 };
 #endif /* FSM_STATE_H */

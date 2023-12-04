@@ -15,8 +15,8 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 #endif
 
 
+/*
 bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions) {
-    /*
     for (auto state: *_states) {
         if (state->getName() == _currentState->getName() and state->isFinalState()){
             return true;
@@ -43,33 +43,17 @@ bool ExtendedFSM::fire(std::map<std::string,int> inputs, std::map<std::string,in
     if (transitionFound) {
         postfire(destinationState, setActions, inputs);
     }
-*/
     return false;
 }
+*/
 
-bool ExtendedFSM::fire() {
-    auto inputs = std::map<std::string,int>{};
-    auto outputActions = std::map<std::string,int>{};
-
-    return fire(inputs, outputActions);
-}
-
-void ExtendedFSM::postfire(std::string destinationState, std::string setActions, std::map<std::string,int>& inputs){
-    //updateVariables(setActions, inputs);
-    _currentState->getName() = destinationState;
-}
-
-std::string ExtendedFSM::trim(const std::string& str, const std::string& whitespace = " \t") {
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return "";
-
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
-}
-
+//bool ExtendedFSM::fire() {
+//    auto inputs = std::map<std::string,int>{};
+//    auto outputActions = std::map<std::string,int>{};
+//
+//    return fire(inputs, outputActions);
+//}
+//
 void print(std::string name, std::string value){
     std::cout << name <<": " << value << std::endl;
 }
@@ -286,12 +270,6 @@ void ExtendedFSM::insertState(std::string name, bool isFinalState = false, bool 
     //std::cout << "transition: " << transition <<"\n";
     _transitions->push_back(transition);
 }*/
-void ExtendedFSM::insertVariable(Variable* variable) {
-    //auto variable = FSM_Variable(name, initialValue);
-    //auto variable = FSM_Variable(_parentModel, name);
-    //variable.setInitialValue(initialValue);
-    _variables->insert(variable);
-}
 /*
 void ExtendedFSM::insertVariable(FSM_Variable* variable) {
     std::cout << "VARIABLE NAME: " << variable->getName() << "\n";
@@ -302,36 +280,18 @@ void ExtendedFSM::insertVariable(FSM_Variable* variable) {
 
 }*/
 
-std::string ExtendedFSM::show(){
+ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {}
 
+std::string ExtendedFSM::show(){
     std::string txt = ModelDataDefinition::show() + ",assignments=[";
 	for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
 		txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
 	}
 	txt = txt.substr(0, txt.length() - 1) + "]";
 	return txt;
-
-    //return "ExtendedFSM";
-}
-
-bool ExtendedFSM::_check(std::string* errorMessage){
-    bool resultAll = true;
-    *errorMessage += "";
-    return resultAll;
-}
-
-
-void ExtendedFSM::_initBetweenReplications(){}
-
-void ExtendedFSM::addVariable(Variable* var){
-    //_check("ERROR MESSAGE TEST");
-
-    _createInternalAndAttachedData();
 }
 
 void ExtendedFSM::_createInternalAndAttachedData(){
-
-    //std::cout << "ENTREI _createInternalAndAttachedData" << std::endl;
     ModelDataManager* elems = _parentModel->getDataManager();
 	for (Assignment* ass : *_assignments->list()) {
 		ModelDataDefinition* elem;
@@ -386,21 +346,19 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
     return newElement;
 }
 
-ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {
-    //_elems = elems;
+bool ExtendedFSM::_check(std::string* errorMessage){
+    bool resultAll = true;
+    *errorMessage += "";
+    return resultAll;
 }
 
-void ExtendedFSM::useEFSM() {
-    
-    /*for(auto var: *_variables){
-        _parentModel->parseExpression(var.first + "=" + std::to_string(var.second));
-    }*/
+void ExtendedFSM::_initBetweenReplications(){}
+void ExtendedFSM::reset(){}
 
-    _currentState = _currentState->fire();
+void ExtendedFSM::insertVariable(Variable* variable) {
+    _variables->insert(variable);
+}
 
-    /*for(auto it = _variables->begin(); it != _variables->end(); ++it) {
-        double value = _parentModel->parseExpression(it->first);
-        auto var = std::make_pair(it->first, value);
-        _variables->insert(it, var);
-    }*/
+void ExtendedFSM::useEFSM(Entity* entity) {
+    _currentState->fire(entity);
 }
