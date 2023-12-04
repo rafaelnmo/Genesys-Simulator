@@ -79,7 +79,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
-    transition1->setGuardExpression("hasCar = 1 & carsParked < maxCarsParked");
+    transition1->setGuardExpression("(hasCar = 1) and (carsParked < maxCarsParked)");
     //transition1->setOriginState("Counting");
     //transition1->setDestinationState("Counting");
     transition1->setOutputActions("hasCar = 0");

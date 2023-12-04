@@ -85,6 +85,7 @@ bool FSM_Transition::isEnabled(){
     return false;
 }
 
+/*
 bool FSM_Transition::check(std::stringstream& actions_ss) {
     auto action = std::string();
     while(std::getline(actions_ss, action, '&')) {
@@ -136,7 +137,17 @@ bool FSM_Transition::check(std::stringstream& actions_ss) {
 
     }
     return true;
+}*/
+
+bool FSM_Transition::_check(std::string* errorMessage){
+	bool resultAll = true;
+    resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
+    //resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
+    ///resultAll &= _parentModel->checkExpression(_setActions, "Set Actions expression", errorMessage);
+
+	return resultAll;
 }
+
 
 void FSM_Transition::executeActions(std::string actions){
     if (actions == "") {

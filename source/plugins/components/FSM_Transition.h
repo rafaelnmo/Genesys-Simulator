@@ -124,6 +124,7 @@ protected: /// virtual protected method that must be overriden
 	virtual void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
 	/// new virtual methods for all ModelComponents
 	virtual void _onDispatchEvent(Entity* entity, unsigned int inputPortNumber); ///< This method is only for ModelComponents, not ModelDataElements
+	virtual bool _check(std::string* errorMessage);
 
 private:
 	std::string _guardExpression;
