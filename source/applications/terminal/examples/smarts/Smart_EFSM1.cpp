@@ -41,7 +41,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -57,29 +57,25 @@ int Smart_EFSM1::main(int argc, char** argv) {
     assign1->setDescription("Verify if has car");
     Assignment* assigment1 = new Assignment("hasCar", "1");
     assign1->getAssignments()->insert(assigment1);
-    //create1->getConnections()->insert(assign1);
+    create1->getConnections()->insert(assign1);
 
 	Delay* delay1 = plugins->newInstance<Delay>(model); // the default delay time is 1.0 s
     delay1->setDescription("Browse");
     delay1->setDelayExpression("tria(3, 7, 11)");
     delay1->setDelayTimeUnit(Util::TimeUnit::minute);
+    assign1->getConnections()->insert(delay1);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
-    //var1->insertDimentionSize(2); // Not sure why this
 	var1->setInitialValue(10.0, "carsParked"); //x[0] = 1.0
-	//var1->setInitialValue(0.0, "10"); //x[1] = 0.0
 
 	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
-    //var2->insertDimentionSize(2);
 	var2->setInitialValue(20.0, "maxCarsParked"); //x[0] = 1.0
-	//var2->setInitialValue(0.0, "20"); //x[1] = 0.0
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm1->insertVariable(var1);
     efsm1->insertVariable(var2);
     
     efsm1->CreateInternalData(efsm1);
-    //efsm1->CreateInternalData(efsm1);
 
     std::cout << "SHOW: " << efsm1->show() << "\n";
     
@@ -119,31 +115,12 @@ int Smart_EFSM1::main(int argc, char** argv) {
     FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
     modalmodel1->setEFSMData(efsm1);
 
-    //modalmodel1->CreateInternalData(modalmodel1);
-	modalmodel1->show();
-
-    std::cout << "INTERNAL NAME: " << modalmodel1->getInternalDataDefinition()->getName() << "\n";
-	//modalmodel1->getInternalDataDefinition()->getName();
-	//modalmodel1->getInternalDataDefinition()->show();
-    std::cout << "INTERNAL NAME: " << modalmodel1->getInternalDataDefinition()->show() << "\n";
-
-
-
-    //assign1->getConnections()->insert(modalmodel1);
+    delay1->getConnections()->insert(modalmodel1);
 
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
-	//modalmodel1->getConnections()->insert(dispose1);
     dispose1->setReportStatistics(true);
-	
-    //std::cout << "\nplugins: " << plugins->front() << "\n";
-    
-    // connect model components to create a "workflow"
-    create1->getConnections()->insert(assign1);
-    assign1->getConnections()->insert(delay1);
-    delay1->getConnections()->insert(modalmodel1);
     modalmodel1->getConnections()->insert(dispose1);
-
-
+	
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(3);
 	model->getSimulation()->setReplicationLength(5, Util::TimeUnit::second);
