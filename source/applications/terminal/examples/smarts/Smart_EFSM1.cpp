@@ -41,7 +41,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -66,19 +66,16 @@ int Smart_EFSM1::main(int argc, char** argv) {
     assign1->getConnections()->insert(delay1);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
-	var1->setInitialValue(10.0, "carsParked"); //x[0] = 1.0
+	var1->setInitialValue(10.0, "carsParked"); 
 
 	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
-	var2->setInitialValue(20.0, "maxCarsParked"); //x[0] = 1.0
+	var2->setInitialValue(20.0, "maxCarsParked"); 
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm1->insertVariable(var1);
     efsm1->insertVariable(var2);
     
-    efsm1->CreateInternalData(efsm1);
-
-    std::cout << "SHOW: " << efsm1->show() << "\n";
-    
+    efsm1->CreateInternalData(efsm1);   
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
@@ -123,7 +120,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(3);
-	model->getSimulation()->setReplicationLength(5, Util::TimeUnit::second);
+	model->getSimulation()->setReplicationLength(20, Util::TimeUnit::minute);
 	model->getSimulation()->setTerminatingCondition("");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM1.gen");
