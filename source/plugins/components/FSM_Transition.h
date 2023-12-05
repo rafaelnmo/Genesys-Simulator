@@ -3,9 +3,12 @@
 
 #include "../../kernel/simulator/ModelComponent.h"
 #include "../../kernel/simulator/Model.h"
+#include "FSM_State.h"
+#include "../data/EFSM.h"
 
 #include <string>
 
+class ExtendedFSM;
 
 class FSM_Transition : public ModelComponent {
 public:
@@ -54,6 +57,8 @@ public:
     void setSetActions(std::string setActions) {
          _setActions = setActions;
     }
+
+    void setEFSM(ExtendedFSM* refinement);
 
 /* Transition:
   Nondeterministic: if not must be the only enabled transition.
@@ -137,6 +142,7 @@ private:
 	bool _preemptive = false;
 	bool _history = false;
 	bool _immediate = false;
+    ExtendedFSM* _efsm;
 };
 
 

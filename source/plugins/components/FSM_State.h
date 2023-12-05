@@ -3,6 +3,7 @@
 
 #include "../../kernel/simulator/ModelComponent.h"
 #include "FSM_Transition.h"
+#include "../data/EFSM.h"
 #include <string>
 
 class ExtendedFSM;
@@ -29,11 +30,14 @@ public:
         return _isFinalState;
     }
 
+    void setMustBeImmediate() {
+        _mustBeImmediate = true;
+    }
+
     void setAsInitialState();
-
-    void setRefinementName(ExtendedFSM* refinement);
-
-    void fire(Entity* entity, bool mustBeImmediate = false);
+    void setEFSM(ExtendedFSM* refinement);
+    void setRefinement(ExtendedFSM* refinement);
+    ExtendedFSM* getRefinement();
 
 public: // static
     static PluginInformation* GetPluginInformation();
@@ -51,6 +55,7 @@ protected: /// virtual protected method that must be overriden
 private:
     std::string _name;
     bool _isFinalState = false;
+    bool _mustBeImmediate = false;
     ExtendedFSM* _efsm;
     ExtendedFSM* _refinement;
 };

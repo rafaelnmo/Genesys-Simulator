@@ -47,7 +47,20 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    this->_parentModel->sendEntityToComponent(entity, this->getConnections()->getFrontConnection());
+    //_parentModel->parseExpression(transitionChosen->getOutputActions());
+
+    //postfire
+    //_parentModel->parseExpression(transitionChosen->getSetActions());
+
+    auto connections = getConnections()->connections();
+    auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
+
+    if (not isHistory()) {
+        nextState->getRefinement()->reset();
+    }
+
+    nextState->setMustBeImmediate();
+   this->_parentModel->sendEntityToComponent(entity, nextState); 
 }
 
 std::string FSM_Transition::show(){
@@ -63,6 +76,10 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
     const auto strRange = strEnd - strBegin + 1;
 
     return str.substr(strBegin, strRange);
+}
+
+void FSM_State::setEFSM(ExtendedFSM* efsm) {
+    _efsm = efsm;
 }
 
 bool FSM_Transition::isEnabled(){

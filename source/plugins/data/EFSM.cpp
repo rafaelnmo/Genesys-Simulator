@@ -284,34 +284,34 @@ ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(m
 
 std::string ExtendedFSM::show(){
     std::string txt = ModelDataDefinition::show() + ",assignments=[";
-	for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
-		txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
-	}
-	txt = txt.substr(0, txt.length() - 1) + "]";
-	return txt;
+    for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
+        txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
+    }
+    txt = txt.substr(0, txt.length() - 1) + "]";
+    return txt;
 }
 
 void ExtendedFSM::_createInternalAndAttachedData(){
     ModelDataManager* elems = _parentModel->getDataManager();
-	for (Assignment* ass : *_assignments->list()) {
-		ModelDataDefinition* elem;
-		std::string name;
-		if (ass->isAttributeNotVariable()) {
-			name = "Attribute";
-			elem = elems->getDataDefinition(Util::TypeOf<Attribute>(), ass->getDestination());
-		} else {
-			name = "Variable";
-			elem = elems->getDataDefinition(Util::TypeOf<Variable>(), ass->getDestination());
-		}
-		//assert elem != nullptr
-		if (elem != nullptr) {
-			this->_attachedDataInsert(name + "_" + ass->getDestination(), elem);
-		}
-	}
+    for (Assignment* ass : *_assignments->list()) {
+        ModelDataDefinition* elem;
+        std::string name;
+        if (ass->isAttributeNotVariable()) {
+            name = "Attribute";
+            elem = elems->getDataDefinition(Util::TypeOf<Attribute>(), ass->getDestination());
+        } else {
+            name = "Variable";
+            elem = elems->getDataDefinition(Util::TypeOf<Variable>(), ass->getDestination());
+        }
+        //assert elem != nullptr
+        if (elem != nullptr) {
+            this->_attachedDataInsert(name + "_" + ass->getDestination(), elem);
+        }
+    }
 
     for (Variable* variable : *_variables->list()) {
-		_attachedDataInsert(getName() + "." + variable->getName(), variable);
-	}
+        _attachedDataInsert(getName() + "." + variable->getName(), variable);
+    }
 
 }
 
@@ -348,7 +348,14 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
 
 bool ExtendedFSM::_check(std::string* errorMessage){
     bool resultAll = true;
-    *errorMessage += "";
+//    int i = 0;
+//    for (auto* var: *_variables->list()) {
+//        auto data = _parentModel->getDataManager()->getDataDefinition(Util::TypeOf<Variable>(), var->getName());
+//            if (data == nullptr) {
+//                data = _parentModel->getParentSimulator()->getPlugins()->newInstance<Variable>(_parentModel, var->getDestination());
+//                _parentModel->getDataManager()->insert(data);
+//            }
+//    }
     return resultAll;
 }
 
@@ -359,6 +366,25 @@ void ExtendedFSM::insertVariable(Variable* variable) {
     _variables->insert(variable);
 }
 
-void ExtendedFSM::useEFSM(Entity* entity) {
-    _currentState->fire(entity);
+std::string ExtendedFSM::getCurrentState(){
+    return _currentState->getName();
+}
+
+
+void ExtendedFSM::setCurrentState(FSM_State* state) {
+    _currentState = state;
+}
+
+void ExtendedFSM::leaveEFSM(Entity* entity, FSM_State* newCurrentState) {
+    setCurrentState(newCurrentState);
+
+    auto returnComponent = _returnModels->back();
+    _returnModels->pop_back();
+   this->_parentModel->sendEntityToComponent(entity, returnComponent); 
+}
+
+void ExtendedFSM::enterEFSM(Entity* entity, ModelComponent* returnState) {
+    _returnModels->push_back(returnState);
+    useEFSM(entity, _currentState);
+   this->_parentModel->sendEntityToComponent(entity, _currentState); 
 }

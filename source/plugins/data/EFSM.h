@@ -28,6 +28,8 @@
 #include <string>
 #include <iostream>
 
+class FSM_State;
+
 class ExtendedFSM : public ModelDataDefinition {
 public: /// constructors
     ExtendedFSM(Model* model, std::string name = "");
@@ -38,39 +40,34 @@ public: /// new public user methods for this component
     //bool fire(std::map<std::string,int> inputs, std::map<std::string,int>& outputActions);
     //bool fire();
 
-    std::vector<FSM_State*>* getStates() {
-        return _states;
-    }
+    //std::vector<FSM_State*>* getStates() {
+    //    return _states;
+    //}
 
-    std::vector<FSM_Transition*>* getTransitions() {
-        return _transitions;
-    }
+    //std::vector<FSM_Transition*>* getTransitions() {
+    //    return _transitions;
+    //}
 
     List<Variable*>* getVariables() {
          return _variables;
     }
 
-    std::string getCurrentState(){
-        return _currentState->getName();
-    }
+    std::string getCurrentState();
 
-	void setCurrentState(FSM_State* state) {
-		_currentState = state;
-	}
-
+	void setCurrentState(FSM_State* state);
 /*
     void insertNewVariable(std::string variableName, double variableValue) {
         auto var = std::make_pair(variableName, variableValue);
         _variables->insert(var);
     }
 */
-    void insertState(FSM_State* state){
-        _states->push_back(state);
-    }
+    //void insertState(FSM_State* state){
+    //    _states->push_back(state);
+    //}
 
-    void insertTransition(FSM_Transition* transition){
-        _transitions->push_back(transition);
-    }
+    //void insertTransition(FSM_Transition* transition){
+    //    _transitions->push_back(transition);
+    //}
 
     //bool parseAndCheck(std::string expression, std::map<std::string,int>& inputs);
     //bool check(std::stringstream& expression_ss, std::map<std::string,int>& inputs);
@@ -85,7 +82,9 @@ public: /// new public user methods for this component
     //void insertState(FSM_State* state);
     //void insertTransition(FSM_Transition* transition);
     void insertVariable(Variable* variable);
-    void useEFSM(Entity* entity);
+    void useEFSM(Entity* entity, ModelComponent* nextComponent, bool mustBeImmediate = false);
+    void enterEFSM(Entity* entity, ModelComponent* returnState);
+    void leaveEFSM(Entity* entity, FSM_State* newCurrentState);
     void reset();
 
 public: /// virtual public methods
@@ -118,8 +117,9 @@ private:
     //List<FSM_State*>* _states = new List<FSM_State*>();
     //List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
         
-    std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
-    std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
+    //std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
+    //std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
+
     //std::vector<FSM_Variable*>* _variables = new std::vector<FSM_Variable*>;
     //std::map<std::string,double>* _variables;
 
@@ -128,6 +128,7 @@ private:
     List<Assignment*>* _assignments = new List<Assignment*>();
 
     FSM_State* _currentState;
+    std::vector<ModelComponent*>* _returnModels = new std::vector<ModelComponent*>();
 
 };
 

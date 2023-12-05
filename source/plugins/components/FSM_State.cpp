@@ -1,6 +1,5 @@
 #include <stdexcept>
 #include "FSM_State.h"
-#include "../data/EFSM.h"
 
 ModelDataDefinition* FSM_State::NewInstance(Model* model, std::string name) {
 	return new FSM_State(model, name);
@@ -52,17 +51,23 @@ std::string FSM_State::show(){
     return "show";
 }
 
-void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){}
-
 void FSM_State::setAsInitialState() {
     _efsm->setCurrentState(this);
 }
 
-void FSM_State::setRefinementName(ExtendedFSM* refinement) {
+void FSM_State::setEFSM(ExtendedFSM* efsm) {
+    _efsm = efsm;
+}
+
+void FSM_State::setRefinement(ExtendedFSM* refinement) {
     _refinement = refinement;
 }
 
-void FSM_State::fire(Entity* entity, bool mustBeImmediate){
+ExtendedFSM* FSM_State::getRefinement() {
+    return _refinement;
+}
+
+void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
 	auto enableds = 0;
 	auto hasDeterministicEnabled = false;
 	auto hasDefaultConnected = false; // found a default to use if none is enabled
@@ -83,8 +88,8 @@ void FSM_State::fire(Entity* entity, bool mustBeImmediate){
 		}
 
 		if  (transition->isEnabled() and 
-                (not mustBeImmediate or 
-                    (mustBeImmediate and transition->isImmediate())
+                (not _mustBeImmediate or 
+                    (_mustBeImmediate and transition->isImmediate())
                 )
             ){
 			if (not transition->isNondeterministic()) {
@@ -93,7 +98,7 @@ void FSM_State::fire(Entity* entity, bool mustBeImmediate){
 			if (not transition->isDefault()) {
 				//hasNondefault = true;
 				transitionChosen = transition;
-			} else if (enableds <= 0 and mustBeImmediate)
+			} else if (enableds <= 0 and _mustBeImmediate)
             {
                 transitionChosen = transition;
             }
@@ -107,31 +112,20 @@ void FSM_State::fire(Entity* entity, bool mustBeImmediate){
 	}
 
     if(enableds <= 0) {
-        if (mustBeImmediate) {
-            _efsm->setCurrentState(this);
+        if (_mustBeImmediate) {
+            _mustBeImmediate = false;
+            _efsm->leaveEFSM(entity, this);
             return;
         } else {
             transitionChosen = transitionDefault;
         }
     }
+    _mustBeImmediate = false;
 
     if (not transitionChosen->isPreemptive()) {
-        _refinement->useEFSM(entity);
+        _refinement->enterEFSM(entity, transitionChosen);
     }
 
-    //_parentModel->parseExpression(transitionChosen->getOutputActions());
-
-    //postfire
-    //_parentModel->parseExpression(transitionChosen->getSetActions());
-
-    connections = transitionChosen->getConnections()->connections();
-    auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
-
-    if (not transitionChosen->isHistory()) {
-        nextState->_refinement->reset();
-    }
-
-    nextState->fire(entity, true);
-    //return stateDestination; //->fire(true);
+   this->_parentModel->sendEntityToComponent(entity, transitionChosen); 
 }
 
