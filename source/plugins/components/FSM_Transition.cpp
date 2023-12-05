@@ -56,7 +56,7 @@ void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumb
     auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
 
     if (not isHistory()) {
-        nextState->getRefinement()->reset();
+        nextState->resetRefinment();
     }
 
     nextState->setMustBeImmediate();

@@ -34,6 +34,7 @@ public:
         _mustBeImmediate = true;
     }
 
+    void resetRefinment();
     void setAsInitialState();
     void setEFSM(ExtendedFSM* efsm);
     void setRefinement(ExtendedFSM* refinement);

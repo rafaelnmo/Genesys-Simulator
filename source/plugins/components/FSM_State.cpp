@@ -52,8 +52,7 @@ std::string FSM_State::show(){
 }
 
 void FSM_State::setAsInitialState() {
-    // TODO
-    _efsm->setCurrentState(this);
+    _efsm->setInitialState(this);
 }
 
 void FSM_State::setEFSM(ExtendedFSM* efsm) {
@@ -64,6 +63,11 @@ void FSM_State::setRefinement(ExtendedFSM* refinement) {
     _refinement = refinement;
 }
 
+void FSM_State::resetRefinment() {
+    if (_refinement != nullptr) {
+        _refinement->reset();
+    }
+}
 ExtendedFSM* FSM_State::getRefinement() {
     return _refinement;
 }
