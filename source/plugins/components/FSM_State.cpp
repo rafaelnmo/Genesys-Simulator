@@ -52,6 +52,7 @@ std::string FSM_State::show(){
 }
 
 void FSM_State::setAsInitialState() {
+    // TODO
     _efsm->setCurrentState(this);
 }
 
@@ -122,7 +123,7 @@ void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
     }
     _mustBeImmediate = false;
 
-    if (not transitionChosen->isPreemptive()) {
+    if (_refinement != nullptr and not transitionChosen->isPreemptive()) {
         _refinement->enterEFSM(entity, transitionChosen);
     }
 

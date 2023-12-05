@@ -78,10 +78,6 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
     return str.substr(strBegin, strRange);
 }
 
-void FSM_State::setEFSM(ExtendedFSM* efsm) {
-    _efsm = efsm;
-}
-
 bool FSM_Transition::isEnabled(){
     if (_guardExpression == "") {
         return true;

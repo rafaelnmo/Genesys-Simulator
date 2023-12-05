@@ -385,6 +385,5 @@ void ExtendedFSM::leaveEFSM(Entity* entity, FSM_State* newCurrentState) {
 
 void ExtendedFSM::enterEFSM(Entity* entity, ModelComponent* returnState) {
     _returnModels->push_back(returnState);
-    useEFSM(entity, _currentState);
    this->_parentModel->sendEntityToComponent(entity, _currentState); 
 }

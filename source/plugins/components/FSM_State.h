@@ -35,7 +35,7 @@ public:
     }
 
     void setAsInitialState();
-    void setEFSM(ExtendedFSM* refinement);
+    void setEFSM(ExtendedFSM* efsm);
     void setRefinement(ExtendedFSM* refinement);
     ExtendedFSM* getRefinement();
 
@@ -56,7 +56,7 @@ private:
     std::string _name;
     bool _isFinalState = false;
     bool _mustBeImmediate = false;
+    ExtendedFSM* _refinement = nullptr;
     ExtendedFSM* _efsm;
-    ExtendedFSM* _refinement;
 };
 #endif /* FSM_STATE_H */

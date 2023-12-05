@@ -58,8 +58,6 @@ public:
          _setActions = setActions;
     }
 
-    void setEFSM(ExtendedFSM* refinement);
-
 /* Transition:
   Nondeterministic: if not must be the only enabled transition.
   Default: if given a value true, specifies that this transition is enabled if no other non-default transition is enabled and if its guard evaluates to true
@@ -142,7 +140,6 @@ private:
 	bool _preemptive = false;
 	bool _history = false;
 	bool _immediate = false;
-    ExtendedFSM* _efsm;
 };
 
 
