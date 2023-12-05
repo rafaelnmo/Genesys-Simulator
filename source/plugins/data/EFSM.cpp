@@ -17,32 +17,17 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {}
 
 std::string ExtendedFSM::show(){
-    std::string txt = ModelDataDefinition::show() + ",assignments=[";
+   /* std::string txt = ModelDataDefinition::show() + ",assignments=[";
     for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
         txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
     }
     txt = txt.substr(0, txt.length() - 1) + "]";
-    return txt;
+    return txt;*/
 }
 
 void ExtendedFSM::_createInternalAndAttachedData(){
     ModelDataManager* elems = _parentModel->getDataManager();
-    for (Assignment* ass : *_assignments->list()) {
-        ModelDataDefinition* elem;
-        std::string name;
-        if (ass->isAttributeNotVariable()) {
-            name = "Attribute";
-            elem = elems->getDataDefinition(Util::TypeOf<Attribute>(), ass->getDestination());
-        } else {
-            name = "Variable";
-            elem = elems->getDataDefinition(Util::TypeOf<Variable>(), ass->getDestination());
-        }
-        //assert elem != nullptr
-        if (elem != nullptr) {
-            this->_attachedDataInsert(name + "_" + ass->getDestination(), elem);
-        }
-    }
-
+    
     for (Variable* variable : *_variables) {
         _attachedDataInsert(getName() + "." + variable->getName(), variable);
     }

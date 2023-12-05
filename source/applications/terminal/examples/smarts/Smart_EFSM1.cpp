@@ -41,7 +41,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -50,7 +50,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     Create* create1 = plugins->newInstance<Create>(model);
     create1->setDescription("Enter Garage");
     create1->setEntityType(entityType);
-    create1->setTimeBetweenCreationsExpression("50");
+    create1->setTimeBetweenCreationsExpression("1");
     create1->setTimeUnit(Util::TimeUnit::minute);
 
     Assign* assign1 = new Assign(model);
@@ -61,15 +61,15 @@ int Smart_EFSM1::main(int argc, char** argv) {
 
 	Delay* delay1 = plugins->newInstance<Delay>(model); // the default delay time is 1.0 s
     delay1->setDescription("Browse");
-    delay1->setDelayExpression("tria(3, 7, 11)");
-    delay1->setDelayTimeUnit(Util::TimeUnit::minute);
+    delay1->setDelayExpression("10");
+    delay1->setDelayTimeUnit(Util::TimeUnit::second);
     assign1->getConnections()->insert(delay1);
 
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
-	var1->setInitialValue(10.0, "carsParked"); 
+	var1->setInitialValue(12.0, "carsParked"); 
 
 	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
-	var2->setInitialValue(20.0, "maxCarsParked"); 
+	var2->setInitialValue(15.0, "maxCarsParked"); 
 
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm1->insertVariable(var1);
@@ -112,7 +112,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	
     // set options, save and simulate
 	model->getSimulation()->setNumberOfReplications(3);
-	model->getSimulation()->setReplicationLength(20, Util::TimeUnit::minute);
+	model->getSimulation()->setReplicationLength(10, Util::TimeUnit::minute);
 	model->getSimulation()->setTerminatingCondition("");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM1.gen");

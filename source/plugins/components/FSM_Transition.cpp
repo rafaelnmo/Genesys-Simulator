@@ -47,10 +47,10 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    //_parentModel->parseExpression(transitionChosen->getOutputActions());
+    _parentModel->parseExpression(getOutputActions());
 
     //postfire
-    //_parentModel->parseExpression(transitionChosen->getSetActions());
+    _parentModel->parseExpression(getSetActions());
 
     auto connections = getConnections()->connections();
     auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);

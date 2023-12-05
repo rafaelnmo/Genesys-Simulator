@@ -91,8 +91,6 @@ private:
 
     std::vector<Variable*>* _variables = new std::vector<Variable*>();
 
-    List<Assignment*>* _assignments = new List<Assignment*>();
-
     FSM_State* _initialState;
     FSM_State* _currentState;
     std::vector<ModelComponent*>* _returnModels = new std::vector<ModelComponent*>();
