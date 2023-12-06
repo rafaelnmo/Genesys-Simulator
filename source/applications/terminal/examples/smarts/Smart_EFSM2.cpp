@@ -8,8 +8,17 @@
 // Model Components
 #include "../../../../plugins/components/Create.h"
 #include "../../../../plugins/components/Dispose.h"
+#include "../../../../plugins/components/Assign.h"
+#include "../../../../plugins/data/Variable.h"
 #include "../../../../plugins/data/EFSM.h"
-#include "../../../../plugins/components/FiniteStateMachine.h"
+#include "../../../../plugins/components/FSM_State.h"
+#include "../../../../plugins/components/FSM_Transition.h"
+#include "../../../../plugins/components/FSM_Variable.h"
+#include "../../../../plugins/components/FSM_State.h"
+#include "../../../../plugins/components/FSM_ModalModel.h"
+#include "../../../../plugins/components/Delay.h"
+
+
 #include "../../../TraitsApp.h"
 
 Smart_EFSM2::Smart_EFSM2() {
@@ -28,81 +37,140 @@ int Smart_EFSM2::main(int argc, char** argv) {
     plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 	// create model
 	Model* model = genesys->getModels()->newModel();
+    
+    EntityType* entityType = new EntityType(model, "Person");
     Create* create1 = plugins->newInstance<Create>(model);
-	
-	// initialize model parts
-    //ExtendedFSM* ExtendedExample = plugins->newInstance<ExtendedFSM>(model, "ExtendedFinishMachine_1");
-    FiniteStateMachine* fsm = plugins->newInstance<FiniteStateMachine>(model, "ExtendedFinishMachine_1");
-	fsm->setName("fsm_1");
-    std::cout << fsm->getName() << "\n";
-	std::cout << fsm->show() << "\n";
-    /*
+	create1->setDescription("Traffic light");
+    create1->setEntityType(entityType);
+    create1->setTimeBetweenCreationsExpression("1");
+    create1->setTimeUnit(Util::TimeUnit::minute);
+
+    Assign* assign1 = new Assign(model);
+    assign1->setDescription("Arrive in traffic light");
+    Assignment* assigment1 = new Assignment("pedestrian", "1");
+    assign1->getAssignments()->insert(assigment1);
+    create1->getConnections()->insert(assign1);
+
+	Delay* delay1 = plugins->newInstance<Delay>(model); // the default delay time is 1.0 s
+    delay1->setDescription("Browse");
+    delay1->setDelayExpression("10");
+    delay1->setDelayTimeUnit(Util::TimeUnit::second);
+    assign1->getConnections()->insert(delay1);
+
+	Variable* var1 = plugins->newInstance<Variable>(model, "count");
+	var1->setInitialValue(0.0, "count"); 
+
+    ExtendedFSM* efsm2 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
+    efsm2->insertVariable(var1);
+    //efsm2->insertVariable(var2);
+
+    FSM_State* stateRed = plugins->newInstance<FSM_State>(model, "red");
+    stateRed->setEFSM(efsm2);
+    stateRed->setAsInitialState();
+
+    FSM_State* stateGreen = plugins->newInstance<FSM_State>(model, "green");
+    stateGreen->setEFSM(efsm2);
+    stateGreen->setAsInitialState();
+
+    FSM_State* stateYellow = plugins->newInstance<FSM_State>(model, "yellow");
+    stateYellow->setEFSM(efsm2);
+    stateYellow->setAsInitialState();
+
+    FSM_State* statePending = plugins->newInstance<FSM_State>(model, "pending");
+    statePending->setEFSM(efsm2);
+    statePending->setAsInitialState();
+
+    FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
+    transition1->setGuardExpression(""); // 
+    transition1->setOutputActions("sigR = 1");
+    transition1->setSetActions("count = count + 1");
+    stateRed->getConnections()->insert(transition1);
+    transition1->getConnections()->insert(stateRed);
+
+
+    FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
+    transition2->setGuardExpression(""); // count >= 60
+    transition2->setOutputActions("sigG = 1 and sigR = 0");
+    transition2->setSetActions("count = 0");
+    stateRed->getConnections()->insert(transition2);
+    transition2->getConnections()->insert(stateGreen);
+
+    //test
+    FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_3");
+    transition3->setGuardExpression(""); // cout < 60
+    transition3->setOutputActions("sigG = 1");
+    transition3->setSetActions("count = count + 1");
+    stateGreen->getConnections()->insert(transition3);
+    transition3->getConnections()->insert(stateGreen);
+
+    FSM_Transition* transition9 = plugins->newInstance<FSM_Transition>(model,"transition_9");
+    transition9->setGuardExpression(""); //pedestrian = 1 and count >= 60
+    transition9->setOutputActions("sigY = 1 and sigG = 0");
+    transition9->setSetActions("count = 0");
+    stateGreen->getConnections()->insert(transition9);
+    transition9->getConnections()->insert(stateYellow);
+
+    FSM_Transition* transition4 = plugins->newInstance<FSM_Transition>(model,"transition_4");
+    transition4->setGuardExpression(""); //pedestrian and count < 60
+    transition4->setOutputActions("sigG = 1");
+    transition4->setSetActions("count = count + 1");
+    stateGreen->getConnections()->insert(transition4);
+    transition4->getConnections()->insert(statePending);
+
+    FSM_Transition* transition5 = plugins->newInstance<FSM_Transition>(model, "transition_5");
+    transition5->setGuardExpression(""); //
+    transition5->setOutputActions("");
+    transition5->setSetActions("count = count + 1");
+    statePending->getConnections()->insert(transition5);
+    transition5->getConnections()->insert(statePending);
+
+    FSM_Transition* transition6 = plugins->newInstance<FSM_Transition>(model, "transition_6");
+    transition6->setGuardExpression(""); // count >= 60
+    transition6->setOutputActions("sigY = 1 and sigG = 0");
+    transition6->setSetActions("count = 0");
+    statePending->getConnections()->insert(transition6);
+    transition6->getConnections()->insert(stateYellow);
+
+
+    FSM_Transition* transition7 = plugins->newInstance<FSM_Transition>(model, "transition_7");
+    transition7->setGuardExpression(""); //
+    transition7->setOutputActions("");
+    transition7->setSetActions("count = count + 1");
+    stateYellow->getConnections()->insert(transition7);
+    transition7->getConnections()->insert(stateYellow);
+
+    FSM_Transition* transition8 = plugins->newInstance<FSM_Transition>(model, "transition_8");
+    transition8->setGuardExpression(""); //count >= 5
+    transition8->setOutputActions("sigR = 1 and sigY = 0");
+    transition8->setSetActions("count = 0");
+    stateYellow->getConnections()->insert(transition8);
+    transition8->getConnections()->insert(stateRed);
+
+
+    FSM_Transition* transition10 = plugins->newInstance<FSM_Transition>(model,"transition_10");
+    transition10->setGuardExpression("");
+    transition10->setOutputActions("");
+    transition10->setSetActions("");
+    transition10->setDefault(true);
+    stateRed->getConnections()->insert(transition10);
+    transition10->getConnections()->insert(stateRed);
+
+    FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
+    modalmodel1->setEFSMData(efsm2);
+    delay1->getConnections()->insert(modalmodel1);
+
     Dispose* dispose1 = plugins->newInstance<Dispose>(model);
-    std::cout << dispose1->getName();
-    std::cout << dispose1->getId();
-
-	// connect model components to create a "workflow"
-	create1->getConnections()->insert(fsm);
-	fsm->getConnections()->insert(dispose1);
-
     dispose1->setReportStatistics(true);
-	
-    std::cout << "\nplugins: " << plugins->front() << "\n";
+    modalmodel1->getConnections()->insert(dispose1);
 
-	// creating states of efsm
-    fsm->_createInternalAndAttachedData();
+	// set options, save and simulate
 
-	// creating states of efsm
-    fsm->_internalDataDefinition->insertState("Green", false, false);
-    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(0).getName() << "\n";
-    fsm->_internalDataDefinition->insertState("Yellow", false, false);
-    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(1).getName() << "\n";
-    fsm->_internalDataDefinition->insertState("Red", false, true);
-    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(2).getName() << "\n";
-    fsm->_internalDataDefinition->insertState("Pending", false, false);
-    std::cout <<  "state Name: " << fsm->_internalDataDefinition->getStates()->at(3).getName() << "\n";
-
-    fsm->_internalDataDefinition->insertVariable("count", 0);
-    //fsm->_internalDataDefinition->insertVariable("M", 100);
-
-    // creating transitions of each state of efsm
-    fsm->_internalDataDefinition->insertTransition("count >= 60", "Red", "Green","sigG = 1", "count = 0");
-    //fsm->_internalDataDefinition->insertTransition("pedestrian & count < 60", "Green", "Pending", "", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count < 60 & pedestrian = 1", "Green", "Pending", "", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count >= 60", "Pending", "Yellow", "sigY = 1", "count = 0");
-    fsm->_internalDataDefinition->insertTransition("count >= 5", "Yellow", "Red", "sigR = 1", "count = 0");
-    fsm->_internalDataDefinition->insertTransition("pedestrian = 0 & count >= 60", "Green", "Yellow", "sigY", "count = 0");
-    fsm->_internalDataDefinition->insertTransition("count < 60", "Red", "Red", "", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count < 60", "Green", "Green", "", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count < 60", "Pending", "Pending", "", "count = count + 1");
-    fsm->_internalDataDefinition->insertTransition("count < 5", "Yellow", "Yellow", "", "count = count + 1");
-	
-	// run the simulation
-    auto outputActions = std::map<std::string,int>{};
-    auto input = std::map<std::string,int>{};
-    input.insert(std::pair<std::string,int>("pedestrian", 1));
-    //input.insert(std::pair<std::string,int>("pedestrian", 0));
-
-    bool isfinalState;
-    for (int i = 1; i <= 240; i++){
-        outputActions.clear();
-        isfinalState = fsm->_internalDataDefinition->fire(input, outputActions);
-        std::cout << "currentState: " << fsm->_internalDataDefinition->getCurrentState() <<std::endl;
-        for(auto outputAction: outputActions){
-            std::cout << outputAction.first << " = " << outputAction.second << std::endl;
-        }
-    }
-*/
-    std::cout << "" << std::endl;
-
-    // set options, save and simulate
-	model->getSimulation()->setNumberOfReplications(1);
-	model->getSimulation()->setReplicationLength(3, Util::TimeUnit::second);
-	//model->getSimulation()->setTerminatingCondition("count(Dispose_1.CountNumberIn)>30");
+	model->getSimulation()->setNumberOfReplications(3);
+	model->getSimulation()->setReplicationLength(3, Util::TimeUnit::minute);
+	model->getSimulation()->setTerminatingCondition("");
 	model->getSimulation()->setReplicationReportBaseTimeUnit(Util::TimeUnit::hour);
     model->save("./models/Smart_EFSM2.gen");
 	model->getSimulation()->start();	
-	
 	// free memory
 	delete genesys;
 	
