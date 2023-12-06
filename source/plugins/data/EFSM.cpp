@@ -82,6 +82,12 @@ void ExtendedFSM::_initBetweenReplications(){
     _currentState = _initialState;
     for (auto* var: *_variables) {
         var->InitBetweenReplications(var);
+        for (auto value: *var->getValues()) {
+            std::cout << value.first + " = " + std::to_string(value.second) << std::endl;                                       // debug
+            std::cout << "BEFORE_INIT: " << value.first << " = " << _parentModel->parseExpression(value.first) << std::endl;    // debug
+            _parentModel->parseExpression(value.first + " = " + std::to_string(value.second));
+            std::cout << "AFTER_INIT: " << value.first << " = " << _parentModel->parseExpression(value.first) << std::endl;     // debug
+        }
     }
 }
 void ExtendedFSM::reset(){

@@ -47,10 +47,14 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
+    std::cout << "TRANSITION_CHOSEN: " << _guardExpression << std::endl; // debug
+    std::cout << "BEFORE: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
     _parentModel->parseExpression(getOutputActions());
 
     //postfire
     _parentModel->parseExpression(getSetActions());
+    std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
+    std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("maxCarsParked") << std::endl; // debug
 
     auto connections = getConnections()->connections();
     auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
@@ -79,7 +83,9 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
 }
 
 bool FSM_Transition::isEnabled(){
+    std::cout << "GUARD_EXPRESSION: " << _guardExpression << std::endl; // debug
     if (_guardExpression == "") {
+    std::cout << "TRUE" << std::endl;                                   // debug
         return true;
     }
 
@@ -95,6 +101,7 @@ bool FSM_Transition::isEnabled(){
     //    }
     //}
 
+    std::cout << "FALSE" << std::endl;                                  // debug
     return false;
 }
 

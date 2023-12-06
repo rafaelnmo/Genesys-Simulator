@@ -97,6 +97,7 @@ void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
                     (_mustBeImmediate and transition->isImmediate())
                 )
             ){
+                std::cout << "FSM_STATE TRUE" << std::endl; // debug
 			if (not transition->isNondeterministic()) {
 				hasDeterministicEnabled = true;
 			}
@@ -131,6 +132,7 @@ void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
         _refinement->enterEFSM(entity, transitionChosen);
     }
 
+   std::cout << "TRANSITION_CHOSEN: " << transitionChosen->getGuardExpression() << std::endl; // debug
    this->_parentModel->sendEntityToComponent(entity, transitionChosen); 
 }
 
