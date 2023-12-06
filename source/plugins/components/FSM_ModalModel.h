@@ -15,10 +15,6 @@ public:
 	
 	virtual ~FSM_ModalModel() = default;
 
-
-    //bool _loadInstance(PersistenceRecord *fields);
-    //void _saveInstance(PersistenceRecord *fields, bool saveDefaultValues);
-
 	std::string setName(std::string name){
 		_name = name;
 	}
@@ -32,7 +28,6 @@ public:
 	ExtendedFSM* getEFSM() const;
 
 	ExtendedFSM* getInternalDataDefinition(){
-		//return _internalDataDefinition;
 		return _efsm;
 	}
 
@@ -56,9 +51,6 @@ protected: /// virtual protected method that must be overriden
 private:
 	std::string _name;
     ExtendedFSM* _efsm = nullptr;
-
-	//ExtendedFSM* _internalDataDefinition = nullptr;
-
 };
 
 #endif /* FSM_MODALMODEL_H */

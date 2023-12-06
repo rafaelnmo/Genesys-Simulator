@@ -45,7 +45,6 @@ public: /// new public user methods for this component
     void setInitialState(FSM_State* state);
     
     void insertVariable(Variable* variable);
-    void useEFSM(Entity* entity, ModelComponent* nextComponent, bool mustBeImmediate = false);
     void enterEFSM(Entity* entity, ModelComponent* returnState);
     void leaveEFSM(Entity* entity, FSM_State* newCurrentState);
     void reset();
@@ -60,8 +59,6 @@ public: /// static public methods that must have implementations (Load and New j
     static PluginInformation* GetPluginInformation();
     static ModelDataDefinition* LoadInstance(Model* model, PersistenceRecord *fields);
     static ModelDataDefinition* NewInstance(Model* model, std::string name = "");
-
-    void addVariable(Variable* var);
 
 protected: /// virtual protected method that must be overriden
     virtual bool _loadInstance(PersistenceRecord *fields);
@@ -80,14 +77,6 @@ private:
     } DEFAULT;
     std::string _someString = DEFAULT.someString;
     unsigned int _someUint = DEFAULT.someUint;
-    //List<FSM_State*>* _states = new List<FSM_State*>();
-    //List<FSM_Transition*>* _transitions = new List<FSM_Transition*>();
-        
-    //std::vector<FSM_State*>* _states = new std::vector<FSM_State*>;
-    //std::vector<FSM_Transition*>* _transitions = new std::vector<FSM_Transition*>;
-
-    //std::vector<FSM_Variable*>* _variables = new std::vector<FSM_Variable*>;
-    //std::map<std::string,double>* _variables;
 
     std::vector<Variable*>* _variables = new std::vector<Variable*>();
 
