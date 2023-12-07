@@ -13,7 +13,6 @@
 #include "../../../../plugins/data/EFSM.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
-#include "../../../../plugins/components/FSM_Variable.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_ModalModel.h"
 #include "../../../../plugins/components/Delay.h"
@@ -57,12 +56,24 @@ int Smart_EFSM2::main(int argc, char** argv) {
     delay1->setDelayTimeUnit(Util::TimeUnit::second);
     assign1->getConnections()->insert(delay1);
 
-	Variable* var1 = plugins->newInstance<Variable>(model, "count");
-	var1->setInitialValue(0.0, "count"); 
+	Variable* varCount = plugins->newInstance<Variable>(model, "count");
+	varCount->setInitialValue(0.0, "count"); 
 
+	Variable* varSigR = plugins->newInstance<Variable>(model, "sigR");
+	varSigR->setInitialValue(1.0, "sigR"); 
+
+    Variable* varSigG = plugins->newInstance<Variable>(model, "sigG");
+	varSigG->setInitialValue(0.0, "sigG"); 
+
+    Variable* varSigY = plugins->newInstance<Variable>(model, "sigY");
+	varSigY->setInitialValue(0.0, "sigY"); 
+    
     ExtendedFSM* efsm2 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
-    efsm2->insertVariable(var1);
-    //efsm2->insertVariable(var2);
+    efsm2->insertVariable(varCount);
+    efsm2->insertVariable(varSigR);
+    efsm2->insertVariable(varSigG);
+    efsm2->insertVariable(varSigY);
+
 
     FSM_State* stateRed = plugins->newInstance<FSM_State>(model, "red");
     stateRed->setEFSM(efsm2);
@@ -89,7 +100,7 @@ int Smart_EFSM2::main(int argc, char** argv) {
 
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
-    transition2->setGuardExpression(""); // count >= 60
+    transition2->setGuardExpression("(1.0<=2.5)==count"); // count >= 60
     transition2->setOutputActions("sigG = 1 and sigR = 0");
     transition2->setSetActions("count = 0");
     stateRed->getConnections()->insert(transition2);
@@ -97,21 +108,21 @@ int Smart_EFSM2::main(int argc, char** argv) {
 
     //test
     FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_3");
-    transition3->setGuardExpression(""); // cout < 60
+    transition3->setGuardExpression("count < 60"); // cout < 60
     transition3->setOutputActions("sigG = 1");
     transition3->setSetActions("count = count + 1");
     stateGreen->getConnections()->insert(transition3);
     transition3->getConnections()->insert(stateGreen);
 
     FSM_Transition* transition9 = plugins->newInstance<FSM_Transition>(model,"transition_9");
-    transition9->setGuardExpression(""); //pedestrian = 1 and count >= 60
+    transition9->setGuardExpression("pedestrian = 1 and count >= 60"); //pedestrian = 1 and count >= 60
     transition9->setOutputActions("sigY = 1 and sigG = 0");
     transition9->setSetActions("count = 0");
     stateGreen->getConnections()->insert(transition9);
     transition9->getConnections()->insert(stateYellow);
 
     FSM_Transition* transition4 = plugins->newInstance<FSM_Transition>(model,"transition_4");
-    transition4->setGuardExpression(""); //pedestrian and count < 60
+    transition4->setGuardExpression("pedestrian and count < 60"); //pedestrian and count < 60
     transition4->setOutputActions("sigG = 1");
     transition4->setSetActions("count = count + 1");
     stateGreen->getConnections()->insert(transition4);

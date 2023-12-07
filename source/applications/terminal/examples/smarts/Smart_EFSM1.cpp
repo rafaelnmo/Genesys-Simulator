@@ -16,7 +16,6 @@
 #include "../../../../plugins/data/EFSM.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_Transition.h"
-#include "../../../../plugins/components/FSM_Variable.h"
 #include "../../../../plugins/components/FSM_State.h"
 #include "../../../../plugins/components/FSM_ModalModel.h"
 #include "../../../../plugins/components/Delay.h"
@@ -41,7 +40,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -81,19 +80,19 @@ int Smart_EFSM1::main(int argc, char** argv) {
     state1->setAsInitialState();
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
-    // transition1->setGuardExpression("(hasCar == 1) and (carsParked < maxCarsParked)");
-    // transition1->setOutputActions("hasCar = 0");
-    transition1->setGuardExpression("hasCar == 1");
+    transition1->setGuardExpression("(hasCar == 1) and (carsParked < maxCarsParked)");
     transition1->setOutputActions("hasCar = 0");
+    //transition1->setGuardExpression("hasCar == 1");
+    //transition1->setOutputActions("hasCar = 0");
     transition1->setSetActions("carsParked = carsParked + 1");
     state1->getConnections()->insert(transition1);
     transition1->getConnections()->insert(state1);
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
-    // transition2->setGuardExpression("hasCar == 0 and carsParked > 0");
-    // transition2->setOutputActions("hasCar = 1");
-    transition2->setGuardExpression("hasCar == 0");
+    transition2->setGuardExpression("hasCar == 0 and carsParked > 0");
     transition2->setOutputActions("hasCar = 1");
+    //transition2->setGuardExpression("hasCar == 0");
+    //transition2->setOutputActions("hasCar = 1");
     transition2->setSetActions("carsParked = carsParked - 1");
     state1->getConnections()->insert(transition2);
     transition2->getConnections()->insert(state1);

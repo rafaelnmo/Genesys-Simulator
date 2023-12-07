@@ -15,7 +15,7 @@ public:
 	
 	virtual ~FSM_ModalModel() = default;
 
-	std::string setName(std::string name){
+	void setName(std::string name){
 		_name = name;
 	}
 

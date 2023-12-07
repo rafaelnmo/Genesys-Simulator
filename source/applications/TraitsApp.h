@@ -29,6 +29,8 @@
 #include "terminal/examples/smarts/Smart_Record.h"
 #include "terminal/examples/smarts/Smart_LSODE.h"
 #include "terminal/examples/smarts/Smart_Failures.h"
+#include "terminal/examples/smarts/Smart_HoldSearchRemove.h"
+
 
 #include "terminal/examples/smarts/Smart_AssignWriteSeizes.h"
 
@@ -55,7 +57,9 @@ template <> struct TraitsApp<GenesysApplication_if> {
     //typedef Smart_AssignWriteSeizes Application;
     //typedef Smart_LSODE Application;
     //typedef Smart_Record Application;
+    
     //typedef Smart_EFSM2 Application;
+    //typedef Smart_HoldSearchRemove Application;
 
     //typedef Smart_Dummy Application;
 

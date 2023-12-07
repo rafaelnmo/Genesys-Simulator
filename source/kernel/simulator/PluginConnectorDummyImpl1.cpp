@@ -31,7 +31,6 @@
 #include "../../plugins/components/Enter.h"
 #include "../../plugins/components/Exit.h"
 #include "../../plugins/components/FSM_State.h"
-#include "../../plugins/components/FSM_Variable.h"
 #include "../../plugins/components/FSM_Transition.h"
 #include "../../plugins/components/FSM_ModalModel.h"
 #include "../../plugins/components/FiniteStateMachine.h"
@@ -191,8 +190,6 @@ Plugin* PluginConnectorDummyImpl1::connect(const std::string dynamicLibraryFilen
 		GetInfo = &FSM_State::GetPluginInformation;
 	else if (fn == "fsm_transition.so")
 		GetInfo = &FSM_Transition::GetPluginInformation;
-	else if (fn == "fsm_variable.so")
-		GetInfo = &FSM_Variable::GetPluginInformation;
 	else if (fn == "fsm_modalmodel.so")
 		GetInfo = &FSM_ModalModel::GetPluginInformation;
 	else if (fn == "hold.so")

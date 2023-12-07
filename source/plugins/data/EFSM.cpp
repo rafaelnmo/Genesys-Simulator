@@ -66,16 +66,17 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
 }
 
 bool ExtendedFSM::_check(std::string* errorMessage){
-    bool resultAll = true;
-//    int i = 0;
-//    for (auto* var: *_variables->list()) {
-//        auto data = _parentModel->getDataManager()->getDataDefinition(Util::TypeOf<Variable>(), var->getName());
-//            if (data == nullptr) {
-//                data = _parentModel->getParentSimulator()->getPlugins()->newInstance<Variable>(_parentModel, var->getDestination());
-//                _parentModel->getDataManager()->insert(data);
-//            }
-//    }
-    return resultAll;
+	bool res, resultAll = true;
+	//unsigned int i = 0;
+
+    /*for (auto* var: *_variables) {
+		res = _parentModel->checkExpression(var->getValue(), "expression=[" , errorMessage);
+        if (!res) {
+			traceError("Error parsing expression \"");
+		}
+		resultAll &= res;
+    }
+    return resultAll;*/
 }
 
 void ExtendedFSM::_initBetweenReplications(){

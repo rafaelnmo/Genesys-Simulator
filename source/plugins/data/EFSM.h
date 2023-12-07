@@ -22,7 +22,6 @@
 #include "../../kernel/util/List.h"
 #include "../components/FSM_Transition.h"
 #include "../components/FSM_State.h"
-#include "../components/FSM_Variable.h"
 #include <vector>
 #include <map>
 #include <string>

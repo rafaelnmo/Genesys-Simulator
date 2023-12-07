@@ -162,8 +162,26 @@ bool FSM_Transition::check(std::stringstream& actions_ss) {
 bool FSM_Transition::_check(std::string* errorMessage){
 	bool resultAll = true;
     resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
-    //resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
-    ///resultAll &= _parentModel->checkExpression(_setActions, "Set Actions expression", errorMessage);
+    /*resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
+    resultAll &= _parentModel->checkExpression(_setActions, "Set Actions expression", errorMessage);
+
+
+	if (!resultAll) {
+		*errorMessage += "SearchIn was not defined.";
+	}
+	if (_guardExpression == "") {
+         resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
+		*errorMessage += "_guardExpression was not defined.";
+	} else {
+         resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
+	}
+	if (_outputActions == "") {
+		resultAll = false;
+		*errorMessage += "_outputActions was not defined.";
+	} else {
+        resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
+
+	}*/
 
 	return resultAll;
 }
