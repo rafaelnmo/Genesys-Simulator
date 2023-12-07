@@ -56,8 +56,8 @@ int Smart_EFSM2::main(int argc, char** argv) {
     delay1->setDelayTimeUnit(Util::TimeUnit::second);
     assign1->getConnections()->insert(delay1);
 
-	Variable* varCount = plugins->newInstance<Variable>(model, "count");
-	varCount->setInitialValue(0.0, "count"); 
+	Variable* varCount = plugins->newInstance<Variable>(model, "countWait");
+	varCount->setInitialValue(0.0, "countWait"); 
 
 	Variable* varSigR = plugins->newInstance<Variable>(model, "sigR");
 	varSigR->setInitialValue(1.0, "sigR"); 
@@ -94,51 +94,51 @@ int Smart_EFSM2::main(int argc, char** argv) {
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
     transition1->setGuardExpression(""); // 
     transition1->setOutputActions("sigR = 1");
-    transition1->setSetActions("count = count + 1");
+    transition1->setSetActions("countWait = countWait + 1");
     stateRed->getConnections()->insert(transition1);
     transition1->getConnections()->insert(stateRed);
 
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
-    transition2->setGuardExpression("(1.0<=2.5)==count"); // count >= 60
+    transition2->setGuardExpression("countWait >= 60"); // countWait >= 60
     transition2->setOutputActions("sigG = 1 and sigR = 0");
-    transition2->setSetActions("count = 0");
+    transition2->setSetActions("countWait = 0");
     stateRed->getConnections()->insert(transition2);
     transition2->getConnections()->insert(stateGreen);
 
     //test
     FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_3");
-    transition3->setGuardExpression("count < 60"); // cout < 60
+    transition3->setGuardExpression("countWait < 60"); // cout < 60
     transition3->setOutputActions("sigG = 1");
-    transition3->setSetActions("count = count + 1");
+    transition3->setSetActions("countWait = countWait + 1");
     stateGreen->getConnections()->insert(transition3);
     transition3->getConnections()->insert(stateGreen);
 
     FSM_Transition* transition9 = plugins->newInstance<FSM_Transition>(model,"transition_9");
-    transition9->setGuardExpression("pedestrian = 1 and count >= 60"); //pedestrian = 1 and count >= 60
+    transition9->setGuardExpression("(pedestrian == 1) and (countWait >= 60)"); //pedestrian = 1 and countWait >= 60
     transition9->setOutputActions("sigY = 1 and sigG = 0");
-    transition9->setSetActions("count = 0");
+    transition9->setSetActions("countWait = 0");
     stateGreen->getConnections()->insert(transition9);
     transition9->getConnections()->insert(stateYellow);
 
     FSM_Transition* transition4 = plugins->newInstance<FSM_Transition>(model,"transition_4");
-    transition4->setGuardExpression("pedestrian and count < 60"); //pedestrian and count < 60
+    transition4->setGuardExpression("(pedestrian == 1) and (countWait < 60)"); //pedestrian and countWait < 60
     transition4->setOutputActions("sigG = 1");
-    transition4->setSetActions("count = count + 1");
+    transition4->setSetActions("countWait = countWait + 1");
     stateGreen->getConnections()->insert(transition4);
     transition4->getConnections()->insert(statePending);
 
     FSM_Transition* transition5 = plugins->newInstance<FSM_Transition>(model, "transition_5");
     transition5->setGuardExpression(""); //
     transition5->setOutputActions("");
-    transition5->setSetActions("count = count + 1");
+    transition5->setSetActions("countWait = countWait + 1");
     statePending->getConnections()->insert(transition5);
     transition5->getConnections()->insert(statePending);
 
     FSM_Transition* transition6 = plugins->newInstance<FSM_Transition>(model, "transition_6");
-    transition6->setGuardExpression(""); // count >= 60
+    transition6->setGuardExpression("countWait >= 60"); // countWait >= 60
     transition6->setOutputActions("sigY = 1 and sigG = 0");
-    transition6->setSetActions("count = 0");
+    transition6->setSetActions("countWait = 0");
     statePending->getConnections()->insert(transition6);
     transition6->getConnections()->insert(stateYellow);
 
@@ -146,14 +146,14 @@ int Smart_EFSM2::main(int argc, char** argv) {
     FSM_Transition* transition7 = plugins->newInstance<FSM_Transition>(model, "transition_7");
     transition7->setGuardExpression(""); //
     transition7->setOutputActions("");
-    transition7->setSetActions("count = count + 1");
+    transition7->setSetActions("countWait = countWait + 1");
     stateYellow->getConnections()->insert(transition7);
     transition7->getConnections()->insert(stateYellow);
 
     FSM_Transition* transition8 = plugins->newInstance<FSM_Transition>(model, "transition_8");
-    transition8->setGuardExpression(""); //count >= 5
+    transition8->setGuardExpression("countWait >= 5"); //countWait >= 5
     transition8->setOutputActions("sigR = 1 and sigY = 0");
-    transition8->setSetActions("count = 0");
+    transition8->setSetActions("countWait = 0");
     stateYellow->getConnections()->insert(transition8);
     transition8->getConnections()->insert(stateRed);
 
