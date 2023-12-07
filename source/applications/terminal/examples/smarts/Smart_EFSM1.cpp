@@ -65,12 +65,12 @@ int Smart_EFSM1::main(int argc, char** argv) {
     delay1->setDelayTimeUnit(Util::TimeUnit::second);
     assign1->getConnections()->insert(delay1);
 
-	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
-	var1->setInitialValue(2.0, "carsParked"); 
-
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
-    efsm1->insertVariable(var1);
     
+	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
+	var1->setInitialValue(0.0, "carsParked"); 
+    efsm1->insertVariable(var1);
+
     efsm1->CreateInternalData(efsm1);   
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
     state1->setEFSM(efsm1);

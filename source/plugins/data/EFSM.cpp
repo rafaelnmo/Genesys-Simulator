@@ -15,7 +15,7 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {}
 
 std::string ExtendedFSM::show(){
-	auto txt = ModelDataDefinition::show() + ",variables=[";
+    auto txt = ModelDataDefinition::show() + ",variables=[";
     for (auto* var: *_variables) {
         txt += var->show() + ",";
     }
@@ -68,6 +68,7 @@ bool ExtendedFSM::_check(std::string* errorMessage){
 }
 
 void ExtendedFSM::_initBetweenReplications(){
+    _returnModels->clear();
     _currentState = _initialState;
     for (auto* var: *_variables) {
         InitBetweenReplications(var);
@@ -102,10 +103,14 @@ void ExtendedFSM::leaveEFSM(Entity* entity, FSM_State* newCurrentState) {
 
     auto returnComponent = _returnModels->back();
     _returnModels->pop_back();
-   this->_parentModel->sendEntityToComponent(entity, returnComponent); 
+    this->_parentModel->sendEntityToComponent(entity, returnComponent); 
 }
 
 void ExtendedFSM::enterEFSM(Entity* entity, ModelComponent* returnState) {
-    _returnModels->push_back(returnState);
-   this->_parentModel->sendEntityToComponent(entity, _currentState); 
+    if (_currentState->isFinalState()) {
+        this->_parentModel->sendEntityToComponent(entity, returnState); 
+    } else {
+        _returnModels->push_back(returnState);
+        this->_parentModel->sendEntityToComponent(entity, _currentState); 
+    }
 }

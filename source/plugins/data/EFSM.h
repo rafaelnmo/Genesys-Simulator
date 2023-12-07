@@ -66,21 +66,13 @@ protected: // could be overriden .
     virtual void _initBetweenReplications();
     virtual void _createInternalAndAttachedData();
     //virtual ParserChangesInformation* _getParserChangesInformation();
+
 private:
-
-    const struct DEFAULT_VALUES {
-        const std::string someString = "Testinho";
-        const unsigned int someUint = 1;
-    } DEFAULT;
-    std::string _someString = DEFAULT.someString;
-    unsigned int _someUint = DEFAULT.someUint;
-
     std::vector<Variable*>* _variables = new std::vector<Variable*>();
+    std::vector<ModelComponent*>* _returnModels = new std::vector<ModelComponent*>();
 
     FSM_State* _initialState;
     FSM_State* _currentState;
-    std::vector<ModelComponent*>* _returnModels = new std::vector<ModelComponent*>();
-
 };
 
 #endif /* EFSM_H */

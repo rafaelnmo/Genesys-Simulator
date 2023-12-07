@@ -47,7 +47,7 @@ bool FSM_State::_loadInstance(PersistenceRecord *fields) {
 }
 
 std::string FSM_State::show(){
-    return "show";
+    return ModelComponent::show();
 }
 
 void FSM_State::setAsInitialState() {
@@ -169,6 +169,11 @@ void FSM_State::fireWithOnlyImmediate(Entity* entity) {
 void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber) {
     if (_mustBeImmediate) {
         _mustBeImmediate = false;
+
+        if (isFinalState()) {
+            _efsm->leaveEFSM(entity, this);
+        }
+
         fireWithOnlyImmediate(entity);
     } else {
         fire(entity);

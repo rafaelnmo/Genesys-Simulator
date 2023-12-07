@@ -17,14 +17,6 @@ public:
 	virtual ~FSM_Transition() = default;
 
 	// getters
-    std::string getOriginState() {
-        return _originState;
-    }
-
-    std::string getDestinationState() {
-        return _destinationState;
-    }
-
     std::string getGuardExpression() {
         return _guardExpression;
     }
@@ -38,14 +30,6 @@ public:
     }
 
 	// setters
-	void setOriginState(std::string originState) {
-         _originState = originState;
-    }
-
-    void setDestinationState(std::string destinationState) {
-         _destinationState = destinationState;
-    }
-
     void setGuardExpression(std::string guardExpression) {
          _guardExpression = guardExpression;
     }
@@ -127,8 +111,6 @@ protected: /// virtual protected method that must be overriden
 
 private:
 	std::string _guardExpression;
-	std::string _originState;
-	std::string _destinationState;
 	std::string _outputActions;
 	std::string _setActions;
 	bool _nondeterministic = false;

@@ -46,6 +46,17 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
     return res;
 }
 
+bool FSM_Transition::_check(std::string* errorMessage){
+    bool resultAll = true;
+    resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
+
+    return resultAll;
+}
+
+std::string FSM_Transition::show(){
+    return ModelComponent::show();
+}
+
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
     _parentModel->parseExpression(getOutputActions());
 
@@ -60,22 +71,7 @@ void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumb
     }
 
     nextState->setMustBeImmediate();
-   this->_parentModel->sendEntityToComponent(entity, nextState); 
-}
-
-std::string FSM_Transition::show(){
-    return "Transition";
-}
-
-std::string trim(const std::string& str, const std::string& whitespace = " \t") {
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return "";
-
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
+    this->_parentModel->sendEntityToComponent(entity, nextState); 
 }
 
 bool FSM_Transition::isEnabled(){
@@ -86,14 +82,6 @@ bool FSM_Transition::isEnabled(){
     return bool(_parentModel->parseExpression(_guardExpression));
 }
 
-bool FSM_Transition::_check(std::string* errorMessage){
-	bool resultAll = true;
-    resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
-
-	return resultAll;
-}
-
-
 void FSM_Transition::executeActions(std::string actions){
     if (actions == "") {
         return;
@@ -103,14 +91,14 @@ void FSM_Transition::executeActions(std::string actions){
     auto action = std::string();
 
     while(std::getline(actions_ss, action, ';')) {
-		_parentModel->parseExpression(action);
-	}
+        _parentModel->parseExpression(action);
+    }
 }
 
 void FSM_Transition::executeOutputActions() {
-	executeActions(_outputActions);
+    executeActions(_outputActions);
 }
 
 void FSM_Transition::executeSetActions() {
-	executeActions(_setActions);
+    executeActions(_setActions);
 }
