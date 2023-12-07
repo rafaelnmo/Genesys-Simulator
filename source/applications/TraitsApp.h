@@ -34,7 +34,7 @@ template <> struct TraitsApp<GenesysApplication_if> {
     static const bool runTests = false;
     static const bool runGraphicalUserInterface = true; ///< If false, a terminal application will be compiled and executed (See TraitsTerminalApp.h). If true, a GUI for a general simulator will be executed.
 
-    typedef Smart_EFSM2 Application;
+    typedef Smart_EFSM1 Application;
 };
 
 #endif /* TRAITSAPP_H */
