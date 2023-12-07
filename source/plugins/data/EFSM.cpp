@@ -75,8 +75,8 @@ bool ExtendedFSM::_check(std::string* errorMessage){
 			traceError("Error parsing expression \"");
 		}
 		resultAll &= res;
-    }
-    return resultAll;*/
+    }*/
+    return resultAll;
 }
 
 void ExtendedFSM::_initBetweenReplications(){
