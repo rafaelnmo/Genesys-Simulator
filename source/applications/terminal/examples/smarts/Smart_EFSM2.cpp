@@ -33,7 +33,7 @@ int Smart_EFSM2::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("autoloadplugins.txt");
+    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
 	// create model
 	Model* model = genesys->getModels()->newModel();
     
@@ -52,9 +52,11 @@ int Smart_EFSM2::main(int argc, char** argv) {
 
 	Delay* delay1 = plugins->newInstance<Delay>(model); // the default delay time is 1.0 s
     delay1->setDescription("Browse");
-    delay1->setDelayExpression("10");
+    delay1->setDelayExpression("25");
     delay1->setDelayTimeUnit(Util::TimeUnit::second);
     assign1->getConnections()->insert(delay1);
+
+    ExtendedFSM* efsm2 = plugins->newInstance<ExtendedFSM>(model, "efsm_2");
 
 	Variable* varCount = plugins->newInstance<Variable>(model, "countWait");
 	varCount->setInitialValue(0.0, "countWait"); 
@@ -68,12 +70,12 @@ int Smart_EFSM2::main(int argc, char** argv) {
     Variable* varSigY = plugins->newInstance<Variable>(model, "sigY");
 	varSigY->setInitialValue(0.0, "sigY"); 
     
-    ExtendedFSM* efsm2 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm2->insertVariable(varCount);
     efsm2->insertVariable(varSigR);
     efsm2->insertVariable(varSigG);
     efsm2->insertVariable(varSigY);
 
+    efsm2->CreateInternalData(efsm2);   
 
     FSM_State* stateRed = plugins->newInstance<FSM_State>(model, "red");
     stateRed->setEFSM(efsm2);
@@ -81,74 +83,83 @@ int Smart_EFSM2::main(int argc, char** argv) {
 
     FSM_State* stateGreen = plugins->newInstance<FSM_State>(model, "green");
     stateGreen->setEFSM(efsm2);
-    stateGreen->setAsInitialState();
 
     FSM_State* stateYellow = plugins->newInstance<FSM_State>(model, "yellow");
     stateYellow->setEFSM(efsm2);
-    stateYellow->setAsInitialState();
 
     FSM_State* statePending = plugins->newInstance<FSM_State>(model, "pending");
     statePending->setEFSM(efsm2);
-    statePending->setAsInitialState();
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
-    transition1->setGuardExpression(""); // 
+    transition1->setGuardExpression("countWait < 10"); // 
     transition1->setOutputActions("sigR = 1");
     transition1->setSetActions("countWait = countWait + 1");
     stateRed->getConnections()->insert(transition1);
     transition1->getConnections()->insert(stateRed);
+    transition1->setImmediate(true);
 
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
-    transition2->setGuardExpression("countWait >= 60"); // countWait >= 60
+    transition2->setGuardExpression("countWait >= 10"); // countWait >= 10
     transition2->setOutputActions("sigG = 1 and sigR = 0");
     transition2->setSetActions("countWait = 0");
     stateRed->getConnections()->insert(transition2);
     transition2->getConnections()->insert(stateGreen);
+    transition2->setImmediate(true);
+
 
     //test
     FSM_Transition* transition3 = plugins->newInstance<FSM_Transition>(model,"transition_3");
-    transition3->setGuardExpression("countWait < 60"); // cout < 60
+    transition3->setGuardExpression("(pedestrian == 0) and (countWait < 10)"); // cout < 10
     transition3->setOutputActions("sigG = 1");
     transition3->setSetActions("countWait = countWait + 1");
     stateGreen->getConnections()->insert(transition3);
     transition3->getConnections()->insert(stateGreen);
+    transition3->setImmediate(true);
+
 
     FSM_Transition* transition9 = plugins->newInstance<FSM_Transition>(model,"transition_9");
-    transition9->setGuardExpression("(pedestrian == 1) and (countWait >= 60)"); //pedestrian = 1 and countWait >= 60
+    transition9->setGuardExpression("(pedestrian == 1) and (countWait >= 10)"); //pedestrian = 1 and countWait >= 10
     transition9->setOutputActions("sigY = 1 and sigG = 0");
     transition9->setSetActions("countWait = 0");
     stateGreen->getConnections()->insert(transition9);
     transition9->getConnections()->insert(stateYellow);
+    transition9->setImmediate(true);
 
     FSM_Transition* transition4 = plugins->newInstance<FSM_Transition>(model,"transition_4");
-    transition4->setGuardExpression("(pedestrian == 1) and (countWait < 60)"); //pedestrian and countWait < 60
+    transition4->setGuardExpression("(pedestrian == 1) and (countWait < 10)"); //pedestrian and countWait < 10
     transition4->setOutputActions("sigG = 1");
     transition4->setSetActions("countWait = countWait + 1");
     stateGreen->getConnections()->insert(transition4);
     transition4->getConnections()->insert(statePending);
+    transition4->setImmediate(true);
+
 
     FSM_Transition* transition5 = plugins->newInstance<FSM_Transition>(model, "transition_5");
-    transition5->setGuardExpression(""); //
+    transition5->setGuardExpression("countWait < 10"); //
     transition5->setOutputActions("");
     transition5->setSetActions("countWait = countWait + 1");
     statePending->getConnections()->insert(transition5);
     transition5->getConnections()->insert(statePending);
+    transition5->setImmediate(true);
 
     FSM_Transition* transition6 = plugins->newInstance<FSM_Transition>(model, "transition_6");
-    transition6->setGuardExpression("countWait >= 60"); // countWait >= 60
+    transition6->setGuardExpression("countWait >= 10"); // countWait >= 10
     transition6->setOutputActions("sigY = 1 and sigG = 0");
     transition6->setSetActions("countWait = 0");
     statePending->getConnections()->insert(transition6);
     transition6->getConnections()->insert(stateYellow);
+    transition6->setImmediate(true);
+
 
 
     FSM_Transition* transition7 = plugins->newInstance<FSM_Transition>(model, "transition_7");
-    transition7->setGuardExpression(""); //
+    transition7->setGuardExpression("countWait < 5"); //
     transition7->setOutputActions("");
     transition7->setSetActions("countWait = countWait + 1");
     stateYellow->getConnections()->insert(transition7);
     transition7->getConnections()->insert(stateYellow);
+    transition7->setImmediate(true);
 
     FSM_Transition* transition8 = plugins->newInstance<FSM_Transition>(model, "transition_8");
     transition8->setGuardExpression("countWait >= 5"); //countWait >= 5
@@ -157,14 +168,6 @@ int Smart_EFSM2::main(int argc, char** argv) {
     stateYellow->getConnections()->insert(transition8);
     transition8->getConnections()->insert(stateRed);
 
-
-    FSM_Transition* transition10 = plugins->newInstance<FSM_Transition>(model,"transition_10");
-    transition10->setGuardExpression("");
-    transition10->setOutputActions("");
-    transition10->setSetActions("");
-    transition10->setDefault(true);
-    stateRed->getConnections()->insert(transition10);
-    transition10->getConnections()->insert(stateRed);
 
     FSM_ModalModel* modalmodel1 = plugins->newInstance<FSM_ModalModel>(model, "modalmodel_1");
     modalmodel1->setEFSMData(efsm2);
