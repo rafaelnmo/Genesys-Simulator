@@ -49,7 +49,7 @@ void FSM_ModalModel::_onDispatchEvent(Entity* entity, unsigned int inputPortNumb
 }
 
 std::string FSM_ModalModel::show(){
-    return "Variable";
+	return ModelComponent::show() + _efsm->show();
 }
 
 void FSM_ModalModel::setEFSMData(ExtendedFSM* efsm) {
