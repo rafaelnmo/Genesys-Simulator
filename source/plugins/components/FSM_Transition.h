@@ -58,14 +58,6 @@ public:
          _setActions = setActions;
     }
 
-/* Transition:
-  Nondeterministic: if not must be the only enabled transition.
-  Default: if given a value true, specifies that this transition is enabled if no other non-default transition is enabled and if its guard evaluates to true
-  Preemptive: if so the refinement of its source state is not fired.
-  History: If false reset the refinment of its destination state.
-  Immediate: if so must be taken as soon as its source state is entered, in the same iteration.
-  */
-
 	void setNondeterministic(bool nondeterministic) {
 		_nondeterministic = nondeterministic;
 	}
@@ -144,6 +136,16 @@ private:
 	bool _preemptive = false;
 	bool _history = false;
 	bool _immediate = false;
+    /* Transition:
+    Nondeterministic: if not must be the only enabled transition.
+    Default: if given a value true, 
+        specifies that this transition is enabled if no other non-default transition is enabled and 
+        if its guard evaluates to true
+    Preemptive: if so the refinement of its source state is not fired.
+    History: If false reset the refinment of its destination state.
+    Immediate: if so must be taken as soon as its source state is entered, in the same iteration.
+    */
+
 };
 
 

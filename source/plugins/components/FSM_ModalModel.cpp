@@ -61,13 +61,7 @@ ExtendedFSM* FSM_ModalModel::getEFSM() const {
 }
 
 void FSM_ModalModel::_createInternalAndAttachedData() {
-	
 	PluginManager* pm = _parentModel->getParentSimulator()->getPlugins();
-	// internal data
-	/*if (_efsm == nullptr) {
-		_efsm = pm->newInstance<ExtendedFSM>(_parentModel, getName() + "." + "efsm");
-		_internalDataInsert("EFSM", _efsm);
-	}*/
 
 	// attached
 	if (_efsm == nullptr) {
@@ -75,5 +69,4 @@ void FSM_ModalModel::_createInternalAndAttachedData() {
 	}
 
 	_attachedDataInsert("EFSM", _efsm);
-
 }

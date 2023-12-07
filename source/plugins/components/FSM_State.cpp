@@ -7,7 +7,6 @@ ModelDataDefinition* FSM_State::NewInstance(Model* model, std::string name) {
 
 FSM_State::FSM_State(Model* model, std::string name) : ModelComponent(model, Util::TypeOf<FSM_State>(), name) {
 	_name = name;
-	//std::cout << "STATE CONSTRUCTOR" << "\n";
 }
 
 PluginInformation* FSM_State::GetPluginInformation() {
@@ -75,7 +74,6 @@ ExtendedFSM* FSM_State::getRefinement() {
 void FSM_State::fire(Entity* entity) {
     auto connections = this->getConnections()->connections();
     auto transitionChosen = dynamic_cast<FSM_Transition*>(connections->begin()->second->component);
-    std::cout << "TRANSITION_CHOSEN_I: " << transitionChosen->getGuardExpression() << std::endl; // debug
     auto transitionDefault = transitionChosen;
 
     auto anyDefaultConnected = false;
@@ -93,7 +91,6 @@ void FSM_State::fire(Entity* entity) {
 
         if (transition->isEnabled()) {
             ++totalEnableds;
-            std::cout << "FSM_TRANSITION TRUE" << std::endl; // debug
 
             if (transition->isDeterministic()) {
                 deterministicEnabled = true;
@@ -102,27 +99,22 @@ void FSM_State::fire(Entity* entity) {
             if (transition->isDefault()){
                 if (not nonDefaultEnabled) {
                     transitionChosen = transition;
-                    std::cout << "TRANSITION_CHOSEN_D: " << transitionChosen->getGuardExpression() << std::endl; // debug
                 }
             } else {
                 nonDefaultEnabled = true;
                 transitionChosen = transition;
-                std::cout << "TRANSITION_CHOSEN_ND: " << transitionChosen->getGuardExpression() << std::endl; // debug
             }
         }
     }
 
     if (deterministicEnabled and totalEnableds > 1) {
-        std::cout << "EXCEPTION: MORE THAN 1 AND DETERMINISTIC" << std::endl; // debug
         throw std::domain_error("More than a transition and at least one is deterministic.");
     }
 
     if (totalEnableds == 0) {
         transitionChosen = transitionDefault;
-        std::cout << "TRANSITION_CHOSEN_DI: " << transitionChosen->getGuardExpression() << std::endl; // debug
     }
 
-   std::cout << "FINAL TRANSITION_CHOSEN: " << transitionChosen->getGuardExpression() << std::endl; // debug
     if (_refinement != nullptr and not transitionChosen->isPreemptive()) {
         _refinement->enterEFSM(entity, transitionChosen);
     }
@@ -143,7 +135,6 @@ void FSM_State::fireWithOnlyImmediate(Entity* entity) {
 
         if (transition->isImmediate() and transition->isEnabled()) {
             ++totalEnableds;
-            std::cout << "FSM_TRANSITION TRUE" << std::endl; // debug
 
             if (transition->isDeterministic()) {
                 deterministicEnabled = true;
@@ -168,7 +159,6 @@ void FSM_State::fireWithOnlyImmediate(Entity* entity) {
             _refinement->enterEFSM(entity, transitionChosen);
         }
 
-        std::cout << "FINAL_TRANSITION_CHOSEN_IM: " << transitionChosen->getGuardExpression() << std::endl; // debug
         this->_parentModel->sendEntityToComponent(entity, transitionChosen); 
     } else {
         _efsm->leaveEFSM(entity, this);

@@ -1,8 +1,6 @@
 #include "EFSM.h"
 #include <vector>
 #include <string>
-#include <sstream>
-#include <iostream>
 #include <map>
 #include <utility>
 
@@ -66,17 +64,7 @@ ModelDataDefinition* ExtendedFSM::LoadInstance(Model* model, PersistenceRecord *
 }
 
 bool ExtendedFSM::_check(std::string* errorMessage){
-	bool res, resultAll = true;
-	//unsigned int i = 0;
-
-    /*for (auto* var: *_variables) {
-		res = _parentModel->checkExpression(var->getValue(), "expression=[" , errorMessage);
-        if (!res) {
-			traceError("Error parsing expression \"");
-		}
-		resultAll &= res;
-    }*/
-    return resultAll;
+    return true;
 }
 
 void ExtendedFSM::_initBetweenReplications(){
@@ -84,10 +72,7 @@ void ExtendedFSM::_initBetweenReplications(){
     for (auto* var: *_variables) {
         InitBetweenReplications(var);
         for (auto value: *var->getValues()) {
-            std::cout << value.first + " = " + std::to_string(value.second) << std::endl;                                       // debug
-            std::cout << "BEFORE_INIT: " << value.first << " = " << _parentModel->parseExpression(value.first) << std::endl;    // debug
             _parentModel->parseExpression(value.first + " = " + std::to_string(value.second));
-            std::cout << "AFTER_INIT: " << value.first << " = " << _parentModel->parseExpression(value.first) << std::endl;     // debug
         }
     }
 }

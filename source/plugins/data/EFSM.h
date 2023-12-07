@@ -15,7 +15,6 @@
 
 #include "../../kernel/simulator/ModelDataDefinition.h"
 #include "../../kernel/simulator/PluginInformation.h"
-//#include "../../kernel/simulator/ModelDataManager.h"
 #include "../../kernel/simulator/Attribute.h"
 #include "../data/AssignmentItem.h"
 #include "../data/Variable.h"
@@ -25,7 +24,6 @@
 #include <vector>
 #include <map>
 #include <string>
-#include <iostream>
 
 class FSM_State;
 

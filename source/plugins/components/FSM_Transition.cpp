@@ -39,22 +39,18 @@ void FSM_Transition::_saveInstance(PersistenceRecord *fields, bool saveDefaultVa
 
 bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
     bool res = true;
-    try {
-    } catch (...) {
-        res = false;
-    }
+    // try {
+    // } catch (...) {
+    //     res = false;
+    // }
     return res;
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    std::cout << "TRANSITION_TAKEN: " << getName() << std::endl; // debug
-    //std::cout << "BEFORE: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
     _parentModel->parseExpression(getOutputActions());
 
     //postfire
     _parentModel->parseExpression(getSetActions());
-    //std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
-    //std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("maxCarsParked") << std::endl; // debug
 
     auto connections = getConnections()->connections();
     auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
@@ -83,40 +79,16 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
 }
 
 bool FSM_Transition::isEnabled(){
-    std::cout << "GUARD_EXPRESSION:" << _guardExpression << std::endl; // debug
     if (_guardExpression == "") {
-    std::cout << true << std::endl;                                   // debug
         return true;
     }
 
-    double value = bool(_parentModel->parseExpression(_guardExpression));
-    std::cout << value << std::endl;                                  // debug
-    return value;
+    return bool(_parentModel->parseExpression(_guardExpression));
 }
 
 bool FSM_Transition::_check(std::string* errorMessage){
 	bool resultAll = true;
     resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
-    /*resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
-    resultAll &= _parentModel->checkExpression(_setActions, "Set Actions expression", errorMessage);
-
-
-	if (!resultAll) {
-		*errorMessage += "SearchIn was not defined.";
-	}
-	if (_guardExpression == "") {
-         resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
-		*errorMessage += "_guardExpression was not defined.";
-	} else {
-         resultAll &= _parentModel->checkExpression(_guardExpression, "Transition expression", errorMessage);
-	}
-	if (_outputActions == "") {
-		resultAll = false;
-		*errorMessage += "_outputActions was not defined.";
-	} else {
-        resultAll &= _parentModel->checkExpression(_outputActions, "Output Action expression", errorMessage);
-
-	}*/
 
 	return resultAll;
 }

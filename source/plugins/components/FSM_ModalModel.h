@@ -7,10 +7,6 @@
 
 class FSM_ModalModel : public ModelComponent {
 public:
-	/*FSM_ModalModel(Model* model, std::string name, int value):
-	_name(name),
-	_value(value)
-	{}*/
 	FSM_ModalModel(Model* model, std::string name = "");
 	
 	virtual ~FSM_ModalModel() = default;

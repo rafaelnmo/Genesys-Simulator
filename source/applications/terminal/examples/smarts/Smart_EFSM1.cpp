@@ -40,7 +40,8 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("autoloadplugins.txt");
+    //plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
