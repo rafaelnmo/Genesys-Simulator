@@ -40,7 +40,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	genesys->getTracer()->setTraceLevel(TraitsApp<GenesysApplication_if>::traceLevel);
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
-    plugins->autoInsertPlugins("/mnt/HD_EXTERNO/computerScience/course/14ºFASE/modSim/new/Genesys-Simulator/autoloadplugins.txt");
+    plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/gs/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();
@@ -67,12 +67,8 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	Variable* var1 = plugins->newInstance<Variable>(model, "carsParked");
 	var1->setInitialValue(2.0, "carsParked"); 
 
-	Variable* var2 = plugins->newInstance<Variable>(model, "maxCarsParked");
-	var2->setInitialValue(5.0, "maxCarsParked"); 
-
     ExtendedFSM* efsm1 = plugins->newInstance<ExtendedFSM>(model, "efsm_1");
     efsm1->insertVariable(var1);
-    efsm1->insertVariable(var2);
     
     efsm1->CreateInternalData(efsm1);   
     FSM_State* state1 = plugins->newInstance<FSM_State>(model, "state_1");
@@ -80,20 +76,18 @@ int Smart_EFSM1::main(int argc, char** argv) {
     state1->setAsInitialState();
 
     FSM_Transition* transition1 = plugins->newInstance<FSM_Transition>(model, "transition_1");
-    transition1->setGuardExpression("(hasCar == 1) and (carsParked < maxCarsParked)");
+    transition1->setGuardExpression("(hasCar == 1) and (carsParked < 5)");
     transition1->setOutputActions("hasCar = 0");
-    //transition1->setGuardExpression("hasCar == 1");
-    //transition1->setOutputActions("hasCar = 0");
     transition1->setSetActions("carsParked = carsParked + 1");
+    transition1->setNondeterministic(true);
     state1->getConnections()->insert(transition1);
     transition1->getConnections()->insert(state1);
 
     FSM_Transition* transition2 = plugins->newInstance<FSM_Transition>(model,"transition_2");
     transition2->setGuardExpression("hasCar == 0 and carsParked > 0");
     transition2->setOutputActions("hasCar = 1");
-    //transition2->setGuardExpression("hasCar == 0");
-    //transition2->setOutputActions("hasCar = 1");
     transition2->setSetActions("carsParked = carsParked - 1");
+    transition2->setNondeterministic(true);
     state1->getConnections()->insert(transition2);
     transition2->getConnections()->insert(state1);
 
@@ -102,6 +96,7 @@ int Smart_EFSM1::main(int argc, char** argv) {
     transition3->setOutputActions("");
     transition3->setSetActions("");
     transition3->setDefault(true);
+    transition3->setNondeterministic(true);
     state1->getConnections()->insert(transition3);
     transition3->getConnections()->insert(state1);
 

@@ -72,67 +72,116 @@ ExtendedFSM* FSM_State::getRefinement() {
     return _refinement;
 }
 
-void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-	auto enableds = 0;
-	auto hasDeterministicEnabled = false;
-	auto hasDefaultConnected = false; // found a default to use if none is enabled
-	auto connections = this->getConnections()->connections();
+void FSM_State::fire(Entity* entity) {
+    auto connections = this->getConnections()->connections();
+    auto transitionChosen = dynamic_cast<FSM_Transition*>(connections->begin()->second->component);
+    std::cout << "TRANSITION_CHOSEN_I: " << transitionChosen->getGuardExpression() << std::endl; // debug
+    auto transitionDefault = transitionChosen;
 
-	auto transitionDefault = dynamic_cast<FSM_Transition*>(connections->begin()->second->component);
-	auto transitionChosen = transitionDefault;
+    auto anyDefaultConnected = false;
+    auto totalEnableds = 0;
+    auto deterministicEnabled = false;
+    auto nonDefaultEnabled = false;
 
-	if (transitionDefault->isDefault()) {
-		hasDefaultConnected = true;
-	}
+    for(auto connection: *connections) {
+        auto transition = dynamic_cast<FSM_Transition*>(connection.second->component);
 
-	for(auto connection: *connections){
-		auto transition = dynamic_cast<FSM_Transition*>(connection.second->component);
-		if (not hasDefaultConnected and transition->isDefault()) {
-			transitionDefault = transition;
-			hasDefaultConnected = true;
-		}
+        if (transition->isDefault()) {
+            anyDefaultConnected = true;
+            transitionDefault = transition;
+        }
 
-		if  (transition->isEnabled() and 
-                (not _mustBeImmediate or 
-                    (_mustBeImmediate and transition->isImmediate())
-                )
-            ){
-                std::cout << "FSM_STATE TRUE" << std::endl; // debug
-			if (not transition->isNondeterministic()) {
-				hasDeterministicEnabled = true;
-			}
-			if (not transition->isDefault()) {
-				//hasNondefault = true;
-				transitionChosen = transition;
-			} else if (enableds <= 0 and _mustBeImmediate)
-            {
-                transitionChosen = transition;
+        if (transition->isEnabled()) {
+            ++totalEnableds;
+            std::cout << "FSM_TRANSITION TRUE" << std::endl; // debug
+
+            if (transition->isDeterministic()) {
+                deterministicEnabled = true;
             }
-			++enableds;
-            
-		}
-	}
 
-	if (hasDeterministicEnabled and enableds > 1) {
-		throw std::domain_error("More than a transition and at least one is deterministic.");
-	}
-
-    if(enableds <= 0) {
-        if (_mustBeImmediate) {
-            _mustBeImmediate = false;
-            _efsm->leaveEFSM(entity, this);
-            return;
-        } else {
-            transitionChosen = transitionDefault;
+            if (transition->isDefault()){
+                if (not nonDefaultEnabled) {
+                    transitionChosen = transition;
+                    std::cout << "TRANSITION_CHOSEN_D: " << transitionChosen->getGuardExpression() << std::endl; // debug
+                }
+            } else {
+                nonDefaultEnabled = true;
+                transitionChosen = transition;
+                std::cout << "TRANSITION_CHOSEN_ND: " << transitionChosen->getGuardExpression() << std::endl; // debug
+            }
         }
     }
-    _mustBeImmediate = false;
 
+    if (deterministicEnabled and totalEnableds > 1) {
+        std::cout << "EXCEPTION: MORE THAN 1 AND DETERMINISTIC" << std::endl; // debug
+        throw std::domain_error("More than a transition and at least one is deterministic.");
+    }
+
+    if (totalEnableds == 0) {
+        transitionChosen = transitionDefault;
+        std::cout << "TRANSITION_CHOSEN_DI: " << transitionChosen->getGuardExpression() << std::endl; // debug
+    }
+
+   std::cout << "FINAL TRANSITION_CHOSEN: " << transitionChosen->getGuardExpression() << std::endl; // debug
     if (_refinement != nullptr and not transitionChosen->isPreemptive()) {
         _refinement->enterEFSM(entity, transitionChosen);
     }
 
-   std::cout << "TRANSITION_CHOSEN: " << transitionChosen->getGuardExpression() << std::endl; // debug
    this->_parentModel->sendEntityToComponent(entity, transitionChosen); 
+}
+
+void FSM_State::fireWithOnlyImmediate(Entity* entity) {
+    auto connections = this->getConnections()->connections();
+    auto transitionChosen = dynamic_cast<FSM_Transition*>(connections->begin()->second->component);
+
+    auto totalEnableds = 0;
+    auto deterministicEnabled = false;
+    auto nonDefaultEnabled = false;
+
+    for(auto connection: *connections) {
+        auto transition = dynamic_cast<FSM_Transition*>(connection.second->component);
+
+        if (transition->isImmediate() and transition->isEnabled()) {
+            ++totalEnableds;
+            std::cout << "FSM_TRANSITION TRUE" << std::endl; // debug
+
+            if (transition->isDeterministic()) {
+                deterministicEnabled = true;
+            }
+
+            if (transition->isDefault()){
+                if (not nonDefaultEnabled) {
+                    transitionChosen = transition;
+                }
+            } else {
+                nonDefaultEnabled = true;
+                transitionChosen = transition;
+            }
+        }
+    }
+    if (deterministicEnabled and totalEnableds > 1) {
+        throw std::domain_error("More than a transition and at least one is deterministic.");
+    }
+
+    if (totalEnableds > 0) {
+        if (_refinement != nullptr and not transitionChosen->isPreemptive()) {
+            _refinement->enterEFSM(entity, transitionChosen);
+        }
+
+        std::cout << "FINAL_TRANSITION_CHOSEN_IM: " << transitionChosen->getGuardExpression() << std::endl; // debug
+        this->_parentModel->sendEntityToComponent(entity, transitionChosen); 
+    } else {
+        _efsm->leaveEFSM(entity, this);
+    }
+}
+
+
+void FSM_State::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber) {
+    if (_mustBeImmediate) {
+        _mustBeImmediate = false;
+        fireWithOnlyImmediate(entity);
+    } else {
+        fire(entity);
+    }
 }
 

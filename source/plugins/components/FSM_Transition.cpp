@@ -47,14 +47,14 @@ bool FSM_Transition::_loadInstance(PersistenceRecord *fields) {
 }
 
 void FSM_Transition::_onDispatchEvent(Entity* entity, unsigned int inputPortNumber){
-    std::cout << "TRANSITION_CHOSEN: " << _guardExpression << std::endl; // debug
-    std::cout << "BEFORE: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
+    std::cout << "TRANSITION_TAKEN: " << getName() << std::endl; // debug
+    //std::cout << "BEFORE: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
     _parentModel->parseExpression(getOutputActions());
 
     //postfire
     _parentModel->parseExpression(getSetActions());
-    std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
-    std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("maxCarsParked") << std::endl; // debug
+    //std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("carsParked") << std::endl; // debug
+    //std::cout << "AFTER: " << "carsParked = " << _parentModel->parseExpression("maxCarsParked") << std::endl; // debug
 
     auto connections = getConnections()->connections();
     auto nextState = dynamic_cast<FSM_State*>(connections->begin()->second->component);
@@ -83,81 +83,16 @@ std::string trim(const std::string& str, const std::string& whitespace = " \t") 
 }
 
 bool FSM_Transition::isEnabled(){
-    std::cout << "GUARD_EXPRESSION: " << _guardExpression << std::endl; // debug
+    std::cout << "GUARD_EXPRESSION:" << _guardExpression << std::endl; // debug
     if (_guardExpression == "") {
-    std::cout << "TRUE" << std::endl;                                   // debug
+    std::cout << true << std::endl;                                   // debug
         return true;
     }
 
-    //auto expression_ss = std::stringstream();
-    //expression_ss << _guardExpression;
-    //auto actions = std::string();
-    //while(std::getline(expression_ss, actions, '|')) {
-    //    actions = trim(actions);
-    //    auto actions_ss = std::stringstream();
-    //    actions_ss << actions;
-    //    if (check(actions_ss)) {
-    //        return true;
-    //    }
-    //}
-
-    std::cout << "FALSE" << std::endl;                                  // debug
-    return false;
+    double value = bool(_parentModel->parseExpression(_guardExpression));
+    std::cout << value << std::endl;                                  // debug
+    return value;
 }
-
-/*
-bool FSM_Transition::check(std::stringstream& actions_ss) {
-    auto action = std::string();
-    while(std::getline(actions_ss, action, '&')) {
-        action = trim(action);
-        auto action_ss = std::stringstream();
-        action_ss << action;
-        auto operand1_str = std::string();
-        auto operatorAction = std::string();
-        auto operand2_str = std::string();
-
-        std::getline(action_ss, operand1_str, ' ');
-        std::getline(action_ss, operatorAction, ' ');
-        std::getline(action_ss, operand2_str, ' ');
-
-        operand1_str = trim(operand1_str);
-        operatorAction = trim(operatorAction);
-        operand2_str = trim(operand2_str);
-
-        double operand1, operand2;
-        try {
-            operand1 = _parentModel->parseExpression(operand1_str);
-            operand2 = _parentModel->parseExpression(operand2_str);
-        }
-        catch(const std::invalid_argument& e) {
-            return false;
-        }
-        
-        if (operatorAction == "<") {
-            if (not (operand1 < operand2)) {
-                return false;
-            }
-        } else if (operatorAction == "<=") {
-            if (not (operand1 <= operand2)) {
-                return false;
-            }
-        } else if (operatorAction == "=") {
-            if (not (operand1 == operand2)) {
-                return false;
-            }
-        } else if (operatorAction == ">") {
-            if (not (operand1 > operand2)) {
-                return false;
-            }
-        } else if (operatorAction == ">=") {
-            if (not (operand1 >= operand2)) {
-                return false;
-            }
-        }
-
-    }
-    return true;
-}*/
 
 bool FSM_Transition::_check(std::string* errorMessage){
 	bool resultAll = true;

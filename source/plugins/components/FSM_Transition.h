@@ -90,6 +90,10 @@ public:
 		return _nondeterministic;
 	}
 
+	bool isDeterministic() {
+		return not _nondeterministic;
+	}
+
 	bool isDefault() {
 		return _default;
 	}

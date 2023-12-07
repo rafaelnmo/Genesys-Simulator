@@ -40,6 +40,10 @@ public:
     void setRefinement(ExtendedFSM* refinement);
     ExtendedFSM* getRefinement();
 
+private: 
+    void fire(Entity* entity);
+    void fireWithOnlyImmediate(Entity* entity);
+
 public: // static
     static PluginInformation* GetPluginInformation();
     static ModelComponent* LoadInstance(Model* model, PersistenceRecord *fields);
