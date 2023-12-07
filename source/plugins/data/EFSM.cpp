@@ -17,12 +17,12 @@ extern "C" StaticGetPluginInformation GetPluginInformation() {
 ExtendedFSM::ExtendedFSM(Model* model, std::string name) : ModelDataDefinition(model, Util::TypeOf<ExtendedFSM>(), name) {}
 
 std::string ExtendedFSM::show(){
-   /* std::string txt = ModelDataDefinition::show() + ",assignments=[";
-    for (std::list<Assignment*>::iterator it = _assignments->list()->begin(); it != _assignments->list()->end(); it++) {
-        txt += (*it)->getDestination() + "=" + (*it)->getExpression() + ",";
+	auto txt = ModelDataDefinition::show() + ",variables=[";
+    for (auto* var: *_variables) {
+        txt += var->show() + ",";
     }
     txt = txt.substr(0, txt.length() - 1) + "]";
-    return txt;*/
+    return txt;
 }
 
 void ExtendedFSM::_createInternalAndAttachedData(){
@@ -81,7 +81,7 @@ bool ExtendedFSM::_check(std::string* errorMessage){
 void ExtendedFSM::_initBetweenReplications(){
     _currentState = _initialState;
     for (auto* var: *_variables) {
-        var->InitBetweenReplications(var);
+        InitBetweenReplications(var);
         for (auto value: *var->getValues()) {
             std::cout << value.first + " = " + std::to_string(value.second) << std::endl;                                       // debug
             std::cout << "BEFORE_INIT: " << value.first << " = " << _parentModel->parseExpression(value.first) << std::endl;    // debug
