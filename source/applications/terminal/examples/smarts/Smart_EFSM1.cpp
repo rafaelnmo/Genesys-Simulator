@@ -41,7 +41,6 @@ int Smart_EFSM1::main(int argc, char** argv) {
 	setDefaultTraceHandlers(genesys->getTracer());
     PluginManager* plugins = genesys->getPlugins();
     plugins->autoInsertPlugins("autoloadplugins.txt");
-    //plugins->autoInsertPlugins("/home/kuru/UFSC/ModSim/Genesys-Simulator/autoloadplugins.txt");
 
 	// create model
 	Model* model = genesys->getModels()->newModel();

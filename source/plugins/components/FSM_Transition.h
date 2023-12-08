@@ -91,7 +91,6 @@ public:
 	void executeSetActions();
 
 private:
-	bool check(std::stringstream& actions_ss);
 	void executeActions(std::string actions);
 
 public: // static
